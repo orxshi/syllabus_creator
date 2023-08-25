@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Syllabus Creator</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    </head>
+
+    <script src="tab.js"></script>
+    <script src="saveload.js"></script>
+
+    <body>
+
+        <form method="post" action="post.php" id="myform">
+
+            <div class="box">
+
+                <div style="min-width: 180px;">
+
+                    <input type="button" id="load" name="load" class="button" value="Load"/>
+                    <input type="reset" value="Reset"/><br>
+                    <hr>
+                    <input type="submit" name="submit" class="button" value="Download PDF" />
+                    <input type="button" id="save" name="save" class="button" value="Save"/>
+                </div>
+
+
+                <div>
+
+                    <div style="padding-left: 30px;">
+
+                        <div class="tab" style="padding-bottom: 30px;">
+                            <button class="tablinks" onclick="openTab(event, 'divbasic')">Basic</button>
+                            <button class="tablinks" onclick="openTab(event, 'divobj')">Objectives</button>
+                            <button class="tablinks" onclick="openTab(event, 'divsource')">Sources</button>
+                            <button class="tablinks" onclick="openTab(event, 'divassess')">Activities</button>
+                            <button class="tablinks" onclick="openTab(event, 'divoutcome')">Outcomes</button>
+                            <button class="tablinks" onclick="openTab(event, 'divects')">ECTS</button>
+                            <button class="tablinks" onclick="openTab(event, 'divcontents')">Contents</button>
+                        </div>
+
+                        <div name="divbasic" id="divbasic" class="tabcontent" style="display:block">
+                            <label for="coursename">Course name:</label>
+                            <input type="text" id="coursename" name="coursename" placeholder="Physics I"><br>
+
+                            <label for="coursecode">Course code:</label>
+                            <input type="text" id="coursecode" name="coursecode" placeholder="PHYS101"><br>
+
+                            <label for="nationalcredit">National credits:</label>
+                            <input type="text" id="nationalcredit" name="nationalcredit" placeholder="3"><br>
+
+                            <label for="ectscredit">ECTS credits:</label>
+                            <input type="text" id="ectscredit" name="ectscredit" placeholder="5"><br>
+
+                            <label for="theoretical">Theoretical (hour/week):</label>
+                            <input type="text" id="theoretical" name="theoretical" placeholder="3"><br>
+
+                            <label for="prerequisite">Prerequisities:</label>
+                            <input type="text" id="prerequisite" name="prerequisite" placeholder="MTXXX"><br>
+
+                            <label for="coursetype">Course type:</label>
+                            <select name="coursetype" id="coursetype">
+                                <option value="Compulsory">Compulsory</option>
+                                <option value="Technical elective">Technical elective</option>
+                                <option value="Elective">Elective</option>
+                            </select><br>
+
+                            <label for="courselevel">Course level:</label>
+                            <select name="courselevel" id="courselevel">
+                                <option value="Undergraduate">Undergraduate</option>
+                                <option value="Graduate">Graduate</option>
+                            </select>
+
+                        </div>
+
+                        <div name="divobj" id="divobj" class="tabcontent">
+
+
+                            <textarea id="obj0" name="obj0" id="obj0" placeholder="Objective 1"></textarea>
+                            <textarea id="obj1" name="obj1" id="obj1" placeholder="Objective 2"></textarea>
+                            <textarea id="obj2" name="obj2" id="obj2" placeholder="Objective 3"></textarea>
+                            <textarea id="obj3" name="obj3" id="obj3" placeholder="Objective 4"></textarea>
+                            <textarea id="obj4" name="obj4" id="obj4" placeholder="Objective 5"></textarea>
+                            <textarea id="obj5" name="obj5" id="obj5" placeholder="Objective 6"></textarea>
+                            <textarea id="obj6" name="obj6" id="obj6" placeholder="Objective 7"></textarea>
+                            <textarea id="obj7" name="obj7" id="obj7" placeholder="Objective 8"></textarea>
+
+
+                        </div>
+
+                        <div name="divsource" id="divsource" class="tabcontent">
+
+                            <textarea name="source0" id="source0" placeholder="Textbook: XXX"></textarea>
+                            <textarea name="source1" id="source1" placeholder="Source 2"></textarea>
+                            <textarea name="source2" id="source2" placeholder="Source 3"></textarea>
+                            <textarea name="source3" id="source3" placeholder="Source 4"></textarea>
+                            <textarea name="source4" id="source4" placeholder="Source 5"></textarea>
+
+                        </div>
+
+
+                        <div name="divassess" id="divassess" class="tabcontent">
+
+                            <table id="tabassess">
+                                <tr>
+                                    <td><input type="text" id="act0" name="act0" placeholder="Midterm"></td>
+                                    <td><input class="shorttext" type="text" id="actper0" name="actper0" placeholder="30"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="act1" name="act1" placeholder="Final"></td>
+                                    <td><input class="shorttext" type="text" id="actper1" name="actper1" placeholder="40"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="act2" name="act2" placeholder="Activity 3"></td>
+                                    <td><input class="shorttext" type="text" id="actper2" name="actper2"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="act3" name="act3" placeholder="Activity 4"></td>
+                                    <td><input class="shorttext" type="text" id="actper3" name="actper3"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" id="act4" name="act4" placeholder="Activity 5"></td>
+                                    <td><input class="shorttext" type="text" id="actper4" name="actper4"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                        <div name="divects" id="divects" class="tabcontent">
+
+                            <table id="tabects">
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Number of activity</th>
+                                    <th>Duration (hour)</th>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact0" name="ectsact0" id="ectsact0" placeholder="ECTS activity 0"></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm0" name="ectsnm0" id="ectsnm0"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur0" name="ectsdur0" id="ectsdur0"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact1" name="ectsact1" id="ectsact1" placeholder="In-class lecture"></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm1" name="ectsnm1" id="ectsnm1" placeholder="13"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur1" name="ectsdur1" id="ectsdur1" placeholder="3"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact2" name="ectsact2" id="ectsact2" placeholder="Midterm exam"></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm2" name="ectsnm2" id="ectsnm2" placeholder="1"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur2" name="ectsdur2" id="ectsdur2" placeholder="1.5"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact3" name="ectsact3" id="ectsact3" placeholder="Midterm exam prep."></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm3" name="ectsnm3" id="ectsnm3" placeholder="1"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur3" name="ectsdur3" id="ectsdur3" placeholder="15"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact4" name="ectsact4" id="ectsact4" placeholder="ECTS activity 4"></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm4" name="ectsnm4" id="ectsnm4"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur4" name="ectsdur4" id="ectsdur4"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact5" name="ectsact5" id="ectsact5" placeholder="ECTS activity 5"></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm5" name="ectsnm5" id="ectsnm5"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur5" name="ectsdur5" id="ectsdur5"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact6" name="ectsact6" id="ectsact6" placeholder="ECTS activity 6"></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm6" name="ectsnm6" id="ectsnm6"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur6" name="ectsdur6" id="ectsdur6"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact7" name="ectsact7" id="ectsact7" placeholder="ECTS activity 7"></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm7" name="ectsnm7" id="ectsnm7"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur7" name="ectsdur7" id="ectsdur7"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact8" name="ectsact8" id="ectsact8" placeholder="ECTS activity 8"></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm8" name="ectsnm8" id="ectsnm8"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur8" name="ectsdur8" id="ectsdur8"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="text" id="ectsact9" name="ectsact9" id="ectsact9" placeholder="ECTS activity 9"></td>
+                                    <td><input class="shorttext" type="text" id="ectsnm9" name="ectsnm9" id="ectsnm9"></td>
+                                    <td><input class="shorttext" type="text" id="ectsdur9" name="ectsdur9" id="ectsdur9"></td>
+                                </tr>
+
+
+                            </table>
+
+                        </div>
+
+                        <div name="divcontents" id="divcontents" class="tabcontent">
+
+                            <table id="tabcontents">
+                                <tr>
+                                    <th>Week</th>
+                                    <th>Chapter</th>
+                                    <th>Subject</th>
+                                    <th>Lab. activity</th>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek0" name="conweek0"></td>
+                                    <td><input class="shorttext" type="text" id="conchp0" name="conchp0" ></td>
+                                    <td><input class="text" type="text" id="consub0" name="consub0"></td>
+                                    <td><input type="text" id="conlab0" name="conlab0"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek1" name="conweek1" placeholder="1"></td>
+                                    <td><input class="shorttext" type="text" id="conchp1" name="conchp1" placeholder="1"></td>
+                                    <td><input class="text" type="text" id="consub1" name="consub1" placeholder="Introduction"></td>
+                                    <td><input type="text" id="conlab1" name="conlab1" placeholder="Lab. tour"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek2" name="conweek2"></td>
+                                    <td><input class="shorttext" type="text" id="conchp2" name="conchp2" ></td>
+                                    <td><input class="text" type="text" id="consub2" name="consub2"></td>
+                                    <td><input type="text" id="conlab2" name="conlab2"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek3" name="conweek3"></td>
+                                    <td><input class="shorttext" type="text" id="conchp3" name="conchp3" ></td>
+                                    <td><input class="text" type="text" id="consub3" name="consub3"></td>
+                                    <td><input type="text" id="conlab3" name="conlab3"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek4" name="conweek4"></td>
+                                    <td><input class="shorttext" type="text" id="conchp4" name="conchp4" ></td>
+                                    <td><input class="text" type="text" id="consub4" name="consub4"></td>
+                                    <td><input type="text" id="conlab4" name="conlab4"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek5" name="conweek5"></td>
+                                    <td><input class="shorttext" type="text" id="conchp5" name="conchp5" ></td>
+                                    <td><input class="text" type="text" id="consub5" name="consub5"></td>
+                                    <td><input type="text" id="conlab5" name="conlab5"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek6" name="conweek6"></td>
+                                    <td><input class="shorttext" type="text" id="conchp6" name="conchp6" ></td>
+                                    <td><input class="text" type="text" id="consub6" name="consub6"></td>
+                                    <td><input type="text" id="conlab6" name="conlab6"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek7" name="conweek7"></td>
+                                    <td><input class="shorttext" type="text" id="conchp7" name="conchp7" ></td>
+                                    <td><input class="text" type="text" id="consub7" name="consub7"></td>
+                                    <td><input type="text" id="conlab7" name="conlab7"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek8" name="conweek8"></td>
+                                    <td><input class="shorttext" type="text" id="conchp8" name="conchp8" ></td>
+                                    <td><input class="text" type="text" id="consub8" name="consub8"></td>
+                                    <td><input type="text" id="conlab8" name="conlab8"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek9" name="conweek9"></td>
+                                    <td><input class="shorttext" type="text" id="conchp9" name="conchp9" ></td>
+                                    <td><input class="text" type="text" id="consub9" name="consub9"></td>
+                                    <td><input type="text" id="conlab9" name="conlab9"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek10" name="conweek10"></td>
+                                    <td><input class="shorttext" type="text" id="conchp10" name="conchp10" ></td>
+                                    <td><input class="text" type="text" id="consub10" name="consub10"></td>
+                                    <td><input type="text" id="conlab10" name="conlab10"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek11" name="conweek11"></td>
+                                    <td><input class="shorttext" type="text" id="conchp11" name="conchp11" ></td>
+                                    <td><input class="text" type="text" id="consub11" name="consub11"></td>
+                                    <td><input type="text" id="conlab11" name="conlab11"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek12" name="conweek12"></td>
+                                    <td><input class="shorttext" type="text" id="conchp12" name="conchp12" ></td>
+                                    <td><input class="text" type="text" id="consub12" name="consub12"></td>
+                                    <td><input type="text" id="conlab12" name="conlab12"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek13" name="conweek13"></td>
+                                    <td><input class="shorttext" type="text" id="conchp13" name="conchp13" ></td>
+                                    <td><input class="text" type="text" id="consub13" name="consub13"></td>
+                                    <td><input type="text" id="conlab13" name="conlab13"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><input class="shorttext" type="text" id="conweek14" name="conweek14"></td>
+                                    <td><input class="shorttext" type="text" id="conchp14" name="conchp14" ></td>
+                                    <td><input class="text" type="text" id="consub14" name="consub14"></td>
+                                    <td><input type="text" id="conlab14" name="conlab14"></td>
+                                </tr>
+
+
+                            </table>
+
+                        </div>
+
+
+
+
+                        <div name="divoutcome" id="divoutcome" class="tabcontent">
+
+                            <div class="tooltip">Help
+                                <span class="tooltiptext">1: Written exam <br> 2: Assignment <br> 3: Project/report <br> 4: Presentation <br> 5: Lab. work</span>
+                            </div>
+
+                            <table id="taboutcome">
+                                <tr>
+                                    <td><textarea id="out0" name="out0" placeholder="Outcome 1"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="outval0" name="outval0" placeholder="1,2"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="out1" name="out1" placeholder="Outcome 2"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="outval1" name="outval1" placeholder="1"></td>
+                                <tr>
+                                    <td><textarea id="out2" name="out2" placeholder="Outcome 3"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="outval2" name="outval2" placeholder="3"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="out3" name="out3" placeholder="Outcome 4"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="outval3" name="outval3"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="out4" name="out4" placeholder="Outcome 5"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="outval4" name="outval4"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="out5" name="out5" placeholder="Outcome 6"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="outval5" name="outval5"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="out6" name="out6" placeholder="Outcome 7"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="outval6" name="outval6"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="out7" name="out7" placeholder="Outcome 8"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="outval7" name="outval7"></td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+        </form>
+
+    </body>
+
+</html>

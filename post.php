@@ -1,0 +1,142 @@
+<?php
+
+if (array_key_exists('submit', $_POST))
+{
+    exec('cp documentoriginal.tex syllabus.tex');
+    $path_to_file = 'syllabus.tex';
+    $content = file_get_contents ($path_to_file);
+
+    $content = str_replace ("PHCourseName", $_POST['coursename'], $content);
+    $content = str_replace ("PHCourseCode", $_POST['coursecode'], $content);
+    $content = str_replace ("PHNationalCredit", $_POST['nationalcredit'], $content);
+    $content = str_replace ("PHECTSCredit", $_POST['ectscredit'], $content);
+    $content = str_replace ("PHTheoretical", $_POST['theoretical'], $content);
+    $content = str_replace ("PHCourseType", $_POST['coursetype'], $content);
+    $content = str_replace ("PHCourseLevel", $_POST['courselevel'], $content);
+    $content = str_replace ("PHPrerequisite", $_POST['prerequisite'], $content);
+
+    for ($i = 7; $i >= 0; $i--)
+    {
+        $insertion = $_POST["obj" . $i];
+
+        $env = "objectives";
+        $off = strlen($env) + 2;
+
+        if (!empty($insertion))
+        {
+            $pos = strpos($content, $env);
+            $content = substr_replace($content, "\item " . $insertion . PHP_EOL, $pos+$off, 0);
+        }
+    }
+
+    for ($i = 4; $i >= 0; $i--)
+    {
+        $insertion = $_POST["source" . $i];
+
+        $env = "textbook";
+        $off = strlen($env) + 2;
+
+        if (!empty($insertion))
+        {
+            $pos = strpos($content, $env);
+            $content = substr_replace($content, "\item " . $insertion . PHP_EOL, $pos+$off, 0);
+        }
+    }
+
+    for ($i = 4; $i >= 0; $i--)
+    {
+        $insertion0 = $_POST["act" . $i];
+        $insertion1 = $_POST["actper" . $i];
+
+        $env = "assessment";
+        $off = strlen($env) + 2;
+
+        if (!empty($insertion0))
+        {
+            $pos = strpos($content, $env);
+            $content = substr_replace($content, "\makerow{" . $insertion0 . "}{" . $insertion1 . "}" . PHP_EOL , $pos+$off, 0);
+        }
+    }
+
+    for ($i = 7; $i >= 0; $i--)
+    {
+        $insertion0 = $_POST["out" . $i];
+        $insertion1 = $_POST["outval" . $i];
+
+        $env = "outcomes";
+        $off = strlen($env) + 2;
+
+        if (!empty($insertion0))
+        {
+            $pos = strpos($content, $env);
+            $content = substr_replace($content, "\makerow{" . $insertion0 . "}{" . $insertion1 . "}" . PHP_EOL , $pos+$off, 0);
+        }
+    }
+
+    $sumects = 0;
+
+    for ($i = 9; $i >= 0; $i--)
+    {
+        $insertion0 = $_POST["ectsact" . $i];
+        $insertion1 = $_POST["ectsnm" . $i];
+        $insertion2 = $_POST["ectsdur" . $i];
+
+        $sumects = $sumects + $insertion1 * $insertion2;
+
+        $env = "ects";
+        $off = strlen($env) + 2;
+
+        if (!empty($insertion0))
+        {
+            $pos = strpos($content, $env);
+            $content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion1 * $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
+        }
+    }
+
+    $env = "end{ects}";
+    $off = -strlen($env) + 8;
+
+    if (!empty($_POST["ectsact0"]))
+    {
+        $pos = strpos($content, $env);
+        $content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
+        $pos = strpos($content, $env);
+        $content = substr_replace($content, "\makeectsrow{Total}{}{}{" . $sumects . "}" . PHP_EOL , $pos+$off, 0);
+        $pos = strpos($content, $env);
+        $content = substr_replace($content, "\makeectsrow{Total / 30}{}{}{" . number_format($sumects/30,2) . "}" . PHP_EOL , $pos+$off, 0);
+        $pos = strpos($content, $env);
+        $content = substr_replace($content, "\makeectsrow{ECTS credits}{}{}{" . round($sumects/30) . "}" . PHP_EOL , $pos+$off, 0);
+    }
+
+    for ($i = 14; $i >= 0; $i--)
+    {
+        $insertion0 = $_POST["conweek" . $i];
+        $insertion1 = $_POST["conchp" . $i];
+        $insertion2 = $_POST["consub" . $i];
+        $insertion3 = $_POST["conlab" . $i];
+
+        $env = "contents";
+        $off = strlen($env) + 2;
+
+        if (!empty($insertion0))
+        {
+            $pos = strpos($content, $env);
+            $content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion3 . "}" . PHP_EOL , $pos+$off, 0);
+        }
+    }
+
+    file_put_contents($path_to_file, $content);
+
+    exec('/usr/local/texlive/2021/bin/x86_64-linux/pdflatex syllabus.tex');
+
+    $file = 'syllabus.pdf';
+
+    header('Content-Type: application/pdf');
+    header("Content-Disposition: inline; filename=\"$file\"");
+
+    ob_clean();
+    flush();
+
+    readfile($file);
+}
+?>

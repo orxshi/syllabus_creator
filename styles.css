@@ -1,0 +1,59 @@
+label{
+    display: inline-block;
+    width: 200px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+body{
+    margin-top: 40px;
+    width: 750px;
+}
+textarea{
+    height: 4em;
+    width: 20em;
+}
+.shorttext{
+    width: 5em;
+}
+td{
+    vertical-align: top;
+}
+th{
+    max-width: 4em;
+}
+.tab {
+    overflow: hidden;
+}
+.tabcontent {
+    display: none;
+}
+.box {
+    display: flex;
+    gap: 20px;
+}
+.tooltip {
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+  border-bottom: 1px dotted black;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: left;
+  padding: 10px 0px 10px 10px;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
