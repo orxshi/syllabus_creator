@@ -97,12 +97,12 @@
         Theoretical (hour/week) & \@theoretical\\
         Practice (hour/week) & \@practical\\
         Laboratory (hour/week) & \@laboratory\\
-        Year of study & \@yearsOfStudy\\
-        Semester when the course unit is delivered & \@semester\\
+        %Year of study & \@yearsOfStudy\\
+        %Semester when the course unit is delivered & \@semester\\
         Mode of Delivery & \@courseMode\\
         Language of instruction & \@instructionLanguage\\
         Prerequisities and co-requisities & \@prerequisite\\
-        Recommended optional programme components & \@recommended
+        %Recommended optional programme components & \@recommended
         %\end{tabularx}
     \end{tabular}
 }
@@ -127,6 +127,11 @@
 \newcommand{\makeectsrow}[4]
 {
 #1 & #2 & #3 & #4\\
+}
+
+\newcommand{\makeshortectsrow}[3]
+{
+#1 & #2 & #3\\
 }
 
 \newenvironment{outcomes}
@@ -179,7 +184,20 @@
     \begin{minipage}{\textwidth}
     \textbf{Contents}\\[3mm]
     \begin{tabular}{llp{0.35\textwidth}p{0.35\textwidth}}
-    Week & Chapter & Subject & Laboratory activity\\
+    Week & Chapter & Subject & Lab activity\\
+        \midrule
+}
+{
+    \end{tabular}
+    \end{minipage}
+}
+
+\newenvironment{contentswolab}
+{
+    \begin{minipage}{\textwidth}
+    \textbf{Contents}\\[3mm]
+    \begin{tabular}{lll}
+    Week & Chapter & Subject\\
         \midrule
 }
 {

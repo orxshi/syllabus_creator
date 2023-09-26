@@ -105,15 +105,15 @@
                             <table id="tabassess">
                                 <tr>
                                     <td><input type="text" id="act0" name="act0" placeholder="Midterm"></td>
-                                    <td><input class="shorttext" type="text" id="actper0" name="actper0" placeholder="30"></td>
+                                    <td><input class="shorttext" type="text" id="actper0" name="actper0" placeholder="35"></td>
                                 </tr>
                                 <tr>
                                     <td><input type="text" id="act1" name="act1" placeholder="Final"></td>
-                                    <td><input class="shorttext" type="text" id="actper1" name="actper1" placeholder="40"></td>
+                                    <td><input class="shorttext" type="text" id="actper1" name="actper1" placeholder="45"></td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" id="act2" name="act2" placeholder="Activity 3"></td>
-                                    <td><input class="shorttext" type="text" id="actper2" name="actper2"></td>
+                                    <td><input type="text" id="act2" name="act2" placeholder="Assignments"></td>
+                                    <td><input class="shorttext" type="text" id="actper2" name="actper2" placeholder="20"></td>
                                 </tr>
                                 <tr>
                                     <td><input type="text" id="act3" name="act3" placeholder="Activity 4"></td>
@@ -136,11 +136,7 @@
                                     <th>Duration (hour)</th>
                                 </tr>
 
-                                <tr>
-                                    <td><input type="text" id="ectsact0" name="ectsact0" id="ectsact0" placeholder="ECTS activity 0"></td>
-                                    <td><input class="shorttext" type="text" id="ectsnm0" name="ectsnm0" id="ectsnm0"></td>
-                                    <td><input class="shorttext" type="text" id="ectsdur0" name="ectsdur0" id="ectsdur0"></td>
-                                </tr>
+                                
 
                                 <tr>
                                     <td><input type="text" id="ectsact1" name="ectsact1" id="ectsact1" placeholder="In-class lecture"></td>
@@ -212,107 +208,107 @@
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek0" name="conweek0"></td>
+                                    <td><input class="shorttext" type="text" id="conweek0" name="conweek0" value="1"></td>
                                     <td><input class="shorttext" type="text" id="conchp0" name="conchp0" ></td>
-                                    <td><input class="text" type="text" id="consub0" name="consub0"></td>
+                                    <td><input class="text" type="text" id="consub0" name="consub0" placeholder="Introduction"></td>
                                     <td><input type="text" id="conlab0" name="conlab0"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek1" name="conweek1" placeholder="1"></td>
-                                    <td><input class="shorttext" type="text" id="conchp1" name="conchp1" placeholder="1"></td>
-                                    <td><input class="text" type="text" id="consub1" name="consub1" placeholder="Introduction"></td>
-                                    <td><input type="text" id="conlab1" name="conlab1" placeholder="Lab. tour"></td>
+                                    <td><input class="shorttext" type="text" id="conweek1" name="conweek1" value="2"></td>
+                                    <td><input class="shorttext" type="text" id="conchp1" name="conchp1"></td>
+                                    <td><input class="text" type="text" id="consub1" name="consub1"></td>
+                                    <td><input type="text" id="conlab1" name="conlab1"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek2" name="conweek2"></td>
+                                    <td><input class="shorttext" type="text" id="conweek2" name="conweek2" value="3"></td>
                                     <td><input class="shorttext" type="text" id="conchp2" name="conchp2" ></td>
                                     <td><input class="text" type="text" id="consub2" name="consub2"></td>
                                     <td><input type="text" id="conlab2" name="conlab2"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek3" name="conweek3"></td>
+                                    <td><input class="shorttext" type="text" id="conweek3" name="conweek3" value="4"></td>
                                     <td><input class="shorttext" type="text" id="conchp3" name="conchp3" ></td>
                                     <td><input class="text" type="text" id="consub3" name="consub3"></td>
                                     <td><input type="text" id="conlab3" name="conlab3"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek4" name="conweek4"></td>
+                                    <td><input class="shorttext" type="text" id="conweek4" name="conweek4" value="5"></td>
                                     <td><input class="shorttext" type="text" id="conchp4" name="conchp4" ></td>
                                     <td><input class="text" type="text" id="consub4" name="consub4"></td>
                                     <td><input type="text" id="conlab4" name="conlab4"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek5" name="conweek5"></td>
+                                    <td><input class="shorttext" type="text" id="conweek5" name="conweek5" value="6"></td>
                                     <td><input class="shorttext" type="text" id="conchp5" name="conchp5" ></td>
                                     <td><input class="text" type="text" id="consub5" name="consub5"></td>
                                     <td><input type="text" id="conlab5" name="conlab5"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek6" name="conweek6"></td>
+                                    <td><input class="shorttext" type="text" id="conweek6" name="conweek6" value="7"></td>
                                     <td><input class="shorttext" type="text" id="conchp6" name="conchp6" ></td>
                                     <td><input class="text" type="text" id="consub6" name="consub6"></td>
                                     <td><input type="text" id="conlab6" name="conlab6"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek7" name="conweek7"></td>
+                                    <td><input class="shorttext" type="text" id="conweek7" name="conweek7" value="8"></td>
                                     <td><input class="shorttext" type="text" id="conchp7" name="conchp7" ></td>
-                                    <td><input class="text" type="text" id="consub7" name="consub7"></td>
+                                    <td><input class="text" type="text" id="consub7" name="consub7" placeholder="Midterm exam"></td>
                                     <td><input type="text" id="conlab7" name="conlab7"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek8" name="conweek8"></td>
+                                    <td><input class="shorttext" type="text" id="conweek8" name="conweek8" value="9"></td>
                                     <td><input class="shorttext" type="text" id="conchp8" name="conchp8" ></td>
                                     <td><input class="text" type="text" id="consub8" name="consub8"></td>
                                     <td><input type="text" id="conlab8" name="conlab8"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek9" name="conweek9"></td>
+                                    <td><input class="shorttext" type="text" id="conweek9" name="conweek9" value="10"></td>
                                     <td><input class="shorttext" type="text" id="conchp9" name="conchp9" ></td>
                                     <td><input class="text" type="text" id="consub9" name="consub9"></td>
                                     <td><input type="text" id="conlab9" name="conlab9"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek10" name="conweek10"></td>
+                                    <td><input class="shorttext" type="text" id="conweek10" name="conweek10" value="11"></td>
                                     <td><input class="shorttext" type="text" id="conchp10" name="conchp10" ></td>
                                     <td><input class="text" type="text" id="consub10" name="consub10"></td>
                                     <td><input type="text" id="conlab10" name="conlab10"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek11" name="conweek11"></td>
+                                    <td><input class="shorttext" type="text" id="conweek11" name="conweek11" value="12"></td>
                                     <td><input class="shorttext" type="text" id="conchp11" name="conchp11" ></td>
                                     <td><input class="text" type="text" id="consub11" name="consub11"></td>
                                     <td><input type="text" id="conlab11" name="conlab11"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek12" name="conweek12"></td>
+                                    <td><input class="shorttext" type="text" id="conweek12" name="conweek12" value="13"></td>
                                     <td><input class="shorttext" type="text" id="conchp12" name="conchp12" ></td>
                                     <td><input class="text" type="text" id="consub12" name="consub12"></td>
                                     <td><input type="text" id="conlab12" name="conlab12"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek13" name="conweek13"></td>
+                                    <td><input class="shorttext" type="text" id="conweek13" name="conweek13" value="14"></td>
                                     <td><input class="shorttext" type="text" id="conchp13" name="conchp13" ></td>
                                     <td><input class="text" type="text" id="consub13" name="consub13"></td>
                                     <td><input type="text" id="conlab13" name="conlab13"></td>
                                 </tr>
 
                                 <tr>
-                                    <td><input class="shorttext" type="text" id="conweek14" name="conweek14"></td>
+                                    <td><input class="shorttext" type="text" id="conweek14" name="conweek14" value="15"></td>
                                     <td><input class="shorttext" type="text" id="conchp14" name="conchp14" ></td>
-                                    <td><input class="text" type="text" id="consub14" name="consub14"></td>
+                                    <td><input class="text" type="text" id="consub14" name="consub14" placeholder="Final exam"></td>
                                     <td><input type="text" id="conlab14" name="conlab14"></td>
                                 </tr>
 

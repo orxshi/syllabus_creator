@@ -2,7 +2,15 @@
 
 if (array_key_exists('submit', $_POST))
 {
-    exec('cp documentoriginal.tex syllabus.tex');
+    if (PHP_OS === 'Linux')
+    {
+        exec('cp documentoriginal.tex syllabus.tex');
+    }
+    else
+    {
+        exec('copy documentoriginal.tex syllabus.tex');
+    }
+    
     $path_to_file = 'syllabus.tex';
     $content = file_get_contents ($path_to_file);
 
@@ -81,7 +89,7 @@ if (array_key_exists('submit', $_POST))
         $insertion1 = $_POST["ectsnm" . $i];
         $insertion2 = $_POST["ectsdur" . $i];
 
-        $sumects = $sumects + $insertion1 * $insertion2;
+        $sumects = $sumects + floatval($insertion1) * floatval($insertion2);
 
         $env = "ects";
         $off = strlen($env) + 2;
@@ -108,26 +116,74 @@ if (array_key_exists('submit', $_POST))
         $content = substr_replace($content, "\makeectsrow{ECTS credits}{}{}{" . round($sumects/30) . "}" . PHP_EOL , $pos+$off, 0);
     }
 
+    $anylab = false;
+
     for ($i = 14; $i >= 0; $i--)
     {
-        $insertion0 = $_POST["conweek" . $i];
-        $insertion1 = $_POST["conchp" . $i];
-        $insertion2 = $_POST["consub" . $i];
         $insertion3 = $_POST["conlab" . $i];
 
-        $env = "contents";
-        $off = strlen($env) + 2;
-
-        if (!empty($insertion0))
+        if ($insertion3 != "")
         {
-            $pos = strpos($content, $env);
-            $content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion3 . "}" . PHP_EOL , $pos+$off, 0);
+            $anylab = true;
         }
     }
 
+    if ($anylab == true)
+    {
+        $content = str_replace("\\begin{contentswolab}", '', $content);
+        $content = str_replace("\\end{contentswolab}", '', $content);
+
+        for ($i = 14; $i >= 0; $i--)
+        {
+            $insertion0 = $_POST["conweek" . $i];
+            $insertion1 = $_POST["conchp" . $i];
+            $insertion2 = $_POST["consub" . $i];
+            $insertion3 = $_POST["conlab" . $i];
+
+            $env = "contents";
+            $off = strlen($env) + 2;
+
+            if (!empty($insertion0))
+            {
+                $pos = strpos($content, $env);
+                $content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion3 . "}" . PHP_EOL , $pos+$off, 0);
+            }
+        }
+    }
+    else
+    {
+        $content = str_replace("\\begin{contents}", '', $content);
+        $content = str_replace("\\end{contents}", '', $content);
+
+        for ($i = 14; $i >= 0; $i--)
+        {
+            $insertion0 = $_POST["conweek" . $i];
+            $insertion1 = $_POST["conchp" . $i];
+            $insertion2 = $_POST["consub" . $i];
+            $insertion3 = $_POST["conlab" . $i];
+
+            $env = "contentswolab";
+            $off = strlen($env) + 2;
+
+            if (!empty($insertion0))
+            {
+                $pos = strpos($content, $env);
+                $content = substr_replace($content, "\makeshortectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
+            }
+        }
+    }
+
+
     file_put_contents($path_to_file, $content);
 
-    exec('/usr/local/texlive/2021/bin/x86_64-linux/pdflatex syllabus.tex');
+    if (PHP_OS === 'Linux')
+    {
+        exec('/usr/local/texlive/2021/bin/x86_64-linux/pdflatex syllabus.tex');
+    }
+    else
+    {
+        exec('C:\Users\Digikey\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdflatex.exe syllabus.tex');
+    }
 
     $file = 'syllabus.pdf';
 
