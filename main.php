@@ -19,10 +19,10 @@
                 <div style="min-width: 180px;">
 
                     <input type="button" id="load" name="load" class="button" value="Load"/>
+                    <input type="button" id="save" name="save" class="button" value="Save"/>
                     <input type="reset" value="Reset"/><br>
                     <hr>
-                    <input type="submit" name="submit" class="button" value="Download PDF" />
-                    <input type="button" id="save" name="save" class="button" value="Save"/>
+                    <input type="submit" name="submit" class="button" value="Generate PDF" />
                 </div>
 
 
@@ -198,6 +198,10 @@
                         </div>
 
                         <div name="divcontents" id="divcontents" class="tabcontent">
+
+                            <div class="tooltip">Tip
+                                <span class="tooltiptext">You can leave Lab. activity empty.</span>
+                            </div>
 
                             <table id="tabcontents">
                                 <tr>
