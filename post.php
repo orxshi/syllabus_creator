@@ -143,7 +143,7 @@ if (array_key_exists('submit', $_POST))
             $env = "contents";
             $off = strlen($env) + 2;
 
-            if (!empty($insertion0))
+            if (!empty($insertion2))
             {
                 $pos = strpos($content, $env);
                 $content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion3 . "}" . PHP_EOL , $pos+$off, 0);
@@ -165,14 +165,30 @@ if (array_key_exists('submit', $_POST))
             $env = "contentswolab";
             $off = strlen($env) + 2;
 
-            if (!empty($insertion0))
+            if (!empty($insertion2))
             {
                 $pos = strpos($content, $env);
                 $content = substr_replace($content, "\makeshortectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
             }
         }
-    }
 
+        $env = "makeshortectsrow{8}";
+        $off = strlen($env) + 18;
+
+        $pos = strpos($content, $env);
+        $content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
+
+        $off = strlen($env) - 20;
+
+        $pos = strpos($content, $env);
+        $content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
+
+        $env = "makeshortectsrow{15}";
+        $off = strlen($env) - 21;
+
+        $pos = strpos($content, $env);
+        $content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
+    }
 
     file_put_contents($path_to_file, $content);
 
