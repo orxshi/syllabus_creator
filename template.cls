@@ -5,6 +5,7 @@
 \usepackage[left=2cm,right=2cm,top=2cm]{geometry}
 \usepackage{multirow}
 \usepackage{graphicx}
+\usepackage{needspace}
 
 \setlength\parindent{0pt}
 %\newcolumntype{s}{>{\hsize=.15\hsize}X}
@@ -43,11 +44,13 @@
 
 \newenvironment{textbook}
 {
+    \needspace{5cm}
     \textbf{Recommended sources}
     \begin{itemize}
 }
 {
     \end{itemize}
+    \vspace{1cm}
 }
 
 
@@ -99,7 +102,7 @@
         Laboratory (hour/week) & \@laboratory\\
         %Year of study & \@yearsOfStudy\\
         %Semester when the course unit is delivered & \@semester\\
-        Mode of Delivery & \@courseMode\\
+        Mode of delivery & \@courseMode\\
         Language of instruction & \@instructionLanguage\\
         Prerequisities and co-requisities & \@prerequisite\\
         %Recommended optional programme components & \@recommended
@@ -110,6 +113,7 @@
 
 \newenvironment{objectives}
 {
+    \needspace{10cm}
     %\begin{minipage}{\textwidth}
     \textbf{Objectives}
     \begin{itemize}
@@ -117,6 +121,7 @@
 {
     \end{itemize}
     %\end{minipage}
+    \vspace{1cm}
 }
 
 \newcommand{\makerow}[2]
@@ -136,6 +141,7 @@
 
 \newenvironment{outcomes}
 {
+    \needspace{10cm}
     \begin{minipage}{\textwidth}
     %\begin{samepage}
     \textbf{Learning outcomes}\\[3mm]
@@ -151,10 +157,12 @@
         \end{tabular}
     \end{minipage}
     %\end{samepage}
+    \vspace{1cm}
 }
 
 \newenvironment{assessment}
 {
+    \needspace{5cm}
     \begin{minipage}{\textwidth}
     \textbf{Assessment}\\[3mm]
         \begin{tabular}{ll}
@@ -164,10 +172,12 @@
 {
     \end{tabular}
     \end{minipage}
+    \vspace{1cm}
 }
 
 \newenvironment{ects}
 {
+    \needspace{10cm}
     \begin{minipage}{\textwidth}
     \textbf{ECTS allocated based on the student workload}\\[3mm]
         \begin{tabular}{llll}
@@ -177,10 +187,12 @@
 {
     \end{tabular}
     \end{minipage}
+    \vspace{1cm}
 }
 
 \newenvironment{contents}
 {
+    \needspace{10cm}
     \begin{minipage}{\textwidth}
     \textbf{Contents}\\[3mm]
     \begin{tabular}{llp{0.35\textwidth}p{0.35\textwidth}}
@@ -190,10 +202,12 @@
 {
     \end{tabular}
     \end{minipage}
+    \vspace{1cm}
 }
 
 \newenvironment{contentswolab}
 {
+    \needspace{10cm}
     \begin{minipage}{\textwidth}
     \textbf{Contents}\\[3mm]
     \begin{tabular}{lll}
@@ -203,6 +217,7 @@
 {
     \end{tabular}
     \end{minipage}
+    \vspace{1cm}
 }
 
 

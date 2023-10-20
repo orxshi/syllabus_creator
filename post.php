@@ -17,7 +17,7 @@ if (array_key_exists('submit', $_POST))
     $content = str_replace ("PHCourseName", $_POST['coursename'], $content);
     $content = str_replace ("PHCourseCode", $_POST['coursecode'], $content);
     $content = str_replace ("PHNationalCredit", $_POST['nationalcredit'], $content);
-    $content = str_replace ("PHECTSCredit", $_POST['ectscredit'], $content);
+    //$content = str_replace ("PHECTSCredit", $_POST['ectscredit'], $content);
     $content = str_replace ("PHTheoretical", $_POST['theoretical'], $content);
     $content = str_replace ("PHCourseType", $_POST['coursetype'], $content);
     $content = str_replace ("PHCourseLevel", $_POST['courselevel'], $content);
@@ -104,7 +104,7 @@ if (array_key_exists('submit', $_POST))
     $env = "end{ects}";
     $off = -strlen($env) + 8;
 
-    if (!empty($_POST["ectsact0"]))
+    if (!empty($_POST["ectsact1"]))
     {
         $pos = strpos($content, $env);
         $content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
@@ -115,6 +115,8 @@ if (array_key_exists('submit', $_POST))
         $pos = strpos($content, $env);
         $content = substr_replace($content, "\makeectsrow{ECTS credits}{}{}{" . round($sumects/30) . "}" . PHP_EOL , $pos+$off, 0);
     }
+
+    $content = str_replace ("PHECTSCredit", round($sumects/30), $content);
 
     $anylab = false;
 
