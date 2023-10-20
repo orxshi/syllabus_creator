@@ -21,8 +21,8 @@ The code has been tested with
 
 ## Usage
 
-Run main.php. Fill in form fields.
-
-* Click Download PDF to get generated syllabus in PDF form.
-* Click Save to save form data in JSON file.
-* Click Load to load data from JSON file. 
+* Open index.html
+* Fill in form fields.
+* Or click Load to load data from JSON file, if there is any. 
+* Click Generate PDF to generate PDF of the syllabus.
+* Optionally, click Save to save form data in JSON file.
