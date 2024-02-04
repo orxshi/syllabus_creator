@@ -3,7 +3,7 @@
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage[left=2cm,right=2cm,top=2cm]{geometry}
-\usepackage{multirow}
+%\usepackage{multirow}
 \usepackage{graphicx}
 \usepackage{needspace}
 
@@ -139,6 +139,11 @@
 #1 & #2 & #3\\
 }
 
+\newcommand{\makeveryshortectsrow}[2]
+{
+	#1 & #2\\
+}
+
 \newenvironment{outcomes}
 {
     \needspace{10cm}
@@ -175,9 +180,9 @@
     \vspace{1cm}
 }
 
-\newenvironment{ects}
+\newenvironment{myects}
 {
-    \needspace{10cm}
+    \needspace{5cm}
     \begin{minipage}{\textwidth}
     \textbf{ECTS allocated based on the student workload}\\[3mm]
         \begin{tabular}{llll}
@@ -212,6 +217,36 @@
     \textbf{Contents}\\[3mm]
     \begin{tabular}{lll}
     Week & Chapter & Subject\\
+        \midrule
+}
+{
+    \end{tabular}
+    \end{minipage}
+    \vspace{1cm}
+}
+
+\newenvironment{contentswochp}
+{
+    \needspace{10cm}
+    \begin{minipage}{\textwidth}
+    \textbf{Contents}\\[3mm]
+    \begin{tabular}{llp{0.35\textwidth}p{0.35\textwidth}}
+    Week & Subject & Lab activity\\
+        \midrule
+}
+{
+    \end{tabular}
+    \end{minipage}
+    \vspace{1cm}
+}
+
+\newenvironment{contentswolabwochp}
+{
+    \needspace{10cm}
+    \begin{minipage}{\textwidth}
+    \textbf{Contents}\\[3mm]
+    \begin{tabular}{lll}
+    Week & Subject\\
         \midrule
 }
 {
