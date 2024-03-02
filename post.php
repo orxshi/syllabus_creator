@@ -259,23 +259,6 @@ if (array_key_exists('submit', $_POST))
 				}
 			}
 		}
-		
-		$env = "makeveryshortectsrow{8}";
-		$off = strlen($env) + 15;
-
-		$pos = strpos($content, $env);
-		$content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
-
-		$off = strlen($env) - 24;
-
-		$pos = strpos($content, $env);
-		$content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
-
-		$env = "makeveryshortectsrow{15}";
-		$off = strlen($env) - 25;
-
-		$pos = strpos($content, $env);
-		$content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
 	}
 
 
