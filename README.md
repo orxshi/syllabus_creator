@@ -2,6 +2,8 @@
 
 This is a course syllabus generator. The form collects information from the user. Respective fields in LaTeX or Word template are replaced to produce PDF or Word file.
 
+`![screenshot](img1.png)`
+
 ## Motivation
 
 * To have consistent format
@@ -9,7 +11,7 @@ This is a course syllabus generator. The form collects information from the user
 
 ## Required packages
 
-phpoffice/phpword (install with "composer require phpoffice/phpword")
+phpoffice/phpword (install with ```composer require phpoffice/phpword```)
 
 ## Optional packages
 
