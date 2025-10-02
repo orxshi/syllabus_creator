@@ -2,7 +2,7 @@
 
 This is a course syllabus generator. The form collects information from the user. Respective fields in LaTeX or Word template are replaced to produce PDF or Word file.
 
-`![screenshot](img1.png)`
+![screenshot](img1.png)
 
 ## Motivation
 
