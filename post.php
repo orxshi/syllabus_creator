@@ -1,6 +1,10 @@
 <?php
 
-if (array_key_exists('submit', $_POST))
+require_once 'vendor/autoload.php';
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+
+if (array_key_exists('submit_pdf_latex', $_POST))
 {
 	if (PHP_OS === 'Linux')
 	{
@@ -270,7 +274,7 @@ if (array_key_exists('submit', $_POST))
 	}
 	else
 	{
-		exec('C:\Users\Digikey\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdflatex.exe syllabus.tex');
+		exec('C:\Users\orhan\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdflatex.exe syllabus.tex');
 	}
 
 	$file = 'syllabus.pdf';
@@ -283,4 +287,86 @@ if (array_key_exists('submit', $_POST))
 
 	readfile($file);
 }
+
+
+
+
+if (array_key_exists('submit_word', $_POST))
+{
+    $phpWord = new PhpWord();
+
+	$section = $phpWord->addSection();
+
+	// Header text
+	$headerText = "GAU, Faculty of Engineering";
+	$section->addText(
+		$headerText,
+		['bold' => true, 'size' => 16],               // font style: bold, size 16
+		['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER] // paragraph style: centered
+	);
+
+	// Optional: add a line break after header
+	$section->addTextBreak(0.7);
+
+	$rowStyle = [
+    'cantSplit' => true,
+    'exactHeight' => true,
+    'height' => 300  // default row height for all rows
+	];
+
+	$paragraphStyle = [
+		'spaceBefore' => 0,
+		'spaceAfter' => 0,
+	];
+
+	$table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']); // only style array here
+
+	// First row
+	$table->addRow($rowStyle['height'], $rowStyle);
+
+	$labelText = "\u{00A0}\u{00A0}Course Unit Title";
+	$table->addCell(
+		3000,
+		['valign' => 'center']
+	)->addText($labelText, ['bold' => true], $paragraphStyle);
+
+	$courseName = "\u{00A0}\u{00A0}" . ($_POST['coursename'] ?? 'Unknown Course Title');
+	$table->addCell(
+		6000,
+		['valign' => 'center']
+	)->addText($courseName, null, $paragraphStyle);
+
+	// Second row
+	$table->addRow($rowStyle['height'], $rowStyle);
+
+	$labelText = "\u{00A0}\u{00A0}Course Unit Code";
+	$table->addCell(
+		3000,
+		['valign' => 'center']
+	)->addText($labelText, ['bold' => true], $paragraphStyle);
+
+	$courseCode = "\u{00A0}\u{00A0}" . ($_POST['coursecode'] ?? 'Unknown Course Code');
+	$table->addCell(
+		6000,
+		['valign' => 'center']
+	)->addText($courseCode, null, $paragraphStyle);
+    
+
+    $file = "syllabus.docx";
+    $writer = IOFactory::createWriter($phpWord, 'Word2007');
+    $writer->save($file);
+
+    header("Content-Description: File Transfer");
+    header("Content-Disposition: attachment; filename=$file");
+    header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    readfile($file);
+    unlink($file);
+    exit;
+}
+
+
+
+
+
+
 ?>
