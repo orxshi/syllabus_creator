@@ -3,6 +3,29 @@
 require_once 'vendor/autoload.php';
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
+\PhpOffice\PhpWord\Settings::setPdfRenderer(
+    \PhpOffice\PhpWord\Settings::PDF_RENDERER_TCPDF,
+    __DIR__ . '/vendor/tecnickcom/tcpdf' // path to TCPDF
+);
+
+
+
+
+function calculateEctsSum(array $postData, int $count = 10): float
+{
+    $sumEcts = 0.0;
+
+    for ($i = $count - 1; $i >= 0; $i--) {
+        $ectsNm  = $postData["ectsnm" . $i] ?? 0;   // numeric multiplier
+        $ectsDur = $postData["ectsdur" . $i] ?? 0;  // duration
+        
+        $sumEcts += floatval($ectsNm) * floatval($ectsDur);
+    }
+
+    return $sumEcts;
+}
+
+
 
 if (array_key_exists('submit_pdf_latex', $_POST))
 {
@@ -289,11 +312,295 @@ if (array_key_exists('submit_pdf_latex', $_POST))
 }
 
 
+function addCourseRow(
+    \PhpOffice\PhpWord\Element\Table $table,
+    string $left,
+    string $right,
+    array $rowStyle = [],
+    array $paragraphStyle = []
+): void {
 
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+    $table->addCell(
+        6500,
+        ['valign' => 'center']
+    )->addText($left, ['bold' => true], $paragraphStyle);
+
+    $table->addCell(
+        5000,
+        ['valign' => 'center', 'wrapText' => true]
+    )->addText($right, null, $paragraphStyle);
+}
+
+function addObjectivesRow(
+    \PhpOffice\PhpWord\Element\Table $table,
+    array $rowStyle = [],
+    array $paragraphStyle = []
+): void {
+
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+    $cell = $table->addCell(
+        0,
+        ['valign' => 'center', 'wrapText' => true, 'gridSpan' => 2]
+    );
+
+    $cell->addText(
+        "Objectives of the Course:",
+        ['bold' => true],
+        array_merge($paragraphStyle, ['spaceBefore' => 100, 'spaceAfter' => 120])
+    );
+
+    // Collect objectives from $_POST
+    $objectives = [];
+    for ($i = 0; $i < 7; $i++) {
+        if (!empty($_POST["obj" . $i])) {
+            $objectives[] = $_POST["obj" . $i];
+        }
+    }
+
+    // Add bullet points
+    foreach ($objectives as $objective) {
+        $cell->addListItem(
+            $objective,
+            0,
+            null,
+            ['listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_BULLET_FILLED]
+        );
+    }
+}
+
+function addSourcesRow(
+    \PhpOffice\PhpWord\Element\Table $table,
+    array $rowStyle = [],
+    array $paragraphStyle = []
+): void {
+
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+    $cell = $table->addCell(
+        11500,
+        ['valign' => 'center', 'wrapText' => true]
+    );
+
+    $cell->addText(
+        "Recommended Sources",
+        ['bold' => true],
+        array_merge($paragraphStyle, ['spaceBefore' => 100, 'spaceAfter' => 120])
+    );
+
+    $sources = [];
+    for ($i = 0; $i < 5; $i++) {
+        if (!empty($_POST["source" . $i])) {
+            $sources[] = $_POST["source" . $i];
+        }
+    }
+
+    foreach ($sources as $source) {
+        $cell->addListItem(
+            $source,
+            0,
+            null,
+            ['listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_BULLET_FILLED]
+        );
+    }
+}
+
+function addContentsRow(
+    \PhpOffice\PhpWord\Element\Table $table,
+    array $rowStyle = [],
+    array $paragraphStyle = []
+): void {
+
+    // First row: Course Contents spanning all 4 columns
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $cell = $table->addCell(
+        0,
+        ['valign' => 'center', 'gridSpan' => 4]
+    );
+    $cell->addText(
+        "Course Contents",
+        ['bold' => true],
+        array_merge($paragraphStyle)
+    );
+
+    // Second row: Week | Empty | Empty | Exams
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+    $table->addCell(1000, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Week", [], $paragraphStyle);
+    $table->addCell(2000, ['cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0], $paragraphStyle);
+	$table->addCell(6500, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0], $paragraphStyle);
+    $table->addCell(2000, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Exams", [], $paragraphStyle);
+
+	$conweeks = [];
+	$conchapters = [];
+	$consubjects = [];
+	$conlabs = [];
+    
+    for ($i = 0; $i < 15; $i++) {
+        // if (!empty($_POST["consub" . $i])) {
+            $conweeks[] = $_POST["conweek" . $i];
+            $conchapters[] = $_POST["conchp" . $i];
+            $consubjects[] = $_POST["consub" . $i];
+            $conlabs[] = $_POST["conlab" . $i];
+        // }
+    }
+
+	foreach ($conweeks as $idx => $conweek) {
+		$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	    $table->addCell(1000, ['valign' => 'center'])->addText(($idx + 1), [], $paragraphStyle);    	
+    	$table->addCell(2000, ['valign' => 'center'])->addText(!empty($conchapters[$idx]) ? "Chapter {$conchapters[$idx]}" : '', [], $paragraphStyle);
+    	$table->addCell(6500, ['valign' => 'center'])->addText($consubjects[$idx] ?? '', [], $paragraphStyle);
+    	$table->addCell(2000, ['valign' => 'center'])->addText($conlabs[$idx] ?? '', [], $paragraphStyle);
+	}
+}
+
+function addAssessmentRow(
+    \PhpOffice\PhpWord\Element\Table $table,
+    array $rowStyle = [],
+    array $paragraphStyle = []
+): void {
+
+	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$cell = $table->addCell(
+        11500,
+        ['valign' => 'center', 'gridSpan' => 2]
+    );
+
+	$cell->addText(
+        "Assessment",
+        ['bold' => true],
+        $paragraphStyle
+    );
+
+	$activities = [];
+	$activitiesper = [];
+    for ($i = 0; $i < 5; $i++) {
+        if (!empty($_POST["actper" . $i])) {
+            $activities[] = $_POST["act" . $i];
+            $activitiesper[] = $_POST["actper" . $i];
+        }
+    }
+
+	
+
+	foreach ($activities as $idx => $activity) {
+		$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+		// $leftWidth = max(2000, strlen($activity) * 150);
+		$table->addCell(2000)->addText($activity, [], $paragraphStyle);
+		$table->addCell(9500)->addText($activitiesper[$idx], [], $paragraphStyle);
+	}
+}
+
+function addOutcomesRow(
+    \PhpOffice\PhpWord\Element\Table $table,
+    array $rowStyle = [],
+    array $paragraphStyle = []
+): void {
+
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$cell = $table->addCell(
+        0,
+        ['valign' => 'center', 'gridSpan' => 2]
+    );
+
+	$cell->addText(
+        "Learning Outcomes",
+        ['bold' => true],
+        $paragraphStyle
+    );
+
+	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$table->addCell(
+        9500,
+		['valign' => 'center']      
+    )->addText("When this course has been completed the student should be able to", [], $paragraphStyle);
+
+	$table->addCell(
+    2000,
+    ['valign' => 'center']
+	)->addText(
+		"Assessment",
+		[],
+		['align' => 'center', 'spaceBefore' => 0, 'spaceAfter'  => 0]
+	);
+
+
+
+    $outcomes0 = [];
+    $outcomes1 = [];
+    for ($i = 0; $i < 7; $i++) {
+        if (!empty($_POST["obj" . $i])) {
+            $outcomes0[] = $_POST["out" . $i];
+            $outcomes1[] = $_POST["outval" . $i];
+        }
+    }
+
+    foreach ($outcomes0 as $idx => $outcome) {
+    $table->addRow();
+
+    // LEFT cell: nested table for number + text
+    $outerCell = $table->addCell(9500);
+
+    $innerTable = $outerCell->addTable(['width' => 9500, 'unit' => 'dxa']);
+    $innerTable->addRow();
+
+    // Number cell with RIGHT BORDER
+    $innerTable->addCell(800, [
+        'borderRightSize'  => 6,
+        'borderRightColor' => '000000',
+		'valign' => 'center'
+    ])->addText(($idx + 1), [], $paragraphStyle);
+
+    // Outcome text cell
+    $innerTable->addCell(8700, ['wrapText' => true])
+               ->addText($outcome, [], $paragraphStyle);
+
+    // RIGHT cell: assessment
+    $table->addCell(2000, ['valign' => 'center'])
+          ->addText($outcomes1[$idx] ?? '', [], $paragraphStyle);
+}
+
+// Add row for Assessment Methods
+$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+
+
+$table->addCell(
+    0,
+    [
+        'gridSpan' => 2,
+        'valign'   => 'center'        
+    ]
+	)->addText(
+		"Assessment Methods: 1. Written Exam, 2. Assignment, 3. Project/Report, 4. Presentation, 5. Lab Work",
+		[],
+		['align' => 'center', 'spaceBefore' => 0, 'spaceAfter'  => 0]
+	);
+
+
+}
 
 if (array_key_exists('submit_word', $_POST))
 {
     $phpWord = new PhpWord();
+
+	$phpWord->setDefaultFontName('Calibri');
+	$phpWord->setDefaultFontSize(10);
+
+	$sectionStyle = [
+    'orientation' => 'portrait',
+    'marginTop' => 1440,    // 1 inch = 1440 twips
+    'marginBottom' => 1440,
+    'marginLeft' => 1440,
+    'marginRight' => 1440
+];
 
 	$section = $phpWord->addSection();
 
@@ -314,54 +621,112 @@ if (array_key_exists('submit_word', $_POST))
     'height' => 300  // default row height for all rows
 	];
 
-	$paragraphStyle = [
-		'spaceBefore' => 0,
-		'spaceAfter' => 0,
+	$rowStyleML = [
+    'cantSplit' => true,
+    'exactHeight' => false,
+    'height' => 300  // default row height for all rows
 	];
 
-	$table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']); // only style array here
+	$paragraphStyle = [
+    'spaceBefore' => 0,
+    'spaceAfter'  => 0,
+    'indentation' => [
+        'left' => 100
+	],    
+	];
 
-	// First row
-	$table->addRow($rowStyle['height'], $rowStyle);
+	
 
-	$labelText = "\u{00A0}\u{00A0}Course Unit Title";
-	$table->addCell(
-		3000,
-		['valign' => 'center']
-	)->addText($labelText, ['bold' => true], $paragraphStyle);
+	$table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
-	$courseName = "\u{00A0}\u{00A0}" . ($_POST['coursename'] ?? 'Unknown Course Title');
-	$table->addCell(
-		6000,
-		['valign' => 'center']
-	)->addText($courseName, null, $paragraphStyle);
+	addCourseRow($table, "Course Unit Title", $_POST['coursename'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Course Unit Code", $_POST['coursecode'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Type of Course Unit", $_POST['coursetype'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Level of Course Unit", "3rd Year BSc", $rowStyle, $paragraphStyle);
+	addCourseRow($table, "National Credits", $_POST['nationalcredit'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Number of ECTS Credits Allocated", round(calculateEctsSum($_POST)/30), $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Theoretical (hour/week)", $_POST['theoretical'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Practice (hour/week)", "-", $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Laboratory (hour/week)", "-", $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Year of Study", "3", $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Semester when the course unit is delivered", "5", $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Mode of Delivery", "Face to face", $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Language of Instruction", "English", $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Prerequisites and co-requisites", $_POST['prerequisite'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Recommended Optional Programme Components", "An adequate background in calculus, physics, and engineering mechanics", $rowStyle, $paragraphStyle);
 
-	// Second row
-	$table->addRow($rowStyle['height'], $rowStyle);
+	addObjectivesRow($table, $rowStyleML, $paragraphStyle);
 
-	$labelText = "\u{00A0}\u{00A0}Course Unit Code";
-	$table->addCell(
-		3000,
-		['valign' => 'center']
-	)->addText($labelText, ['bold' => true], $paragraphStyle);
+	$outcomestable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$contenttable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$sourcetable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$assesstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
-	$courseCode = "\u{00A0}\u{00A0}" . ($_POST['coursecode'] ?? 'Unknown Course Code');
-	$table->addCell(
-		6000,
-		['valign' => 'center']
-	)->addText($courseCode, null, $paragraphStyle);
-    
+	addOutcomesRow($outcomestable, $rowStyle, $paragraphStyle);
+	addContentsRow($contenttable, $rowStyle, $paragraphStyle);
+
+	addSourcesRow($sourcetable, $rowStyleML, $paragraphStyle);
+
+
+	// $tableStyle = [
+    // 	'borderSize'  => 6,
+    // 	'borderColor' => '000000',
+    // 	// 'layout'      => 'autofit',
+	// ];
+	// $phpWord->addTableStyle('AssessmentTable', $tableStyle);
+	// $assesstable = $section->addTable('AssessmentTable');
+
+
+	addAssessmentRow($assesstable, $rowStyle, $paragraphStyle);
+
+	
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
 
     $file = "syllabus.docx";
     $writer = IOFactory::createWriter($phpWord, 'Word2007');
     $writer->save($file);
 
-    header("Content-Description: File Transfer");
-    header("Content-Disposition: attachment; filename=$file");
-    header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    readfile($file);
-    unlink($file);
-    exit;
+	\PhpOffice\PhpWord\Settings::setPdfRenderer(
+    \PhpOffice\PhpWord\Settings::PDF_RENDERER_TCPDF,
+    __DIR__ . '/vendor/tecnickcom/tcpdf' // path to TCPDF in your project
+	);
+
+	// Save as PDF
+	$filePDF = "syllabus.pdf";
+	$writerPDF = IOFactory::createWriter($phpWord, 'PDF');
+	$writerPDF->save($filePDF);
+
+	
+
+    // header("Content-Description: File Transfer");
+    // header("Content-Disposition: attachment; filename=$file");
+    // header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    // readfile($file);
+    // unlink($file);
+    // exit;
+
+	header("Content-Description: File Transfer");
+	header("Content-Disposition: attachment; filename=syllabus.pdf");
+	header("Content-Type: application/pdf");
+	readfile($filePDF);
+	unlink($filePDF);
+	exit;
 }
 
 
