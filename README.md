@@ -42,32 +42,7 @@ The code has been tested with
 
 * Open index.html
 * Fill in form fields.
-* Or click Load to load data from JSON file, if there is any. For convenience, ME303 is available.
-* Click Generate PDF with Latex to generate PDF of the syllabus prepared with LaTeX.
+* Or click Load to load data from JSON file, if there is any. For convenience, MT111 is available.
+* Click Generate PDF to generate PDF of the syllabus.
 * Click Generate Word to generate Word file of the syllabus.
 * Optionally, click Save to save form data in JSON file.
-
-## Language corrections / typos
-
-Prerequisities -> Prerequisites
-
-Assesment. -> Assessment
-
-5:Very high -> 5: Very high
-
-## TODO
-
-PHPWord to PDF via any package such as TCPDF or DomPDF produces bad rendering.
-
-Either Word to PDF is done by the user by using native feature of Word or LaTeX is used instead.
-
-National credits should be calculated from theoretical and practice.
-
-Add Turkish eligible department such as Bilgisayar Muhendisligi for Turkish courses.
-
-Give Turkish language option for Turkish courses.
-
-
-
-
-
