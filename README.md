@@ -9,6 +9,11 @@ This is a course syllabus generator. The form collects information from the user
 * To have consistent format
 * To avoid losing time with formatting
 
+## Abilities
+
+* Handles & and Microsoft-encoded quotes “ ” so you can just copy/paste from Word
+* Handles Turkish characters
+
 ## Required packages
 
 phpoffice/phpword (install with ```composer require phpoffice/phpword```)
@@ -62,8 +67,7 @@ Add Turkish eligible department such as Bilgisayar Muhendisligi for Turkish cour
 
 Give Turkish language option for Turkish courses.
 
-Check ampersand or other problematic symbols in fields and replace with amp for php.
 
-## Caution
 
-Do not use & in any field. Use and.
+
+
