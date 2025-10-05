@@ -432,8 +432,7 @@ function addCourseRow(
     string $left,
     string $right,
     array $rowStyle = [],
-    array $paragraphStyle = [],
-	array $cleanPost
+    array $paragraphStyle = []
 ): void {
 
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
@@ -451,9 +450,9 @@ function addCourseRow(
 
 function addObjectivesRow(
     \PhpOffice\PhpWord\Element\Table $table,
+    array $cleanPost,
     array $rowStyle = [],
-    array $paragraphStyle = [],
-	array $cleanPost
+    array $paragraphStyle = []
 ): void {
 
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
@@ -490,9 +489,9 @@ function addObjectivesRow(
 
 function addSourcesRow(
     \PhpOffice\PhpWord\Element\Table $table,
+    array $cleanPost,
     array $rowStyle = [],
-    array $paragraphStyle = [],
-	array $cleanPost
+    array $paragraphStyle = []
 ): void {
 
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
@@ -527,9 +526,9 @@ function addSourcesRow(
 
 function addContentsRow(
     \PhpOffice\PhpWord\Element\Table $table,
+    array $cleanPost,
     array $rowStyle = [],
-    array $paragraphStyle = [],
-	array $cleanPost
+    array $paragraphStyle = []
 ): void {
 
     // First row: Course Contents spanning all 4 columns
@@ -578,9 +577,9 @@ function addContentsRow(
 
 function addAssessmentRow(
     \PhpOffice\PhpWord\Element\Table $table,
+    array $cleanPost,
     array $rowStyle = [],
     array $paragraphStyle = [],
-	array $cleanPost
 ): void {
 
 	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
@@ -618,9 +617,9 @@ function addAssessmentRow(
 
 function addECTSRow(
     \PhpOffice\PhpWord\Element\Table $table,
+    array $cleanPost,
     array $rowStyle = [],
-    array $paragraphStyle = [],
-	array $cleanPost
+    array $paragraphStyle = []
 ): void {
 
 	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
@@ -760,9 +759,9 @@ for ($i = 0; $i < 10; $i++) {
 
 function addContribsRow(
     \PhpOffice\PhpWord\Element\Table $table,
+    array $cleanPost,
     array $rowStyle = [],
-    array $paragraphStyle = [],
-	array $cleanPost
+    array $paragraphStyle = []
 ): void {
 
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
@@ -859,9 +858,9 @@ $table->addCell(
 
 function addOutcomesRow(
     \PhpOffice\PhpWord\Element\Table $table,
+    array $cleanPost,
     array $rowStyle = [],
-    array $paragraphStyle = [],
-	array $cleanPost
+    array $paragraphStyle = []
 ): void {
 
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
@@ -1032,29 +1031,29 @@ if (array_key_exists('submit_pdf', $_POST))
     	$modeString = "None selected";
 	}
 
-	addCourseRow($table, "Course Unit Title", $cleanPost['coursename'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Course Unit Code", $cleanPost['coursecode'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Type of Course Unit", $cleanPost['coursetype'] . $eligdepString, $rowStyle, $paragraphStyle, $cleanPost);
+	addCourseRow($table, "Course Unit Title", $cleanPost['coursename'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Course Unit Code", $cleanPost['coursecode'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Type of Course Unit", $cleanPost['coursetype'] . $eligdepString, $rowStyle, $paragraphStyle);
 
-	addCourseRow($table, "Level of Course Unit", $cleanPost['level'], $rowStyle, $paragraphStyle, $cleanPost);
+	addCourseRow($table, "Level of Course Unit", $cleanPost['level'], $rowStyle, $paragraphStyle);
 
 	$natcre = floatval($cleanPost['theoretical']) + floatval($$cleanPost['practice']) / 2 + + floatval($cleanPost['labcre']) / 2;
 
-	addCourseRow($table, "National Credits", $natcre, $rowStyle, $paragraphStyle, $cleanPost);
+	addCourseRow($table, "National Credits", $natcre, $rowStyle, $paragraphStyle);
 
 
-	addCourseRow($table, "Number of ECTS Credits Allocated", round(calculateEctsSum($cleanPost)/30), $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Theoretical (hour/week)", $cleanPost['theoretical'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Practice (hour/week)", $cleanPost['practice'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Laboratory (hour/week)", $cleanPost['labcre'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Year of Study", $cleanPost['yearofstudy'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Semester when the course unit is delivered", $cleanPost['semdel'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Mode of Delivery", $modeString, $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Language of Instruction", $cleanPost['lang'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Prerequisites and co-requisites", $cleanPost['prerequisite'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Recommended Optional Programme Components", $cleanPost['recom'], $rowStyle, $paragraphStyle, $cleanPost);
+	addCourseRow($table, "Number of ECTS Credits Allocated", round(calculateEctsSum($cleanPost)/30), $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Theoretical (hour/week)", $cleanPost['theoretical'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Practice (hour/week)", $cleanPost['practice'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Laboratory (hour/week)", $cleanPost['labcre'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Year of Study", $cleanPost['yearofstudy'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Semester when the course unit is delivered", $cleanPost['semdel'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Mode of Delivery", $modeString, $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Language of Instruction", $cleanPost['lang'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Prerequisites and co-requisites", $cleanPost['prerequisite'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Recommended Optional Programme Components", $cleanPost['recom'], $rowStyle, $paragraphStyle);
 
-	addObjectivesRow($table, $rowStyleML, $paragraphStyle, $cleanPost, $cleanPost);
+	addObjectivesRow($table, $cleanPost, $rowStyleML, $paragraphStyle, $cleanPost);
 
 	$outcomestable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$contenttable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
@@ -1063,12 +1062,12 @@ if (array_key_exists('submit_pdf', $_POST))
 	$ectstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$contribstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
-	addOutcomesRow($outcomestable, $rowStyle, $paragraphStyle, $cleanPost);
-	addContribsRow($outcomestable, $rowStyle, $paragraphStyle, $cleanPost);
-	addContentsRow($contenttable, $rowStyle, $paragraphStyle, $cleanPost);
-	addSourcesRow($sourcetable, $rowStyleML, $paragraphStyle, $cleanPost);
-	addAssessmentRow($assesstable, $rowStyle, $paragraphStyle, $cleanPost);
-	addECTSRow($ectstable, $rowStyleML, $paragraphStyle, $cleanPost);
+	addOutcomesRow($outcomestable, $cleanPost, $rowStyle, $paragraphStyle);
+	addContribsRow($outcomestable, $cleanPost, $rowStyle, $paragraphStyle);
+	addContentsRow($contenttable, $cleanPost, $rowStyle, $paragraphStyle);
+	addSourcesRow($sourcetable, $cleanPost, $rowStyleML, $paragraphStyle);
+	addAssessmentRow($assesstable, $cleanPost, $rowStyle, $paragraphStyle);
+	addECTSRow($ectstable, $cleanPost, $rowStyleML, $paragraphStyle);
 
     // Step 1: Save DOCX to a temp file
 	$tempDocx = tempnam(sys_get_temp_dir(), 'syllabus') . '.docx';
@@ -1195,29 +1194,29 @@ if (array_key_exists('submit_word', $_POST)) {
     	$modeString = "None selected";
 	}
 
-	addCourseRow($table, "Course Unit Title", $cleanPost['coursename'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Course Unit Code", $cleanPost['coursecode'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Type of Course Unit", $cleanPost['coursetype'] . $eligdepString, $rowStyle, $paragraphStyle, $cleanPost);
+	addCourseRow($table, "Course Unit Title", $cleanPost['coursename'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Course Unit Code", $cleanPost['coursecode'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Type of Course Unit", $cleanPost['coursetype'] . $eligdepString, $rowStyle, $paragraphStyle);
 
-	addCourseRow($table, "Level of Course Unit", $cleanPost['level'], $rowStyle, $paragraphStyle, $cleanPost);
+	addCourseRow($table, "Level of Course Unit", $cleanPost['level'], $rowStyle, $paragraphStyle);
 
 	$natcre = floatval($cleanPost['theoretical']) + floatval($$cleanPost['practice']) / 2 + + floatval($cleanPost['labcre']) / 2;
 
-	addCourseRow($table, "National Credits", $natcre, $rowStyle, $paragraphStyle, $cleanPost);
+	addCourseRow($table, "National Credits", $natcre, $rowStyle, $paragraphStyle);
 
 
-	addCourseRow($table, "Number of ECTS Credits Allocated", round(calculateEctsSum($cleanPost)/30), $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Theoretical (hour/week)", $cleanPost['theoretical'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Practice (hour/week)", $cleanPost['practice'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Laboratory (hour/week)", $cleanPost['labcre'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Year of Study", $cleanPost['yearofstudy'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Semester when the course unit is delivered", $cleanPost['semdel'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Mode of Delivery", $modeString, $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Language of Instruction", $cleanPost['lang'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Prerequisites and co-requisites", $cleanPost['prerequisite'], $rowStyle, $paragraphStyle, $cleanPost);
-	addCourseRow($table, "Recommended Optional Programme Components", $cleanPost['recom'], $rowStyle, $paragraphStyle, $cleanPost);
+	addCourseRow($table, "Number of ECTS Credits Allocated", round(calculateEctsSum($cleanPost)/30), $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Theoretical (hour/week)", $cleanPost['theoretical'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Practice (hour/week)", $cleanPost['practice'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Laboratory (hour/week)", $cleanPost['labcre'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Year of Study", $cleanPost['yearofstudy'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Semester when the course unit is delivered", $cleanPost['semdel'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Mode of Delivery", $modeString, $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Language of Instruction", $cleanPost['lang'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Prerequisites and co-requisites", $cleanPost['prerequisite'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Recommended Optional Programme Components", $cleanPost['recom'], $rowStyle, $paragraphStyle);
 
-	addObjectivesRow($table, $rowStyleML, $paragraphStyle, $cleanPost, $cleanPost);
+	addObjectivesRow($table, $cleanPost, $rowStyleML, $paragraphStyle, $cleanPost);
 
 	$outcomestable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$contenttable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
@@ -1226,12 +1225,12 @@ if (array_key_exists('submit_word', $_POST)) {
 	$ectstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$contribstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
-	addOutcomesRow($outcomestable, $rowStyle, $paragraphStyle, $cleanPost);
-	addContribsRow($outcomestable, $rowStyle, $paragraphStyle, $cleanPost);
-	addContentsRow($contenttable, $rowStyle, $paragraphStyle, $cleanPost);
-	addSourcesRow($sourcetable, $rowStyleML, $paragraphStyle, $cleanPost);
-	addAssessmentRow($assesstable, $rowStyle, $paragraphStyle, $cleanPost);
-	addECTSRow($ectstable, $rowStyleML, $paragraphStyle, $cleanPost);
+	addOutcomesRow($outcomestable, $cleanPost, $rowStyle, $paragraphStyle);
+	addContribsRow($outcomestable, $cleanPost, $rowStyle, $paragraphStyle);
+	addContentsRow($contenttable, $cleanPost, $rowStyle, $paragraphStyle);
+	addSourcesRow($sourcetable, $cleanPost, $rowStyleML, $paragraphStyle);
+	addAssessmentRow($assesstable, $cleanPost, $rowStyle, $paragraphStyle);
+	addECTSRow($ectstable, $cleanPost, $rowStyleML, $paragraphStyle);
 
     // Step 1: Save DOCX to a temp file
     $tempDocx = tempnam(sys_get_temp_dir(), 'syllabus') . '.docx';
