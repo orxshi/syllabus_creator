@@ -16,6 +16,7 @@ You will see
 ```
 composer.json
 composer.lock
+vendor (folder)
 ```
 in the current folder. All installation files are in the current folder only.
 
@@ -42,9 +43,13 @@ The code has been tested with
 * Optionally, click Save to save form data in JSON file.
 
 ## Language corrections
+
 Prerequisities -> Prerequisites
+
 Assesment. -> Assessment
 
 ## TODO
+
 PHPWord to PDF via any package such as TCPDF or DomPDF produces bad rendering.
+
 Either Word to PDF is done by the user by using native feature of Word or LaTeX is used instead.

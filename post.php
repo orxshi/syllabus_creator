@@ -3,10 +3,10 @@
 require_once 'vendor/autoload.php';
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
-\PhpOffice\PhpWord\Settings::setPdfRenderer(
-    \PhpOffice\PhpWord\Settings::PDF_RENDERER_TCPDF,
-    __DIR__ . '/vendor/tecnickcom/tcpdf' // path to TCPDF
-);
+// \PhpOffice\PhpWord\Settings::setPdfRenderer(
+//     \PhpOffice\PhpWord\Settings::PDF_RENDERER_TCPDF,
+//     __DIR__ . '/vendor/tecnickcom/tcpdf' // path to TCPDF
+// );
 
 
 
@@ -27,289 +27,289 @@ function calculateEctsSum(array $postData, int $count = 10): float
 
 
 
-if (array_key_exists('submit_pdf_latex', $_POST))
-{
-	if (PHP_OS === 'Linux')
-	{
-		exec('cp documentoriginal.tex syllabus.tex');
-	}
-	else
-	{
-		exec('copy documentoriginal.tex syllabus.tex');
-	}
+// if (array_key_exists('submit_pdf_latex', $_POST))
+// {
+// 	if (PHP_OS === 'Linux')
+// 	{
+// 		exec('cp documentoriginal.tex syllabus.tex');
+// 	}
+// 	else
+// 	{
+// 		exec('copy documentoriginal.tex syllabus.tex');
+// 	}
 
-	$path_to_file = 'syllabus.tex';
-	$content = file_get_contents ($path_to_file);
+// 	$path_to_file = 'syllabus.tex';
+// 	$content = file_get_contents ($path_to_file);
 
-	$content = str_replace ("PHCourseName", $_POST['coursename'], $content);
-	$content = str_replace ("PHCourseCode", $_POST['coursecode'], $content);
-	$content = str_replace ("PHNationalCredit", $_POST['nationalcredit'], $content);
-	//$content = str_replace ("PHECTSCredit", $_POST['ectscredit'], $content);
-	$content = str_replace ("PHTheoretical", $_POST['theoretical'], $content);
-	$content = str_replace ("PHCourseType", $_POST['coursetype'], $content);
-	$content = str_replace ("PHCourseLevel", $_POST['courselevel'], $content);
-	$content = str_replace ("PHPrerequisite", $_POST['prerequisite'], $content);
+// 	$content = str_replace ("PHCourseName", $_POST['coursename'], $content);
+// 	$content = str_replace ("PHCourseCode", $_POST['coursecode'], $content);
+// 	$content = str_replace ("PHNationalCredit", $_POST['nationalcredit'], $content);
+// 	//$content = str_replace ("PHECTSCredit", $_POST['ectscredit'], $content);
+// 	$content = str_replace ("PHTheoretical", $_POST['theoretical'], $content);
+// 	$content = str_replace ("PHCourseType", $_POST['coursetype'], $content);
+// 	$content = str_replace ("PHCourseLevel", $_POST['courselevel'], $content);
+// 	$content = str_replace ("PHPrerequisite", $_POST['prerequisite'], $content);
 
-	for ($i = 7; $i >= 0; $i--)
-	{
-		$insertion = $_POST["obj" . $i];
+// 	for ($i = 7; $i >= 0; $i--)
+// 	{
+// 		$insertion = $_POST["obj" . $i];
 
-		$env = "objectives";
-		$off = strlen($env) + 2;
+// 		$env = "objectives";
+// 		$off = strlen($env) + 2;
 
-		if (!empty($insertion))
-		{
-			$pos = strpos($content, $env);
-			$content = substr_replace($content, "\item " . $insertion . PHP_EOL, $pos+$off, 0);
-		}
-	}
+// 		if (!empty($insertion))
+// 		{
+// 			$pos = strpos($content, $env);
+// 			$content = substr_replace($content, "\item " . $insertion . PHP_EOL, $pos+$off, 0);
+// 		}
+// 	}
 
-	for ($i = 4; $i >= 0; $i--)
-	{
-		$insertion = $_POST["source" . $i];
+// 	for ($i = 4; $i >= 0; $i--)
+// 	{
+// 		$insertion = $_POST["source" . $i];
 
-		$env = "textbook";
-		$off = strlen($env) + 2;
+// 		$env = "textbook";
+// 		$off = strlen($env) + 2;
 
-		if (!empty($insertion))
-		{
-			$pos = strpos($content, $env);
-			$content = substr_replace($content, "\item " . $insertion . PHP_EOL, $pos+$off, 0);
-		}
-	}
+// 		if (!empty($insertion))
+// 		{
+// 			$pos = strpos($content, $env);
+// 			$content = substr_replace($content, "\item " . $insertion . PHP_EOL, $pos+$off, 0);
+// 		}
+// 	}
 
-	for ($i = 4; $i >= 0; $i--)
-	{
-		$insertion0 = $_POST["act" . $i];
-		$insertion1 = $_POST["actper" . $i];
+// 	for ($i = 4; $i >= 0; $i--)
+// 	{
+// 		$insertion0 = $_POST["act" . $i];
+// 		$insertion1 = $_POST["actper" . $i];
 
-		$env = "assessment";
-		$off = strlen($env) + 2;
+// 		$env = "assessment";
+// 		$off = strlen($env) + 2;
 
-		if (!empty($insertion0))
-		{
-			$pos = strpos($content, $env);
-			$content = substr_replace($content, "\makerow{" . $insertion0 . "}{" . $insertion1 . "}" . PHP_EOL , $pos+$off, 0);
-		}
-	}
+// 		if (!empty($insertion0))
+// 		{
+// 			$pos = strpos($content, $env);
+// 			$content = substr_replace($content, "\makerow{" . $insertion0 . "}{" . $insertion1 . "}" . PHP_EOL , $pos+$off, 0);
+// 		}
+// 	}
 
-	for ($i = 7; $i >= 0; $i--)
-	{
-		$insertion0 = $_POST["out" . $i];
-		$insertion1 = $_POST["outval" . $i];
+// 	for ($i = 7; $i >= 0; $i--)
+// 	{
+// 		$insertion0 = $_POST["out" . $i];
+// 		$insertion1 = $_POST["outval" . $i];
 
-		$env = "outcomes";
-		$off = strlen($env) + 2;
+// 		$env = "outcomes";
+// 		$off = strlen($env) + 2;
 
-		if (!empty($insertion0))
-		{
-			$pos = strpos($content, $env);
-			$content = substr_replace($content, "\makerow{" . $insertion0 . "}{" . $insertion1 . "}" . PHP_EOL , $pos+$off, 0);
-		}
-	}
+// 		if (!empty($insertion0))
+// 		{
+// 			$pos = strpos($content, $env);
+// 			$content = substr_replace($content, "\makerow{" . $insertion0 . "}{" . $insertion1 . "}" . PHP_EOL , $pos+$off, 0);
+// 		}
+// 	}
 
-	$sumects = 0;
+// 	$sumects = 0;
 
-	for ($i = 9; $i >= 0; $i--)
-	{
-		$insertion0 = $_POST["ectsact" . $i];
-		$insertion1 = $_POST["ectsnm" . $i];
-		$insertion2 = $_POST["ectsdur" . $i];
+// 	for ($i = 9; $i >= 0; $i--)
+// 	{
+// 		$insertion0 = $_POST["ectsact" . $i];
+// 		$insertion1 = $_POST["ectsnm" . $i];
+// 		$insertion2 = $_POST["ectsdur" . $i];
 
-		$sumects = $sumects + floatval($insertion1) * floatval($insertion2);
+// 		$sumects = $sumects + floatval($insertion1) * floatval($insertion2);
 
-		$env = "myects";
-		$off = strlen($env) + 2;
+// 		$env = "myects";
+// 		$off = strlen($env) + 2;
 
-		if (!empty($insertion0))
-		{
-			$pos = strpos($content, $env);
-			$content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion1 * $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
-		}
-	}
+// 		if (!empty($insertion0))
+// 		{
+// 			$pos = strpos($content, $env);
+// 			$content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion1 * $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
+// 		}
+// 	}
 
-	$env = "end{myects}";
-	$off = -strlen($env) + 10;
+// 	$env = "end{myects}";
+// 	$off = -strlen($env) + 10;
 
-	if (!empty($_POST["ectsact1"]))
-	{
-		$pos = strpos($content, $env);
-		$content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
-		$pos = strpos($content, $env);
-		$content = substr_replace($content, "\makeectsrow{Total}{}{}{" . $sumects . "}" . PHP_EOL , $pos+$off, 0);
-		$pos = strpos($content, $env);
-		$content = substr_replace($content, "\makeectsrow{Total / 30}{}{}{" . number_format($sumects/30,2) . "}" . PHP_EOL , $pos+$off, 0);
-		$pos = strpos($content, $env);
-		$content = substr_replace($content, "\makeectsrow{ECTS credits}{}{}{" . round($sumects/30) . "}" . PHP_EOL , $pos+$off, 0);
-	}
+// 	if (!empty($_POST["ectsact1"]))
+// 	{
+// 		$pos = strpos($content, $env);
+// 		$content = substr_replace($content, "\midrule" . PHP_EOL , $pos+$off, 0);
+// 		$pos = strpos($content, $env);
+// 		$content = substr_replace($content, "\makeectsrow{Total}{}{}{" . $sumects . "}" . PHP_EOL , $pos+$off, 0);
+// 		$pos = strpos($content, $env);
+// 		$content = substr_replace($content, "\makeectsrow{Total / 30}{}{}{" . number_format($sumects/30,2) . "}" . PHP_EOL , $pos+$off, 0);
+// 		$pos = strpos($content, $env);
+// 		$content = substr_replace($content, "\makeectsrow{ECTS credits}{}{}{" . round($sumects/30) . "}" . PHP_EOL , $pos+$off, 0);
+// 	}
 
-	$content = str_replace ("PHECTSCredit", round($sumects/30), $content);
+// 	$content = str_replace ("PHECTSCredit", round($sumects/30), $content);
 
-	$anylab = false;
+// 	$anylab = false;
 
-	for ($i = 14; $i >= 0; $i--)
-	{
-		$insertion3 = $_POST["conlab" . $i];
+// 	for ($i = 14; $i >= 0; $i--)
+// 	{
+// 		$insertion3 = $_POST["conlab" . $i];
 
-		if ($insertion3 != "")
-		{
-			$anylab = true;
-		}
-	}
+// 		if ($insertion3 != "")
+// 		{
+// 			$anylab = true;
+// 		}
+// 	}
 
-	$anychp = false;
+// 	$anychp = false;
 
-	for ($i = 14; $i >= 0; $i--)
-	{
-		$insertion1 = $_POST["conchp" . $i];
+// 	for ($i = 14; $i >= 0; $i--)
+// 	{
+// 		$insertion1 = $_POST["conchp" . $i];
 
-		if ($insertion1 != "")
-		{
-			$anychp = true;
-		}
-	}
+// 		if ($insertion1 != "")
+// 		{
+// 			$anychp = true;
+// 		}
+// 	}
 
-	if ($anylab == true)
-	{
-		if ($anychp == true)
-		{
-			$content = str_replace("\\begin{contentswolab}", '', $content);
-			$content = str_replace("\\end{contentswolab}", '', $content);
+// 	if ($anylab == true)
+// 	{
+// 		if ($anychp == true)
+// 		{
+// 			$content = str_replace("\\begin{contentswolab}", '', $content);
+// 			$content = str_replace("\\end{contentswolab}", '', $content);
 
-			$content = str_replace("\\begin{contentswolabwochp}", '', $content);
-			$content = str_replace("\\end{contentswolabwochp}", '', $content);
+// 			$content = str_replace("\\begin{contentswolabwochp}", '', $content);
+// 			$content = str_replace("\\end{contentswolabwochp}", '', $content);
 
-			$content = str_replace("\\begin{contentswochp}", '', $content);
-			$content = str_replace("\\end{contentswochp}", '', $content);
+// 			$content = str_replace("\\begin{contentswochp}", '', $content);
+// 			$content = str_replace("\\end{contentswochp}", '', $content);
 
-			for ($i = 14; $i >= 0; $i--)
-			{
-				$insertion0 = $_POST["conweek" . $i];
-				$insertion1 = $_POST["conchp" . $i];
-				$insertion2 = $_POST["consub" . $i];
-				$insertion3 = $_POST["conlab" . $i];
+// 			for ($i = 14; $i >= 0; $i--)
+// 			{
+// 				$insertion0 = $_POST["conweek" . $i];
+// 				$insertion1 = $_POST["conchp" . $i];
+// 				$insertion2 = $_POST["consub" . $i];
+// 				$insertion3 = $_POST["conlab" . $i];
 
-				$env = "contents";
-				$off = strlen($env) + 2;
+// 				$env = "contents";
+// 				$off = strlen($env) + 2;
 
-				if (!empty($insertion2))
-				{
-					$pos = strpos($content, $env);
-					$content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion3 . "}" . PHP_EOL , $pos+$off, 0);
-				}
-			}
-		}
-		else
-		{
-			$content = str_replace("\\begin{contents}", '', $content);
-			$content = str_replace("\\end{contents}", '', $content);
+// 				if (!empty($insertion2))
+// 				{
+// 					$pos = strpos($content, $env);
+// 					$content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion3 . "}" . PHP_EOL , $pos+$off, 0);
+// 				}
+// 			}
+// 		}
+// 		else
+// 		{
+// 			$content = str_replace("\\begin{contents}", '', $content);
+// 			$content = str_replace("\\end{contents}", '', $content);
 
-			$content = str_replace("\\begin{contentswolab}", '', $content);
-			$content = str_replace("\\end{contentswolab}", '', $content);
+// 			$content = str_replace("\\begin{contentswolab}", '', $content);
+// 			$content = str_replace("\\end{contentswolab}", '', $content);
 
-			$content = str_replace("\\begin{contentswolabwochp}", '', $content);
-			$content = str_replace("\\end{contentswolabwochp}", '', $content);
+// 			$content = str_replace("\\begin{contentswolabwochp}", '', $content);
+// 			$content = str_replace("\\end{contentswolabwochp}", '', $content);
 
-			for ($i = 14; $i >= 0; $i--)
-			{
-				$insertion0 = $_POST["conweek" . $i];
-				$insertion1 = $_POST["conchp" . $i];
-				$insertion2 = $_POST["consub" . $i];
-				$insertion3 = $_POST["conlab" . $i];
+// 			for ($i = 14; $i >= 0; $i--)
+// 			{
+// 				$insertion0 = $_POST["conweek" . $i];
+// 				$insertion1 = $_POST["conchp" . $i];
+// 				$insertion2 = $_POST["consub" . $i];
+// 				$insertion3 = $_POST["conlab" . $i];
 
-				$env = "contentswochp";
-				$off = strlen($env) + 2;
+// 				$env = "contentswochp";
+// 				$off = strlen($env) + 2;
 
-				if (!empty($insertion2))
-				{
-					$pos = strpos($content, $env);
-					$content = substr_replace($content, "\makeshortectsrow{" . $insertion0 . "}{" . $insertion2 . "}{" . $insertion3 . "}" . PHP_EOL , $pos+$off, 0);
-				}
-			}
-		}
-	}
-	else
-	{
-		if ($anychp == true)
-		{
-			$content = str_replace("\\begin{contents}", '', $content);
-			$content = str_replace("\\end{contents}", '', $content);
+// 				if (!empty($insertion2))
+// 				{
+// 					$pos = strpos($content, $env);
+// 					$content = substr_replace($content, "\makeshortectsrow{" . $insertion0 . "}{" . $insertion2 . "}{" . $insertion3 . "}" . PHP_EOL , $pos+$off, 0);
+// 				}
+// 			}
+// 		}
+// 	}
+// 	else
+// 	{
+// 		if ($anychp == true)
+// 		{
+// 			$content = str_replace("\\begin{contents}", '', $content);
+// 			$content = str_replace("\\end{contents}", '', $content);
 
-			$content = str_replace("\\begin{contentswolabwochp}", '', $content);
-			$content = str_replace("\\end{contentswolabwochp}", '', $content);
+// 			$content = str_replace("\\begin{contentswolabwochp}", '', $content);
+// 			$content = str_replace("\\end{contentswolabwochp}", '', $content);
 
-			$content = str_replace("\\begin{contentswochp}", '', $content);
-			$content = str_replace("\\end{contentswochp}", '', $content);
+// 			$content = str_replace("\\begin{contentswochp}", '', $content);
+// 			$content = str_replace("\\end{contentswochp}", '', $content);
 
-			for ($i = 14; $i >= 0; $i--)
-			{
-				$insertion0 = $_POST["conweek" . $i];
-				$insertion1 = $_POST["conchp" . $i];
-				$insertion2 = $_POST["consub" . $i];
-				$insertion3 = $_POST["conlab" . $i];
+// 			for ($i = 14; $i >= 0; $i--)
+// 			{
+// 				$insertion0 = $_POST["conweek" . $i];
+// 				$insertion1 = $_POST["conchp" . $i];
+// 				$insertion2 = $_POST["consub" . $i];
+// 				$insertion3 = $_POST["conlab" . $i];
 
-				$env = "contentswolab";
-				$off = strlen($env) + 2;
+// 				$env = "contentswolab";
+// 				$off = strlen($env) + 2;
 
-				if (!empty($insertion2))
-				{
-					$pos = strpos($content, $env);
-					$content = substr_replace($content, "\makeshortectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
-				}
-			}
-		}
-		else
-		{
-			$content = str_replace("\\begin{contents}", '', $content);
-			$content = str_replace("\\end{contents}", '', $content);
+// 				if (!empty($insertion2))
+// 				{
+// 					$pos = strpos($content, $env);
+// 					$content = substr_replace($content, "\makeshortectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
+// 				}
+// 			}
+// 		}
+// 		else
+// 		{
+// 			$content = str_replace("\\begin{contents}", '', $content);
+// 			$content = str_replace("\\end{contents}", '', $content);
 
-			$content = str_replace("\\begin{contentswolab}", '', $content);
-			$content = str_replace("\\end{contentswolab}", '', $content);
+// 			$content = str_replace("\\begin{contentswolab}", '', $content);
+// 			$content = str_replace("\\end{contentswolab}", '', $content);
 
-			$content = str_replace("\\begin{contentswochp}", '', $content);
-			$content = str_replace("\\end{contentswochp}", '', $content);
+// 			$content = str_replace("\\begin{contentswochp}", '', $content);
+// 			$content = str_replace("\\end{contentswochp}", '', $content);
 
-			for ($i = 14; $i >= 0; $i--)
-			{
-				$insertion0 = $_POST["conweek" . $i];
-				$insertion1 = $_POST["conchp" . $i];
-				$insertion2 = $_POST["consub" . $i];
-				$insertion3 = $_POST["conlab" . $i];
+// 			for ($i = 14; $i >= 0; $i--)
+// 			{
+// 				$insertion0 = $_POST["conweek" . $i];
+// 				$insertion1 = $_POST["conchp" . $i];
+// 				$insertion2 = $_POST["consub" . $i];
+// 				$insertion3 = $_POST["conlab" . $i];
 
-				$env = "contentswolabwochp";
-				$off = strlen($env) + 2;
+// 				$env = "contentswolabwochp";
+// 				$off = strlen($env) + 2;
 
-				if (!empty($insertion2))
-				{
-					$pos = strpos($content, $env);
-					$content = substr_replace($content, "\makeveryshortectsrow{" . $insertion0 . "}{" . $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
-				}
-			}
-		}
-	}
+// 				if (!empty($insertion2))
+// 				{
+// 					$pos = strpos($content, $env);
+// 					$content = substr_replace($content, "\makeveryshortectsrow{" . $insertion0 . "}{" . $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
+// 				}
+// 			}
+// 		}
+// 	}
 
 
-	file_put_contents($path_to_file, $content);
+// 	file_put_contents($path_to_file, $content);
 
-	if (PHP_OS === 'Linux')
-	{
-		exec('/usr/local/texlive/2021/bin/x86_64-linux/pdflatex syllabus.tex');
-	}
-	else
-	{
-		exec('C:\Users\orhan\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdflatex.exe syllabus.tex');
-	}
+// 	if (PHP_OS === 'Linux')
+// 	{
+// 		exec('/usr/local/texlive/2021/bin/x86_64-linux/pdflatex syllabus.tex');
+// 	}
+// 	else
+// 	{
+// 		exec('C:\Users\orhan\AppData\Local\Programs\MiKTeX\miktex\bin\x64\pdflatex.exe syllabus.tex');
+// 	}
 
-	$file = 'syllabus.pdf';
+// 	$file = 'syllabus.pdf';
 
-	header('Content-Type: application/pdf');
-	header("Content-Disposition: inline; filename=\"$file\"");
+// 	header('Content-Type: application/pdf');
+// 	header("Content-Disposition: inline; filename=\"$file\"");
 
-	ob_clean();
-	flush();
+// 	ob_clean();
+// 	flush();
 
-	readfile($file);
-}
+// 	readfile($file);
+// }
 
 
 function addCourseRow(
@@ -496,6 +496,141 @@ function addAssessmentRow(
 	}
 }
 
+function addECTSRow(
+    \PhpOffice\PhpWord\Element\Table $table,
+    array $rowStyle = [],
+    array $paragraphStyle = []
+): void {
+
+	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$cell = $table->addCell(
+        0,
+        ['valign' => 'center', 'gridSpan' => 4]
+    );
+
+	$cell->addText(
+        "ECTS Allocated Based on the Student Workload",
+        ['bold' => true],
+        $paragraphStyle
+    );
+
+	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$ps = [
+    'spaceBefore' => 0,
+    'spaceAfter'  => 0,
+    'align' => 'center'
+	];
+
+	$psleft = [
+    'spaceBefore' => 0,
+    'spaceAfter'  => 0,
+    'align' => 'left'
+	];
+
+	$table->addCell(5500, ['valign' => 'center'])->addText("Activities", [], $ps);
+    $table->addCell(2000, ['valign' => 'center'])->addText("Number", [], $ps);
+	$table->addCell(2000, ['valign' => 'center'])->addText("Duration (hour)", [], $ps);
+    $table->addCell(2000, ['valign' => 'center'])->addText("Total Workload (hour)", [], $ps);
+
+	$ectsacts = [];
+$ectsnms = [];
+$ectsdurs = [];
+$sumects = 0;
+
+for ($i = 0; $i < 10; $i++) {
+    if (!empty($_POST["ectsact" . $i])) {
+        $ectsacts[] = $_POST["ectsact" . $i];
+        $ectsnms[] = $_POST["ectsnm" . $i];
+        $ectsdurs[] = $_POST["ectsdur" . $i];
+
+        // Use the **last pushed element**, not $i
+        $sumects += floatval(end($ectsnms)) * floatval(end($ectsdurs));
+    }
+}
+
+	foreach ($ectsacts as $idx => $ectsact)
+	{
+		$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+		$table->addCell(5500, ['valign' => 'center'])->addText($ectsact, [], $paragraphStyle);
+    	$table->addCell(2000, ['valign' => 'center'])->addText($ectsnms[$idx], [], $ps);
+		$table->addCell(2000, ['valign' => 'center'])->addText($ectsdurs[$idx], [], $ps);
+    	$table->addCell(2000, ['valign' => 'center'])->addText(floatval($ectsnms[$idx]) * floatval($ectsdurs[$idx]), [], $ps);
+	}
+
+	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$cell = $table->addCell(
+        9500,
+        ['valign' => 'center', 'gridSpan' => 3]
+    );
+
+	$cell->addText("Total Workload", [], $paragraphStyle);
+
+	$cell = $table->addCell(2000, ['valign' => 'center'])->addText($sumects, [], $ps);
+
+	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$cell = $table->addCell(
+        9500,
+        ['valign' => 'center', 'gridSpan' => 3]
+    );
+
+	$cell->addText("Total Workload/30 (h)", [], $paragraphStyle);
+
+	$cell = $table->addCell(2000, ['valign' => 'center'])->addText(number_format($sumects/30,2), [], $ps);
+
+	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$cell = $table->addCell(
+        9500,
+        ['valign' => 'center', 'gridSpan' => 3]
+    );
+
+	$cell->addText("ECTS Credit of the Course", [], $paragraphStyle);
+
+	$cell = $table->addCell(2000, ['valign' => 'center'])->addText(round($sumects/30), [], $ps);
+	
+
+	
+// round(calculateEctsSum($_POST)/30)
+
+
+
+	// $sumects = 0;
+
+	// for ($i = 9; $i >= 0; $i--)
+	// {
+	// 	$insertion0 = $_POST["ectsact" . $i];
+	// 	$insertion1 = $_POST["ectsnm" . $i];
+	// 	$insertion2 = $_POST["ectsdur" . $i];
+
+	// 	$sumects = $sumects + floatval($insertion1) * floatval($insertion2);
+
+	// 	$env = "myects";
+	// 	$off = strlen($env) + 2;
+
+	// 	if (!empty($insertion0))
+	// 	{
+	// 		$pos = strpos($content, $env);
+	// 		$content = substr_replace($content, "\makeectsrow{" . $insertion0 . "}{" . $insertion1 . "}{" . $insertion2 . "}{" . $insertion1 * $insertion2 . "}" . PHP_EOL , $pos+$off, 0);
+	// 	}
+	// }
+
+
+
+
+
+
+
+
+
+
+
+}
+
 function addOutcomesRow(
     \PhpOffice\PhpWord\Element\Table $table,
     array $rowStyle = [],
@@ -587,7 +722,7 @@ $table->addCell(
 
 }
 
-if (array_key_exists('submit_word', $_POST))
+if (array_key_exists('submit_pdf', $_POST))
 {
     $phpWord = new PhpWord();
 
@@ -661,6 +796,7 @@ if (array_key_exists('submit_word', $_POST))
 	$contenttable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$sourcetable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$assesstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$ectstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
 	addOutcomesRow($outcomestable, $rowStyle, $paragraphStyle);
 	addContentsRow($contenttable, $rowStyle, $paragraphStyle);
@@ -678,6 +814,7 @@ if (array_key_exists('submit_word', $_POST))
 
 
 	addAssessmentRow($assesstable, $rowStyle, $paragraphStyle);
+	addECTSRow($ectstable, $rowStyleML, $paragraphStyle);
 
 	
 
@@ -698,37 +835,143 @@ if (array_key_exists('submit_word', $_POST))
 
 
 
-    $file = "syllabus.docx";
-    $writer = IOFactory::createWriter($phpWord, 'Word2007');
-    $writer->save($file);
+    // Step 1: Save DOCX to a temp file
+	$tempDocx = tempnam(sys_get_temp_dir(), 'syllabus') . '.docx';
+	$writer = IOFactory::createWriter($phpWord, 'Word2007');
+	$writer->save($tempDocx);
 
-	\PhpOffice\PhpWord\Settings::setPdfRenderer(
-    \PhpOffice\PhpWord\Settings::PDF_RENDERER_TCPDF,
-    __DIR__ . '/vendor/tecnickcom/tcpdf' // path to TCPDF in your project
-	);
+	// Step 2: Prepare temp PDF path
+	$tempPdf = tempnam(sys_get_temp_dir(), 'syllabus') . '.pdf';
 
-	// Save as PDF
-	$filePDF = "syllabus.pdf";
-	$writerPDF = IOFactory::createWriter($phpWord, 'PDF');
-	$writerPDF->save($filePDF);
+	// Step 3: Convert DOCX → PDF using Word COM
+	$word = new COM("Word.Application") or die("Unable to instantiate Word");
+	$word->Visible = 0;
+	$doc = $word->Documents->Open($tempDocx);
+	$doc->ExportAsFixedFormat($tempPdf, 17); // 17 = wdExportFormatPDF
+	$doc->Close(false);
+	$word->Quit();
 
-	
-
-    // header("Content-Description: File Transfer");
-    // header("Content-Disposition: attachment; filename=$file");
-    // header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    // readfile($file);
-    // unlink($file);
-    // exit;
-
-	header("Content-Description: File Transfer");
-	header("Content-Disposition: attachment; filename=syllabus.pdf");
+	// Step 4: Serve PDF for download
 	header("Content-Type: application/pdf");
-	readfile($filePDF);
-	unlink($filePDF);
-	exit;
-}
+	header("Content-Disposition: attachment; filename=\"syllabus.pdf\"");
+	header("Content-Length: " . filesize($tempPdf));
+	flush();
+	readfile($tempPdf);
 
+	// Step 5: Clean up temp files
+	@unlink($tempDocx);
+	@unlink($tempPdf);
+	exit;
+
+}      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if (array_key_exists('submit_word', $_POST)) {
+    $phpWord = new PhpWord();
+
+    $phpWord->setDefaultFontName('Calibri');
+    $phpWord->setDefaultFontSize(10);
+
+    $sectionStyle = [
+        'orientation' => 'portrait',
+        'marginTop' => 1440,
+        'marginBottom' => 1440,
+        'marginLeft' => 1440,
+        'marginRight' => 1440
+    ];
+
+    $section = $phpWord->addSection();
+
+    // Header text
+    $headerText = "GAU, Faculty of Engineering";
+    $section->addText(
+        $headerText,
+        ['bold' => true, 'size' => 16],
+        ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]
+    );
+
+    $section->addTextBreak(0.7);
+
+    $rowStyle = [
+        'cantSplit' => true,
+        'exactHeight' => true,
+        'height' => 300
+    ];
+
+    $rowStyleML = [
+        'cantSplit' => true,
+        'exactHeight' => false,
+        'height' => 300
+    ];
+
+    $paragraphStyle = [
+        'spaceBefore' => 0,
+        'spaceAfter'  => 0,
+        'indentation' => ['left' => 100],
+    ];
+
+    $table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+
+    addCourseRow($table, "Course Unit Title", $_POST['coursename'], $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Course Unit Code", $_POST['coursecode'], $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Type of Course Unit", $_POST['coursetype'], $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Level of Course Unit", "3rd Year BSc", $rowStyle, $paragraphStyle);
+    addCourseRow($table, "National Credits", $_POST['nationalcredit'], $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Number of ECTS Credits Allocated", round(calculateEctsSum($_POST)/30), $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Theoretical (hour/week)", $_POST['theoretical'], $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Practice (hour/week)", "-", $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Laboratory (hour/week)", "-", $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Year of Study", "3", $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Semester when the course unit is delivered", "5", $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Mode of Delivery", "Face to face", $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Language of Instruction", "English", $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Prerequisites and co-requisites", $_POST['prerequisite'], $rowStyle, $paragraphStyle);
+    addCourseRow($table, "Recommended Optional Programme Components", "An adequate background in calculus, physics, and engineering mechanics", $rowStyle, $paragraphStyle);
+
+    addObjectivesRow($table, $rowStyleML, $paragraphStyle);
+
+    // Additional tables
+    $outcomestable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+    $contenttable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+    $sourcetable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+    $assesstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+    $ectstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+
+    addOutcomesRow($outcomestable, $rowStyle, $paragraphStyle);
+    addContentsRow($contenttable, $rowStyle, $paragraphStyle);
+    addSourcesRow($sourcetable, $rowStyleML, $paragraphStyle);
+    addAssessmentRow($assesstable, $rowStyle, $paragraphStyle);
+    addECTSRow($ectstable, $rowStyleML, $paragraphStyle);
+
+    // Step 1: Save DOCX to a temp file
+    $tempDocx = tempnam(sys_get_temp_dir(), 'syllabus') . '.docx';
+    $writer = IOFactory::createWriter($phpWord, 'Word2007');
+    $writer->save($tempDocx);
+
+    // Step 2: Serve Word file for download
+    header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    header("Content-Disposition: attachment; filename=\"syllabus.docx\"");
+    header("Content-Length: " . filesize($tempDocx));
+    flush();
+    readfile($tempDocx);
+
+    // Step 3: Clean up temp file
+    @unlink($tempDocx);
+    exit;
+}
 
 
 
