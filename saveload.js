@@ -9,13 +9,14 @@ $(document).ready(function() {
 
         // Convert form data into JSON, handling multiple values
         $.each(formData, function() {
-            if (jsonData[this.name]) {
-                if (!Array.isArray(jsonData[this.name])) {
-                    jsonData[this.name] = [jsonData[this.name]];
+            var name = this.name.replace("[]", ""); // remove brackets
+            if (jsonData[name]) {
+                if (!Array.isArray(jsonData[name])) {
+                    jsonData[name] = [jsonData[name]];
                 }
-                jsonData[this.name].push(this.value || '');
+                jsonData[name].push(this.value || '');
             } else {
-                jsonData[this.name] = this.value || '';
+                jsonData[name] = this.value || '';
             }
         });
 
@@ -52,22 +53,25 @@ $(document).ready(function() {
             let data = JSON.parse(obj);
 
             for (var key in data) {
+                let value = data[key];
 
-                // Handle checkboxes (arrays)
-                if (Array.isArray(data[key])) {
-                    data[key].forEach(function(val) {
-                        $('input[name="'+key+'"][value="'+val+'"]').prop('checked', true);
+                // Handle checkboxes
+                if (Array.isArray(value)) {
+                    $('input[name="'+key+'[]"]').prop('checked', false); // uncheck all first
+                    value.forEach(function(val){
+                        $('input[name="'+key+'[]"][value="'+val+'"]').prop('checked', true);
                     });
                 } else {
-                    // Handle text, textarea, select
                     let el = $('#' + key);
 
-                    if (el.is(':checkbox')) {
-                        el.prop('checked', data[key] == el.val());
+                    if (el.length > 1 && el.is(':checkbox')) {
+                        el.prop('checked', value == el.val());
+                    } else if (el.is(':checkbox')) {
+                        el.prop('checked', value == el.val());
                     } else if (el.is('select')) {
-                        el.val(data[key]);
+                        el.val(value);
                     } else {
-                        el.val(data[key]);
+                        el.val(value);
                     }
                 }
             }
