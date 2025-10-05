@@ -42,14 +42,28 @@ The code has been tested with
 * Click Generate Word to generate Word file of the syllabus.
 * Optionally, click Save to save form data in JSON file.
 
-## Language corrections
+## Language corrections / typos
 
 Prerequisities -> Prerequisites
 
 Assesment. -> Assessment
+
+5:Very high -> 5: Very high
 
 ## TODO
 
 PHPWord to PDF via any package such as TCPDF or DomPDF produces bad rendering.
 
 Either Word to PDF is done by the user by using native feature of Word or LaTeX is used instead.
+
+National credits should be calculated from theoretical and practice.
+
+Add Turkish eligible department such as Bilgisayar Muhendisligi for Turkish courses.
+
+Give Turkish language option for Turkish courses.
+
+Check ampersand or other problematic symbols in fields and replace with amp for php.
+
+## Caution
+
+Do not use & in any field. Use and.

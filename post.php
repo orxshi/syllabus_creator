@@ -492,7 +492,7 @@ function addAssessmentRow(
 
 		// $leftWidth = max(2000, strlen($activity) * 150);
 		$table->addCell(2000)->addText($activity, [], $paragraphStyle);
-		$table->addCell(9500)->addText($activitiesper[$idx], [], $paragraphStyle);
+		$table->addCell(9500)->addText($activitiesper[$idx] . " %", [], $paragraphStyle);
 	}
 }
 
@@ -631,6 +631,110 @@ for ($i = 0; $i < 10; $i++) {
 
 }
 
+
+
+
+
+
+
+function addContribsRow(
+    \PhpOffice\PhpWord\Element\Table $table,
+    array $rowStyle = [],
+    array $paragraphStyle = []
+): void {
+
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$cell = $table->addCell(
+        0,
+        ['valign' => 'center', 'gridSpan' => 2]
+    );
+
+	$cell->addText(
+        "Course’s Contribution to Program",
+        ['bold' => true],
+        $paragraphStyle
+    );
+
+	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+	$table->addCell(
+        9500,
+		['valign' => 'center']      
+    )->addText("", [], $paragraphStyle);
+
+	$table->addCell(
+    2000,
+    ['valign' => 'center']
+	)->addText(
+		"CL",
+		[],
+		['align' => 'center', 'spaceBefore' => 0, 'spaceAfter'  => 0]
+	);
+
+
+
+    $contribs0 = [];
+    $contribs1 = [];
+    for ($i = 0; $i < 9; $i++) {
+        if (!empty($_POST["contrib" . $i])) {
+            $contribs0[] = $_POST["contrib" . $i];
+            $contribs1[] = $_POST["contribval" . $i];
+        }
+    }
+
+    foreach ($contribs0 as $idx => $contrib) {
+    $table->addRow();
+
+    // LEFT cell: nested table for number + text
+    $outerCell = $table->addCell(9500);
+
+    $innerTable = $outerCell->addTable(['width' => 9500, 'unit' => 'dxa']);
+    $innerTable->addRow();
+
+    // Number cell with RIGHT BORDER
+    $innerTable->addCell(800, [
+        'borderRightSize'  => 6,
+        'borderRightColor' => '000000',
+		'valign' => 'center'
+    ])->addText(($idx + 1), [], $paragraphStyle);
+
+    // Outcome text cell
+    $innerTable->addCell(8700, ['wrapText' => true])
+               ->addText($contrib, [], $paragraphStyle);
+
+    // RIGHT cell: assessment
+    $table->addCell(2000, ['valign' => 'center'])
+          ->addText($contribs1[$idx] ?? '', [], $paragraphStyle);
+}
+
+// Add row for Assessment Methods
+$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+
+
+$table->addCell(
+    0,
+    [
+        'gridSpan' => 2,
+        'valign'   => 'center'        
+    ]
+	)->addText(
+		"CL: Contribution Level (1: Very Low, 2: Low, 3: Moderate 4: High, 5: Very High)",
+		[],
+		['align' => 'center', 'spaceBefore' => 0, 'spaceAfter'  => 0]
+	);
+
+
+}
+
+
+
+
+
+
+
+
 function addOutcomesRow(
     \PhpOffice\PhpWord\Element\Table $table,
     array $rowStyle = [],
@@ -671,7 +775,7 @@ function addOutcomesRow(
     $outcomes0 = [];
     $outcomes1 = [];
     for ($i = 0; $i < 7; $i++) {
-        if (!empty($_POST["obj" . $i])) {
+        if (!empty($_POST["out" . $i])) {
             $outcomes0[] = $_POST["out" . $i];
             $outcomes1[] = $_POST["outval" . $i];
         }
@@ -770,25 +874,59 @@ if (array_key_exists('submit_pdf', $_POST))
 	],    
 	];
 
-	
-
 	$table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+
+	if (!empty($_POST['eligdep']))
+	{
+ 	   $eligdep = $_POST['eligdep'];
+
+    	// If "All departments" is selected, ignore others
+    	if (in_array("All departments", $eligdep)) {
+	        $selectedDepartments = ["all departments"];
+	    } else {
+        	$selectedDepartments = $eligdep; // use the ticked ones
+    	}
+
+    	// Example: join them into a string for saving/printing
+    	$eligdepString = implode(", ", $selectedDepartments);
+		$eligdepString = " for " . $eligdepString;
+	}
+	else
+	{
+    	$eligdepString = "None selected";
+	}
+
+	if (!empty($_POST['mode']))
+	{
+ 		$mode = $_POST['mode'];
+    	$modeString = implode(", ", $mode);
+	}
+	else
+	{
+    	$modeString = "None selected";
+	}
 
 	addCourseRow($table, "Course Unit Title", $_POST['coursename'], $rowStyle, $paragraphStyle);
 	addCourseRow($table, "Course Unit Code", $_POST['coursecode'], $rowStyle, $paragraphStyle);
-	addCourseRow($table, "Type of Course Unit", $_POST['coursetype'], $rowStyle, $paragraphStyle);
-	addCourseRow($table, "Level of Course Unit", "3rd Year BSc", $rowStyle, $paragraphStyle);
-	addCourseRow($table, "National Credits", $_POST['nationalcredit'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Type of Course Unit", $_POST['coursetype'] . $eligdepString, $rowStyle, $paragraphStyle);
+
+	addCourseRow($table, "Level of Course Unit", $_POST['level'], $rowStyle, $paragraphStyle);
+
+	$natcre = floatval($_POST['theoretical']) + floatval($_POST['practice']) / 2 + + floatval($_POST['labcre']) / 2;
+
+	addCourseRow($table, "National Credits", $natcre, $rowStyle, $paragraphStyle);
+
+
 	addCourseRow($table, "Number of ECTS Credits Allocated", round(calculateEctsSum($_POST)/30), $rowStyle, $paragraphStyle);
 	addCourseRow($table, "Theoretical (hour/week)", $_POST['theoretical'], $rowStyle, $paragraphStyle);
-	addCourseRow($table, "Practice (hour/week)", "-", $rowStyle, $paragraphStyle);
-	addCourseRow($table, "Laboratory (hour/week)", "-", $rowStyle, $paragraphStyle);
-	addCourseRow($table, "Year of Study", "3", $rowStyle, $paragraphStyle);
-	addCourseRow($table, "Semester when the course unit is delivered", "5", $rowStyle, $paragraphStyle);
-	addCourseRow($table, "Mode of Delivery", "Face to face", $rowStyle, $paragraphStyle);
-	addCourseRow($table, "Language of Instruction", "English", $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Practice (hour/week)", $_POST['practice'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Laboratory (hour/week)", $_POST['labcre'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Year of Study", $_POST['yearofstudy'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Semester when the course unit is delivered", $_POST['semdel'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Mode of Delivery", $modeString, $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Language of Instruction", $_POST['lang'], $rowStyle, $paragraphStyle);
 	addCourseRow($table, "Prerequisites and co-requisites", $_POST['prerequisite'], $rowStyle, $paragraphStyle);
-	addCourseRow($table, "Recommended Optional Programme Components", "An adequate background in calculus, physics, and engineering mechanics", $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Recommended Optional Programme Components", $_POST['recom'], $rowStyle, $paragraphStyle);
 
 	addObjectivesRow($table, $rowStyleML, $paragraphStyle);
 
@@ -797,43 +935,14 @@ if (array_key_exists('submit_pdf', $_POST))
 	$sourcetable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$assesstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$ectstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$contribstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
 	addOutcomesRow($outcomestable, $rowStyle, $paragraphStyle);
+	addContribsRow($outcomestable, $rowStyle, $paragraphStyle);
 	addContentsRow($contenttable, $rowStyle, $paragraphStyle);
-
 	addSourcesRow($sourcetable, $rowStyleML, $paragraphStyle);
-
-
-	// $tableStyle = [
-    // 	'borderSize'  => 6,
-    // 	'borderColor' => '000000',
-    // 	// 'layout'      => 'autofit',
-	// ];
-	// $phpWord->addTableStyle('AssessmentTable', $tableStyle);
-	// $assesstable = $section->addTable('AssessmentTable');
-
-
 	addAssessmentRow($assesstable, $rowStyle, $paragraphStyle);
 	addECTSRow($ectstable, $rowStyleML, $paragraphStyle);
-
-	
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
 
     // Step 1: Save DOCX to a temp file
 	$tempDocx = tempnam(sys_get_temp_dir(), 'syllabus') . '.docx';
@@ -862,7 +971,6 @@ if (array_key_exists('submit_pdf', $_POST))
 	@unlink($tempDocx);
 	@unlink($tempPdf);
 	exit;
-
 }      
 
 
@@ -882,79 +990,119 @@ if (array_key_exists('submit_pdf', $_POST))
 if (array_key_exists('submit_word', $_POST)) {
     $phpWord = new PhpWord();
 
-    $phpWord->setDefaultFontName('Calibri');
-    $phpWord->setDefaultFontSize(10);
+	$phpWord->setDefaultFontName('Calibri');
+	$phpWord->setDefaultFontSize(10);
 
-    $sectionStyle = [
-        'orientation' => 'portrait',
-        'marginTop' => 1440,
-        'marginBottom' => 1440,
-        'marginLeft' => 1440,
-        'marginRight' => 1440
-    ];
+	$sectionStyle = [
+    'orientation' => 'portrait',
+    'marginTop' => 1440,    // 1 inch = 1440 twips
+    'marginBottom' => 1440,
+    'marginLeft' => 1440,
+    'marginRight' => 1440
+];
 
-    $section = $phpWord->addSection();
+	$section = $phpWord->addSection();
 
-    // Header text
-    $headerText = "GAU, Faculty of Engineering";
-    $section->addText(
-        $headerText,
-        ['bold' => true, 'size' => 16],
-        ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]
-    );
+	// Header text
+	$headerText = "GAU, Faculty of Engineering";
+	$section->addText(
+		$headerText,
+		['bold' => true, 'size' => 16],               // font style: bold, size 16
+		['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER] // paragraph style: centered
+	);
 
-    $section->addTextBreak(0.7);
+	// Optional: add a line break after header
+	$section->addTextBreak(0.7);
 
-    $rowStyle = [
-        'cantSplit' => true,
-        'exactHeight' => true,
-        'height' => 300
-    ];
+	$rowStyle = [
+    'cantSplit' => true,
+    'exactHeight' => true,
+    'height' => 300  // default row height for all rows
+	];
 
-    $rowStyleML = [
-        'cantSplit' => true,
-        'exactHeight' => false,
-        'height' => 300
-    ];
+	$rowStyleML = [
+    'cantSplit' => true,
+    'exactHeight' => false,
+    'height' => 300  // default row height for all rows
+	];
 
-    $paragraphStyle = [
-        'spaceBefore' => 0,
-        'spaceAfter'  => 0,
-        'indentation' => ['left' => 100],
-    ];
+	$paragraphStyle = [
+    'spaceBefore' => 0,
+    'spaceAfter'  => 0,
+    'indentation' => [
+        'left' => 100
+	],    
+	];
 
-    $table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
-    addCourseRow($table, "Course Unit Title", $_POST['coursename'], $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Course Unit Code", $_POST['coursecode'], $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Type of Course Unit", $_POST['coursetype'], $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Level of Course Unit", "3rd Year BSc", $rowStyle, $paragraphStyle);
-    addCourseRow($table, "National Credits", $_POST['nationalcredit'], $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Number of ECTS Credits Allocated", round(calculateEctsSum($_POST)/30), $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Theoretical (hour/week)", $_POST['theoretical'], $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Practice (hour/week)", "-", $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Laboratory (hour/week)", "-", $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Year of Study", "3", $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Semester when the course unit is delivered", "5", $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Mode of Delivery", "Face to face", $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Language of Instruction", "English", $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Prerequisites and co-requisites", $_POST['prerequisite'], $rowStyle, $paragraphStyle);
-    addCourseRow($table, "Recommended Optional Programme Components", "An adequate background in calculus, physics, and engineering mechanics", $rowStyle, $paragraphStyle);
+	if (!empty($_POST['eligdep']))
+	{
+ 	   $eligdep = $_POST['eligdep'];
 
-    addObjectivesRow($table, $rowStyleML, $paragraphStyle);
+    	// If "All departments" is selected, ignore others
+    	if (in_array("All departments", $eligdep)) {
+	        $selectedDepartments = ["all departments"];
+	    } else {
+        	$selectedDepartments = $eligdep; // use the ticked ones
+    	}
 
-    // Additional tables
-    $outcomestable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
-    $contenttable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
-    $sourcetable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
-    $assesstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
-    $ectstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+    	// Example: join them into a string for saving/printing
+    	$eligdepString = implode(", ", $selectedDepartments);
+		$eligdepString = " for " . $eligdepString;
+	}
+	else
+	{
+    	$eligdepString = "None selected";
+	}
 
-    addOutcomesRow($outcomestable, $rowStyle, $paragraphStyle);
-    addContentsRow($contenttable, $rowStyle, $paragraphStyle);
-    addSourcesRow($sourcetable, $rowStyleML, $paragraphStyle);
-    addAssessmentRow($assesstable, $rowStyle, $paragraphStyle);
-    addECTSRow($ectstable, $rowStyleML, $paragraphStyle);
+	if (!empty($_POST['mode']))
+	{
+ 		$mode = $_POST['mode'];
+    	$modeString = implode(", ", $mode);
+	}
+	else
+	{
+    	$modeString = "None selected";
+	}
+
+	addCourseRow($table, "Course Unit Title", $_POST['coursename'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Course Unit Code", $_POST['coursecode'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Type of Course Unit", $_POST['coursetype'] . $eligdepString, $rowStyle, $paragraphStyle);
+
+	addCourseRow($table, "Level of Course Unit", $_POST['level'], $rowStyle, $paragraphStyle);
+
+	$natcre = floatval($_POST['theoretical']) + floatval($_POST['practice']) / 2 + + floatval($_POST['labcre']) / 2;
+
+	addCourseRow($table, "National Credits", $natcre, $rowStyle, $paragraphStyle);
+
+
+	addCourseRow($table, "Number of ECTS Credits Allocated", round(calculateEctsSum($_POST)/30), $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Theoretical (hour/week)", $_POST['theoretical'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Practice (hour/week)", $_POST['practice'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Laboratory (hour/week)", $_POST['labcre'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Year of Study", $_POST['yearofstudy'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Semester when the course unit is delivered", $_POST['semdel'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Mode of Delivery", $modeString, $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Language of Instruction", $_POST['lang'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Prerequisites and co-requisites", $_POST['prerequisite'], $rowStyle, $paragraphStyle);
+	addCourseRow($table, "Recommended Optional Programme Components", $_POST['recom'], $rowStyle, $paragraphStyle);
+
+	addObjectivesRow($table, $rowStyleML, $paragraphStyle);
+
+	$outcomestable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$contenttable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$sourcetable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$assesstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$ectstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+	$contribstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+
+	addOutcomesRow($outcomestable, $rowStyle, $paragraphStyle);
+	addContribsRow($outcomestable, $rowStyle, $paragraphStyle);
+	addContentsRow($contenttable, $rowStyle, $paragraphStyle);
+	addSourcesRow($sourcetable, $rowStyleML, $paragraphStyle);
+	addAssessmentRow($assesstable, $rowStyle, $paragraphStyle);
+	addECTSRow($ectstable, $rowStyleML, $paragraphStyle);
 
     // Step 1: Save DOCX to a temp file
     $tempDocx = tempnam(sys_get_temp_dir(), 'syllabus') . '.docx';

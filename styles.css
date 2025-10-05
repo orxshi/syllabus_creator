@@ -31,29 +31,37 @@ th{
     display: flex;
     gap: 20px;
 }
-.tooltip {
-  display: inline-block;
-  float: right;
-  cursor: pointer;
-  border-bottom: 1px dotted black;
+
+.separator {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin: 5px 10px 15px 0; /* top right bottom left */
 }
 
-/* Tooltip text */
+.tooltip {
+  position: relative;
+  top: 0px;      /* distance from the top of the box */
+  left: 450px;    /* distance from the right of the box */
+  cursor: pointer;
+  border-bottom: 1px dotted black;
+  display: inline-block;
+}
+
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  width: 180px;
   background-color: black;
   color: #fff;
   text-align: left;
-  padding: 10px 0px 10px 10px;
+  padding: 6px;
   border-radius: 6px;
 
-  /* Position the tooltip text - see examples below! */
   position: absolute;
-  z-index: 1;
+  top: 20px;   /* show below the "Help" text */
+  left: 0;    /* align tooltip with the right edge */
+  z-index: 1000;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }

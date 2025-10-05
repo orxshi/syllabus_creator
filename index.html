@@ -12,6 +12,8 @@
 
     <body>
 
+        
+
         <form method="post" action="post.php" id="myform">
 
             <div class="box">
@@ -23,7 +25,7 @@
                     <input type="reset" value="Reset"/><br>
                     <hr>
                     <!-- <input type="submit" name="submit_pdf_latex" class="button" value="Generate PDF with Latex" /> -->
-                    <input type="submit" name="submit_pdf" class="button" value="Generate PDF" />
+                    <input type="submit" name="submit_pdf" class="button" value="Generate PDF", style="margin-bottom: 10px;" />
                     <input type="submit" name="submit_word" class="button" value="Generate Word" />
                 </div>
 
@@ -32,12 +34,13 @@
 
                     <div style="padding-left: 30px;">
 
-                        <div class="tab" style="padding-bottom: 30px;">
+                        <div class="tab" style="padding-bottom: 30px; min-width: 600px;">
                             <button class="tablinks" onclick="openTab(event, 'divbasic')">Basic</button>
                             <button class="tablinks" onclick="openTab(event, 'divobj')">Objectives</button>
                             <button class="tablinks" onclick="openTab(event, 'divsource')">Sources</button>
                             <button class="tablinks" onclick="openTab(event, 'divassess')">Activities</button>
                             <button class="tablinks" onclick="openTab(event, 'divoutcome')">Outcomes</button>
+                            <button class="tablinks" onclick="openTab(event, 'divcontrib')">Contributions</button>
                             <button class="tablinks" onclick="openTab(event, 'divects')">ECTS</button>
                             <button class="tablinks" onclick="openTab(event, 'divcontents')">Contents</button>
                         </div>
@@ -49,27 +52,115 @@
                             <label for="coursecode">Course code:</label>
                             <input type="text" id="coursecode" name="coursecode" placeholder="PHYS101"><br>
 
-                            <label for="nationalcredit">National credits:</label>
-                            <input type="text" id="nationalcredit" name="nationalcredit" placeholder="3"><br>
+                            <hr class="separator">
+
+                            <!-- <label for="nationalcredit">National credits:</label> -->
+                            <!-- <input type="text" id="nationalcredit" name="nationalcredit" placeholder="3"><br> -->
 
                             <label for="theoretical">Theoretical (hour/week):</label>
                             <input type="text" id="theoretical" name="theoretical" placeholder="3"><br>
 
+                            <label for="practice">Practice (hour/week):</label>
+                            <input type="text" id="practice" name="practice" placeholder="2"><br>
+
+                            <label for="labcre">Laboratory (hour/week):</label>
+                            <input type="text" id="labcre" name="labcre" placeholder="0"><br>
+
+                            <hr class="separator">
+
+                            <label for="yearofstudy">Year of study:</label>
+                            <input type="text" id="yearofstudy" name="yearofstudy" placeholder="3"><br>
+
+                            <label for="semdel">Semester when the course unit is delivered:</label>
+                            <input type="text" id="semdel" name="semdel" placeholder="3"><br>
+
+                            <hr class="separator">
+
                             <label for="prerequisite">Prerequisities:</label>
                             <input type="text" id="prerequisite" name="prerequisite" placeholder="MTXXX"><br>
+
+                            
 
                             <label for="coursetype">Course type:</label>
                             <select name="coursetype" id="coursetype">
                                 <option value="Compulsory">Compulsory</option>
                                 <option value="Technical elective">Technical elective</option>
-                                <option value="Elective">Elective</option>
+                                <option value="Non-technical elective">Non-technical elective</option>
                             </select><br>
 
-                            <label for="courselevel">Course level:</label>
+                            <!-- <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+    <label style="margin-right: 10px;">Eligible Departments:</label>
+    <div style="border: 1px solid #ccc; padding: 8px; width: 300px; height: 120px; overflow-y: auto; overflow-x: hidden; display: flex; flex-wrap: wrap;">
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="All departments"> All departments</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="Computer Eng."> Computer Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="Electrical. Eng."> Electrical. Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="Energy Sys. Eng."> Energy Sys. Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="Civil Eng."> Civil Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="Mechanical Eng."> Mechanical Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="Automotive Eng."> Automotive Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="AI Eng."> AI Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="Quantity Sur."> Quantity Sur.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="Software Eng."> Software Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="Industrial Eng."> Industrial Eng.</label>
+    </div>
+</div> -->
+
+<div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+    <label style="margin-right: 10px;">Eligible Departments:</label>
+    <div style="border: 1px solid #ccc; padding: 8px; width: 300px; height: 120px; overflow-y: auto; overflow-x: hidden; display: flex; flex-wrap: wrap;">
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="All departments"> All departments</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="CEN"> Computer Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="EEN"> Electrical. Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="ESE"> Energy Sys. Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="CVEN"> Civil Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="ME"> Mechanical Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="AE"> Automotive Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="AIE"> AI Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="QS"> Quantity Sur.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="SE"> Software Eng.</label>
+        <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="IE"> Industrial Eng.</label>
+    </div>
+</div>
+
+<hr class="separator">
+
+                            <label for="lang">Language of Instruction:</label>
+                            <select name="lang" id="lang">
+                                <option value="English">English</option>
+                                <option value="Turkish">Turkish</option>
+                            </select><br>
+
+                            <!-- <label for="courselevel">Course level:</label>
                             <select name="courselevel" id="courselevel">
                                 <option value="Undergraduate">Undergraduate</option>
                                 <option value="Graduate">Graduate</option>
-                            </select>
+                            </select><br> -->
+
+                            <label for="level">Level of Course Unit:</label>
+                            <select name="level" id="level">
+                                <option value="1st year BSc">1st year BSc</option>
+                                <option value="2nd year BSc">2nd year BSc</option>
+                                <option value="3rd year BSc">3rd year BSc</option>
+                                <option value="4th year BSc">4th year BSc</option>
+                                <option value="MSc">MSc</option>
+                                <option value="PhD">PhD</option>
+                            </select><br>
+
+                            <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
+    <label style="margin-right: 10px;">Mode of Delivery:</label>
+    <div style="border: 1px solid #ccc; padding: 8px; width: 200px; height: 60px; overflow-y: auto; overflow-x: hidden; display: flex; flex-wrap: wrap;">
+        <label style="width: 100%;"><input type="checkbox" name="mode[]" value="Face to face"> Face to face</label>
+        <label style="width: 100%;"><input type="checkbox" name="mode[]" value="E-learning"> E-learning</label>
+    </div>
+</div>
+
+
+                            
+
+<label for="recom">Recommended:</label>
+                            <input type="text" id="recom" name="recom" placeholder="Basic background in pre-calculus."><br>
+
+
 
                         </div>
 
@@ -326,7 +417,7 @@
                         <div name="divoutcome" id="divoutcome" class="tabcontent">
 
                             <div class="tooltip">Help
-                                <span class="tooltiptext">1: Written exam <br> 2: Assignment <br> 3: Project/report <br> 4: Presentation <br> 5: Lab. work</span>
+                                <span class="tooltiptext">Assessment methods <br> 1: Written exam <br> 2: Assignment <br> 3: Project/report <br> 4: Presentation <br> 5: Lab. work</span>
                             </div>
 
                             <table id="taboutcome">
@@ -364,6 +455,60 @@
                             </table>
 
                         </div>
+
+
+
+
+                        <div name="divcontrib" id="divcontrib" class="tabcontent">
+
+                            <div class="tooltip">Help
+                                <span class="tooltiptext">Contribution level <br> 1: Very low <br> 2: Low <br> 3: Moderate <br> 4: High <br> 5: Very high</span>
+                            </div>
+
+                            <table id="taboutcome">
+                                <tr>
+                                    <td><textarea id="contrib0" name="contrib0" placeholder="Contribution 1"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="contribval0" name="contribval0" placeholder="2"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="contrib1" name="contrib1" placeholder="Contribution 2"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="contribval1" name="contribval1" placeholder="3"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="contrib2" name="contrib2" placeholder="Contribution 3"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="contribval2" name="contribval2" placeholder="4"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="contrib3" name="contrib3" placeholder="Contribution 4"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="contribval3" name="contribval3"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="contrib4" name="contrib4" placeholder="Contribution 5"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="contribval4" name="contribval4"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="contrib5" name="contrib5" placeholder="Contribution 6"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="contribval5" name="contribval5"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="contrib6" name="contrib6" placeholder="Contribution 7"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="contribval6" name="contribval6"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="contrib7" name="contrib7" placeholder="Contribution 8"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="contribval7" name="contribval7"></td>
+                                </tr>
+                                <tr>
+                                    <td><textarea id="contrib8" name="contrib8" placeholder="Contribution 9"></textarea></td>
+                                    <td><input class="shorttext" type="text" id="contribval8" name="contribval8"></td>
+                                </tr>                                
+                            </table>
+
+                        </div>
+
+
+
+
 
                     </div>
 
