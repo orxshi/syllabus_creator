@@ -1037,7 +1037,7 @@ if (array_key_exists('submit_pdf', $_POST))
 
 	addCourseRow($table, "Level of Course Unit", $cleanPost['level'], $rowStyle, $paragraphStyle);
 
-	$natcre = floatval($cleanPost['theoretical']) + floatval($$cleanPost['practice']) / 2 + + floatval($cleanPost['labcre']) / 2;
+	$natcre = floatval($cleanPost['theoretical']) + floatval($cleanPost['practice']) / 2 + + floatval($cleanPost['labcre']) / 2;
 
 	addCourseRow($table, "National Credits", $natcre, $rowStyle, $paragraphStyle);
 
