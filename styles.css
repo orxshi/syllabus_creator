@@ -3,6 +3,7 @@ label{
     width: 200px;
     text-align: left;
     margin-bottom: 10px;
+    vertical-align: top;
 }
 body{
     margin-top: 40px;

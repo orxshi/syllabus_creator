@@ -52,6 +52,13 @@
                             <label for="coursecode">Course code:</label>
                             <input type="text" id="coursecode" name="coursecode" placeholder="PHYS101"><br>
 
+                            <label for="coursetype">Course type:</label>
+                            <select name="coursetype" id="coursetype">
+                                <option value="Compulsory">Compulsory</option>
+                                <option value="Technical elective">Technical elective</option>
+                                <option value="Non-technical elective">Non-technical elective</option>
+                            </select><br>
+
                             <hr class="separator">
 
                             <!-- <label for="nationalcredit">National credits:</label> -->
@@ -71,22 +78,27 @@
                             <label for="yearofstudy">Year of study:</label>
                             <input type="text" id="yearofstudy" name="yearofstudy" placeholder="3"><br>
 
-                            <label for="semdel">Semester when the course unit is delivered:</label>
+                            <label for="semdel">Semester of study:</label>
                             <input type="text" id="semdel" name="semdel" placeholder="3"><br>
+
+                            <label for="level">Level of Course Unit:</label>
+                            <select name="level" id="level">
+                                <option value="1st year BSc">1st year BSc</option>
+                                <option value="2nd year BSc">2nd year BSc</option>
+                                <option value="3rd year BSc">3rd year BSc</option>
+                                <option value="4th year BSc">4th year BSc</option>
+                                <option value="MSc">MSc</option>
+                                <option value="PhD">PhD</option>
+                            </select><br>
 
                             <hr class="separator">
 
-                            <label for="prerequisite">Prerequisities:</label>
+                            <label for="prerequisite">Prerequisites:</label>
                             <input type="text" id="prerequisite" name="prerequisite" placeholder="MTXXX"><br>
 
                             
 
-                            <label for="coursetype">Course type:</label>
-                            <select name="coursetype" id="coursetype">
-                                <option value="Compulsory">Compulsory</option>
-                                <option value="Technical elective">Technical elective</option>
-                                <option value="Non-technical elective">Non-technical elective</option>
-                            </select><br>
+                            
 
                             <!-- <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
     <label style="margin-right: 10px;">Eligible Departments:</label>
@@ -105,9 +117,10 @@
     </div>
 </div> -->
 
-<div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
-    <label style="margin-right: 10px;">Eligible Departments:</label>
-    <div style="border: 1px solid #ccc; padding: 8px; width: 300px; height: 120px; overflow-y: auto; overflow-x: hidden; display: flex; flex-wrap: wrap;">
+
+
+    <label for="lang">Eligible Departments:</label>
+    <div style="border: 1px solid #ccc; padding: 8px; width: 300px; height: 120px; overflow-y: auto; overflow-x: hidden; display: inline-flex; flex-wrap: wrap; margin-bottom:7px;">
         <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="All departments"> All departments</label>
         <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="CEN"> Computer Eng.</label>
         <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="EEN"> Electrical. Eng.</label>
@@ -120,7 +133,7 @@
         <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="SE"> Software Eng.</label>
         <label style="width: 50%;"><input type="checkbox" name="eligdep[]" value="IE"> Industrial Eng.</label>
     </div>
-</div>
+
 
 <hr class="separator">
 
@@ -136,29 +149,15 @@
                                 <option value="Graduate">Graduate</option>
                             </select><br> -->
 
-                            <label for="level">Level of Course Unit:</label>
-                            <select name="level" id="level">
-                                <option value="1st year BSc">1st year BSc</option>
-                                <option value="2nd year BSc">2nd year BSc</option>
-                                <option value="3rd year BSc">3rd year BSc</option>
-                                <option value="4th year BSc">4th year BSc</option>
-                                <option value="MSc">MSc</option>
-                                <option value="PhD">PhD</option>
-                            </select><br>
-
-                            <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
-    <label style="margin-right: 10px;">Mode of Delivery:</label>
-    <div style="border: 1px solid #ccc; padding: 8px; width: 200px; height: 60px; overflow-y: auto; overflow-x: hidden; display: flex; flex-wrap: wrap;">
-        <label style="width: 100%;"><input type="checkbox" name="mode[]" value="Face to face"> Face to face</label>
-        <label style="width: 100%;"><input type="checkbox" name="mode[]" value="E-learning"> E-learning</label>
-    </div>
-</div>
-
-
                             
+                            <label for="lang">Mode of Delivery:</label>
+                            <div style="border: 1px solid #ccc; padding: 5px; width: 200px; height: 50px; overflow:auto float:left; display: inline-block; margin-bottom:7px;">
+                                <label style="width: 100%;"><input type="checkbox" name="mode[]" value="Face to face"> Face to face</label>
+                                <label style="width: 100%;"><input type="checkbox" name="mode[]" value="E-learning"> E-learning</label>
+                            </div>
 
-<label for="recom">Recommended:</label>
-                            <input type="text" id="recom" name="recom" placeholder="Basic background in pre-calculus."><br>
+                            <label for="recom">Recommended:</label>
+                            <textarea id="recom" name="recom" placeholder="Basic background in pre-calculus."></textarea><br>
 
 
 
@@ -303,7 +302,7 @@
 
                                 <tr>
                                     <td><input class="shorttext" type="text" id="conweek0" name="conweek0" value="1"></td>
-                                    <td><input class="shorttext" type="text" id="conchp0" name="conchp0" ></td>
+                                    <td><input class="shorttext" type="text" id="conchp0" name="conchp0" placeholder="1" ></td>
                                     <td><input class="text" type="text" id="consub0" name="consub0" placeholder="Introduction"></td>
                                     <td><input type="text" id="conlab0" name="conlab0"></td>
                                 </tr>
@@ -353,8 +352,8 @@
                                 <tr>
                                     <td><input class="shorttext" type="text" id="conweek7" name="conweek7" value="8"></td>
                                     <td><input class="shorttext" type="text" id="conchp7" name="conchp7" ></td>
-                                    <td><input class="text" type="text" id="consub7" name="consub7" placeholder="Midterm exam"></td>
-                                    <td><input type="text" id="conlab7" name="conlab7"></td>
+                                    <td><input class="text" type="text" id="consub7" name="consub7"></td>
+                                    <td><input type="text" id="conlab7" name="conlab7" value="Midterm exam"></td>
                                 </tr>
 
                                 <tr>
@@ -402,8 +401,8 @@
                                 <tr>
                                     <td><input class="shorttext" type="text" id="conweek14" name="conweek14" value="15"></td>
                                     <td><input class="shorttext" type="text" id="conchp14" name="conchp14" ></td>
-                                    <td><input class="text" type="text" id="consub14" name="consub14" placeholder="Final exam"></td>
-                                    <td><input type="text" id="conlab14" name="conlab14"></td>
+                                    <td><input class="text" type="text" id="consub14" name="consub14"></td>
+                                    <td><input type="text" id="conlab14" name="conlab14" value="Final exam"></td>
                                 </tr>
 
 
