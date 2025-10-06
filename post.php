@@ -402,7 +402,7 @@ function calculateEctsSum(array $postData, int $count = 10): float
 // 			}
 // 		}
 // 	}
-
+// test
 
 // 	file_put_contents($path_to_file, $content);
 
