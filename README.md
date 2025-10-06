@@ -21,16 +21,11 @@ Usage of LaTeX for PDF generation is under development.
 
 ## Required packages
 
-phpoffice/phpword (install with ```composer require phpoffice/phpword```)
 LibreOffice (install to the current folder with folder name libre)
 
-You will see
-```
-composer.json
-composer.lock
-vendor (folder)
-```
-in the current folder. All installation files are in the current folder only.
+## Dependencies
+
+phpoffice/phpword which comes with the folder but if you wish you can install with ```composer require phpoffice/phpword```
 
 ## Optional packages
 

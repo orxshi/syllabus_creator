@@ -7,7 +7,7 @@ $(document).ready(function() {
         var jsonData = {};
         var formData = $("#myform").serializeArray();
 
-        // Convert form data into JSON, handling multiple values
+        // Convert form data into JSON, always keeping arrays for multiple checkboxes
         $.each(formData, function() {
             var name = this.name.replace("[]", ""); // remove brackets
             if (jsonData[name]) {
@@ -16,7 +16,12 @@ $(document).ready(function() {
                 }
                 jsonData[name].push(this.value || '');
             } else {
-                jsonData[name] = this.value || '';
+                // Always store as array if checkbox group
+                if (this.name.endsWith("[]")) {
+                    jsonData[name] = [this.value || ''];
+                } else {
+                    jsonData[name] = this.value || '';
+                }
             }
         });
 
@@ -55,18 +60,23 @@ $(document).ready(function() {
             for (var key in data) {
                 let value = data[key];
 
-                // Handle checkboxes
-                if (Array.isArray(value)) {
+                // Handle checkbox groups (eligdep, mode, etc.)
+                if ($('input[name="'+key+'[]"]').length) {
                     $('input[name="'+key+'[]"]').prop('checked', false); // uncheck all first
-                    value.forEach(function(val){
-                        $('input[name="'+key+'[]"][value="'+val+'"]').prop('checked', true);
-                    });
-                } else {
+
+                    if (Array.isArray(value)) {
+                        value.forEach(function(val){
+                            $('input[name="'+key+'[]"][value="'+val+'"]').prop('checked', true);
+                        });
+                    } else {
+                        $('input[name="'+key+'[]"][value="'+value+'"]').prop('checked', true);
+                    }
+                }
+                // Handle other input types
+                else {
                     let el = $('#' + key);
 
-                    if (el.length > 1 && el.is(':checkbox')) {
-                        el.prop('checked', value == el.val());
-                    } else if (el.is(':checkbox')) {
+                    if (el.is(':checkbox')) {
                         el.prop('checked', value == el.val());
                     } else if (el.is('select')) {
                         el.val(value);
