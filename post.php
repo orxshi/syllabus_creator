@@ -438,7 +438,7 @@ function addCourseRow(
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
     $table->addCell(
-        6500,
+        4500,
         ['valign' => 'center']
     )->addText($left, ['bold' => true], $paragraphStyle);
 
@@ -476,15 +476,21 @@ function addObjectivesRow(
         }
     }
 
-    // Add bullet points
     foreach ($objectives as $objective) {
-        $cell->addListItem(
-            $objective,
-            0,
-            null,
-            ['listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_BULLET_FILLED]
-        );
-    }
+    $cell->addListItem(
+        $objective,
+        0, // depth level
+        null, // font style
+        [
+            'listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_BULLET_FILLED
+        ],
+        [
+            'spaceBefore' => 100, // twips before paragraph (1/72 inch)
+            'spaceAfter'  => 100  // twips after paragraph
+        ]
+    );
+}
+
 }
 
 function addSourcesRow(
@@ -497,7 +503,7 @@ function addSourcesRow(
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
     $cell = $table->addCell(
-        11500,
+        9500,
         ['valign' => 'center', 'wrapText' => true]
     );
 
@@ -519,7 +525,13 @@ function addSourcesRow(
             $source,
             0,
             null,
-            ['listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_BULLET_FILLED]
+            [
+            'listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_BULLET_FILLED
+        ],
+        [
+            'spaceBefore' => 100, // twips before paragraph (1/72 inch)
+            'spaceAfter'  => 100  // twips after paragraph
+        ]
         );
     }
 }
@@ -547,9 +559,9 @@ function addContentsRow(
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
     $table->addCell(1000, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Week", [], $paragraphStyle);
-    $table->addCell(2000, ['cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0], $paragraphStyle);
-	$table->addCell(6500, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0], $paragraphStyle);
-    $table->addCell(2000, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Exams", [], $paragraphStyle);
+    $table->addCell(1500, ['cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0], $paragraphStyle);
+	$table->addCell(6000, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0], $paragraphStyle);
+    $table->addCell(1000, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Exams", [], $paragraphStyle);
 
 	$conweeks = [];
 	$conchapters = [];
@@ -569,9 +581,9 @@ function addContentsRow(
 		$table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
 	    $table->addCell(1000, ['valign' => 'center'])->addText(($idx + 1), [], $paragraphStyle);    	
-    	$table->addCell(2000, ['valign' => 'center'])->addText(!empty($conchapters[$idx]) ? "Chapter {$conchapters[$idx]}" : '', [], $paragraphStyle);
-    	$table->addCell(6500, ['valign' => 'center'])->addText($consubjects[$idx] ?? '', [], $paragraphStyle);
-    	$table->addCell(2000, ['valign' => 'center'])->addText($conlabs[$idx] ?? '', [], $paragraphStyle);
+    	$table->addCell(1500, ['valign' => 'center'])->addText(!empty($conchapters[$idx]) ? "Chapter {$conchapters[$idx]}" : '', [], $paragraphStyle);
+    	$table->addCell(6000, ['valign' => 'center'])->addText($consubjects[$idx] ?? '', [], $paragraphStyle);
+    	$table->addCell(1000, ['valign' => 'center'])->addText($conlabs[$idx] ?? '', [], $paragraphStyle);
 	}
 }
 
@@ -582,21 +594,16 @@ function addAssessmentRow(
     array $paragraphStyle = [],
 ): void {
 
-	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
-
-	$cell = $table->addCell(
-        11500,
+    // Top row: Assessment
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $table->addCell(
+        9500, // total table width
         ['valign' => 'center', 'gridSpan' => 2]
-    );
+    )->addText("Assessment", ['bold' => true], $paragraphStyle);
 
-	$cell->addText(
-        "Assessment",
-        ['bold' => true],
-        $paragraphStyle
-    );
-
-	$activities = [];
-	$activitiesper = [];
+    // Gather activities and percentages
+    $activities = [];
+    $activitiesper = [];
     for ($i = 0; $i < 5; $i++) {
         if (!empty($cleanPost["actper" . $i])) {
             $activities[] = $cleanPost["act" . $i];
@@ -604,16 +611,33 @@ function addAssessmentRow(
         }
     }
 
-	
+    // Determine max width for activity column
+    $maxLength = 0;
+    foreach ($activities as $activity) {
+        $maxLength = max($maxLength, strlen($activity));
+    }
+    $activityColWidth = $maxLength * 100; // tweak factor if needed
+    $totalWidth = 9500;
+    $percentColWidth = $totalWidth - $activityColWidth;
 
-	foreach ($activities as $idx => $activity) {
-		$table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    // Add activity rows
+    foreach ($activities as $idx => $activity) {
+        $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+        $table->addCell($activityColWidth)->addText($activity, [], $paragraphStyle);
+        $table->addCell($percentColWidth)->addText($activitiesper[$idx] . " %", [], $paragraphStyle);
+    }
 
-		// $leftWidth = max(2000, strlen($activity) * 150);
-		$table->addCell(2000)->addText($activity, [], $paragraphStyle);
-		$table->addCell(9500)->addText($activitiesper[$idx] . " %", [], $paragraphStyle);
-	}
+    // Handle case with no activities
+    if (empty($activities)) {
+        $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+        $table->addCell($totalWidth * 0.7)->addText("", [], $paragraphStyle);
+        $table->addCell($totalWidth * 0.3)->addText("", [], $paragraphStyle);
+    }
 }
+
+
+
+
 
 function addECTSRow(
     \PhpOffice\PhpWord\Element\Table $table,
@@ -649,10 +673,10 @@ function addECTSRow(
     'align' => 'left'
 	];
 
-	$table->addCell(5500, ['valign' => 'center'])->addText("Activities", [], $ps);
-    $table->addCell(2000, ['valign' => 'center'])->addText("Number", [], $ps);
-	$table->addCell(2000, ['valign' => 'center'])->addText("Duration (hour)", [], $ps);
-    $table->addCell(2000, ['valign' => 'center'])->addText("Total Workload (hour)", [], $ps);
+	$table->addCell(5700, ['valign' => 'center'])->addText("Activities", [], $ps);
+    $table->addCell(1000, ['valign' => 'center'])->addText("Number", [], $ps);
+	$table->addCell(1000, ['valign' => 'center'])->addText("Duration (hour)", [], $ps);
+    $table->addCell(1500, ['valign' => 'center'])->addText("Total Workload (hour)", [], $ps);
 
 	$ectsacts = [];
 $ectsnms = [];
@@ -674,10 +698,10 @@ for ($i = 0; $i < 10; $i++) {
 	{
 		$table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
-		$table->addCell(5500, ['valign' => 'center'])->addText($ectsact, [], $paragraphStyle);
-    	$table->addCell(2000, ['valign' => 'center'])->addText($ectsnms[$idx], [], $ps);
-		$table->addCell(2000, ['valign' => 'center'])->addText($ectsdurs[$idx], [], $ps);
-    	$table->addCell(2000, ['valign' => 'center'])->addText(floatval($ectsnms[$idx]) * floatval($ectsdurs[$idx]), [], $ps);
+		$table->addCell(5700, ['valign' => 'center'])->addText($ectsact, [], $paragraphStyle);
+    	$table->addCell(1000, ['valign' => 'center'])->addText($ectsnms[$idx], [], $ps);
+		$table->addCell(1000, ['valign' => 'center'])->addText($ectsdurs[$idx], [], $ps);
+    	$table->addCell(1500, ['valign' => 'center'])->addText(floatval($ectsnms[$idx]) * floatval($ectsdurs[$idx]), [], $ps);
 	}
 
 	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
@@ -764,37 +788,18 @@ function addContribsRow(
     array $paragraphStyle = []
 ): void {
 
+    // Header row
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $cell = $table->addCell(0, ['valign' => 'center', 'gridSpan' => 2]);
+    $cell->addText("Course’s Contribution to Program", ['bold' => true], $paragraphStyle);
 
-	$cell = $table->addCell(
-        0,
-        ['valign' => 'center', 'gridSpan' => 2]
-    );
+    // Sub-header row
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $table->addCell(8200, ['valign' => 'center'])->addText("", [], $paragraphStyle);
+    $table->addCell(1300, ['valign' => 'center'])
+          ->addText("CL", [], ['align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0]);
 
-	$cell->addText(
-        "Course’s Contribution to Program",
-        ['bold' => true],
-        $paragraphStyle
-    );
-
-	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
-
-	$table->addCell(
-        9500,
-		['valign' => 'center']      
-    )->addText("", [], $paragraphStyle);
-
-	$table->addCell(
-    2000,
-    ['valign' => 'center']
-	)->addText(
-		"CL",
-		[],
-		['align' => 'center', 'spaceBefore' => 0, 'spaceAfter'  => 0]
-	);
-
-
-
+    // Collect contributions
     $contribs0 = [];
     $contribs1 = [];
     for ($i = 0; $i < 9; $i++) {
@@ -804,50 +809,36 @@ function addContribsRow(
         }
     }
 
+    // Add contribution rows
     foreach ($contribs0 as $idx => $contrib) {
-    $table->addRow();
+        $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
-    // LEFT cell: nested table for number + text
-    $outerCell = $table->addCell(9500);
+        // Number cell (left)
+        $table->addCell(300, [
+            'valign' => 'center',
+            'borderRightSize' => 6,
+            'borderRightColor' => '000000'
+        ])->addText($idx + 1, [], ['align' => 'left']);
 
-    $innerTable = $outerCell->addTable(['width' => 9500, 'unit' => 'dxa']);
-    $innerTable->addRow();
+        // Contribution text cell (middle)
+        $table->addCell(7900, ['wrapText' => true, 'valign' => 'center'])
+              ->addText($contrib, [], array_merge($paragraphStyle, ['indent' => 200]));
 
-    // Number cell with RIGHT BORDER
-    $innerTable->addCell(800, [
-        'borderRightSize'  => 6,
-        'borderRightColor' => '000000',
-		'valign' => 'center'
-    ])->addText(($idx + 1), [], $paragraphStyle);
+        // CL cell (right)
+        $table->addCell(1300, ['valign' => 'center'])
+              ->addText($contribs1[$idx] ?? '', [], $paragraphStyle);
+    }
 
-    // Outcome text cell
-    $innerTable->addCell(8700, ['wrapText' => true])
-               ->addText($contrib, [], $paragraphStyle);
-
-    // RIGHT cell: assessment
-    $table->addCell(2000, ['valign' => 'center'])
-          ->addText($contribs1[$idx] ?? '', [], $paragraphStyle);
+    // Footer row for Contribution Level explanation
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $table->addCell(0, ['gridSpan' => 2, 'valign' => 'center'])
+          ->addText(
+              "CL: Contribution Level (1: Very Low, 2: Low, 3: Moderate, 4: High, 5: Very High)",
+              [],
+              ['align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0]
+          );
 }
 
-// Add row for Assessment Methods
-$table->addRow($rowStyle['height'] ?? null, $rowStyle);
-
-
-
-$table->addCell(
-    0,
-    [
-        'gridSpan' => 2,
-        'valign'   => 'center'        
-    ]
-	)->addText(
-		"CL: Contribution Level (1: Very Low, 2: Low, 3: Moderate 4: High, 5: Very High)",
-		[],
-		['align' => 'center', 'spaceBefore' => 0, 'spaceAfter'  => 0]
-	);
-
-
-}
 
 
 
@@ -863,37 +854,19 @@ function addOutcomesRow(
     array $paragraphStyle = []
 ): void {
 
+    // Header row
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $cell = $table->addCell(0, ['valign' => 'center', 'gridSpan' => 2]);
+    $cell->addText("Learning Outcomes", ['bold' => true], $paragraphStyle);
 
-	$cell = $table->addCell(
-        0,
-        ['valign' => 'center', 'gridSpan' => 2]
-    );
+    // Sub-header row
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $table->addCell(8200, ['valign' => 'center'])
+          ->addText("When this course has been completed the student should be able to", [], $paragraphStyle);
+    $table->addCell(1300, ['valign' => 'center'])
+          ->addText("Assessment", [], ['align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0]);
 
-	$cell->addText(
-        "Learning Outcomes",
-        ['bold' => true],
-        $paragraphStyle
-    );
-
-	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
-
-	$table->addCell(
-        9500,
-		['valign' => 'center']      
-    )->addText("When this course has been completed the student should be able to", [], $paragraphStyle);
-
-	$table->addCell(
-    2000,
-    ['valign' => 'center']
-	)->addText(
-		"Assessment",
-		[],
-		['align' => 'center', 'spaceBefore' => 0, 'spaceAfter'  => 0]
-	);
-
-
-
+    // Collect outcomes
     $outcomes0 = [];
     $outcomes1 = [];
     for ($i = 0; $i < 7; $i++) {
@@ -903,50 +876,36 @@ function addOutcomesRow(
         }
     }
 
+    // Add outcome rows
     foreach ($outcomes0 as $idx => $outcome) {
-    $table->addRow();
+        $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
-    // LEFT cell: nested table for number + text
-    $outerCell = $table->addCell(9500);
+        // Number cell (left)
+        $table->addCell(300, [
+            'valign' => 'center',
+            'borderRightSize' => 6,
+            'borderRightColor' => '000000'
+        ])->addText($idx + 1, [], ['align' => 'left']);
 
-    $innerTable = $outerCell->addTable(['width' => 9500, 'unit' => 'dxa']);
-    $innerTable->addRow();
+        // Outcome text cell (middle) with indent
+        $table->addCell(7900, ['wrapText' => true, 'valign' => 'center'])
+              ->addText($outcome, [], array_merge($paragraphStyle, ['indent' => 200]));
 
-    // Number cell with RIGHT BORDER
-    $innerTable->addCell(800, [
-        'borderRightSize'  => 6,
-        'borderRightColor' => '000000',
-		'valign' => 'center'
-    ])->addText(($idx + 1), [], $paragraphStyle);
+        // Assessment cell (right)
+        $table->addCell(1300, ['valign' => 'center'])
+              ->addText($outcomes1[$idx] ?? '', [], $paragraphStyle);
+    }
 
-    // Outcome text cell
-    $innerTable->addCell(8700, ['wrapText' => true])
-               ->addText($outcome, [], $paragraphStyle);
-
-    // RIGHT cell: assessment
-    $table->addCell(2000, ['valign' => 'center'])
-          ->addText($outcomes1[$idx] ?? '', [], $paragraphStyle);
+    // Assessment Methods row
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $table->addCell(0, ['gridSpan' => 2, 'valign' => 'center'])
+          ->addText(
+              "Assessment Methods: 1. Written Exam, 2. Assignment, 3. Project/Report, 4. Presentation, 5. Lab Work",
+              [],
+              ['align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0]
+          );
 }
 
-// Add row for Assessment Methods
-$table->addRow($rowStyle['height'] ?? null, $rowStyle);
-
-
-
-$table->addCell(
-    0,
-    [
-        'gridSpan' => 2,
-        'valign'   => 'center'        
-    ]
-	)->addText(
-		"Assessment Methods: 1. Written Exam, 2. Assignment, 3. Project/Report, 4. Presentation, 5. Lab Work",
-		[],
-		['align' => 'center', 'spaceBefore' => 0, 'spaceAfter'  => 0]
-	);
-
-
-}
 
 if (array_key_exists('submit_pdf', $_POST))
 {
@@ -972,12 +931,12 @@ if (array_key_exists('submit_pdf', $_POST))
 	$headerText = "GAU, Faculty of Engineering";
 	$section->addText(
 		$headerText,
-		['bold' => true, 'size' => 16],               // font style: bold, size 16
+		['bold' => true, 'size' => 14],               // font style: bold, size 16
 		['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER] // paragraph style: centered
 	);
 
 	// Optional: add a line break after header
-	$section->addTextBreak(0.7);
+	$section->addTextBreak(1.7);
 
 	$rowStyle = [
     'cantSplit' => true,
@@ -995,11 +954,19 @@ if (array_key_exists('submit_pdf', $_POST))
     'spaceBefore' => 0,
     'spaceAfter'  => 0,
     'indentation' => [
-        'left' => 100
+        'left' => 5
 	],    
 	];
 
-	$table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+    $table = $section->addTable([
+    'borderSize' => 6,
+    'borderColor' => '000000',
+    'layout' => 'fixed',
+    'alignment' => 'center'
+]);
+
+
+	// $table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
 	if (!empty($cleanPost['eligdep']))
 	{
@@ -1062,40 +1029,66 @@ if (array_key_exists('submit_pdf', $_POST))
 	$ectstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$contribstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
-	addOutcomesRow($outcomestable, $cleanPost, $rowStyle, $paragraphStyle);
-	addContribsRow($outcomestable, $cleanPost, $rowStyle, $paragraphStyle);
+	addOutcomesRow($outcomestable, $cleanPost, $rowStyleML, $paragraphStyle);
+	addContribsRow($outcomestable, $cleanPost, $rowStyleML, $paragraphStyle);
 	addContentsRow($contenttable, $cleanPost, $rowStyle, $paragraphStyle);
 	addSourcesRow($sourcetable, $cleanPost, $rowStyleML, $paragraphStyle);
 	addAssessmentRow($assesstable, $cleanPost, $rowStyle, $paragraphStyle);
 	addECTSRow($ectstable, $cleanPost, $rowStyleML, $paragraphStyle);
+
+
+
+    
+
+
 
     // Step 1: Save DOCX to a temp file
 	$tempDocx = tempnam(sys_get_temp_dir(), 'syllabus') . '.docx';
 	$writer = IOFactory::createWriter($phpWord, 'Word2007');
 	$writer->save($tempDocx);
 
-	// Step 2: Prepare temp PDF path
-	$tempPdf = tempnam(sys_get_temp_dir(), 'syllabus') . '.pdf';
 
-	// Step 3: Convert DOCX → PDF using Word COM
-	$word = new COM("Word.Application") or die("Unable to instantiate Word");
-	$word->Visible = 0;
-	$doc = $word->Documents->Open($tempDocx);
-	$doc->ExportAsFixedFormat($tempPdf, 17); // 17 = wdExportFormatPDF
-	$doc->Close(false);
-	$word->Quit();
+    $inputDocx = $tempDocx;
+    $outputDir = sys_get_temp_dir();
 
-	// Step 4: Serve PDF for download
-	header("Content-Type: application/pdf");
-	header("Content-Disposition: attachment; filename=\"syllabus.pdf\"");
-	header("Content-Length: " . filesize($tempPdf));
-	flush();
-	readfile($tempPdf);
 
-	// Step 5: Clean up temp files
-	@unlink($tempDocx);
-	@unlink($tempPdf);
-	exit;
+    // Paths
+    $libreoffice = __DIR__ . "\\libre\\program\\soffice.exe";
+    $inputDocx = $tempDocx;  // your DOCX file path
+    $outputPdf = $tempPdf;   // your PDF file path
+
+    // Run LibreOffice
+    $cmd = "\"$libreoffice\" --headless --convert-to pdf --outdir \"$outputDir\" \"$inputDocx\"";
+    exec($cmd . " 2>&1", $output, $return_var);
+
+    // LibreOffice names the PDF with same basename
+    $generatedPdf = $outputDir . DIRECTORY_SEPARATOR . pathinfo($inputDocx, PATHINFO_FILENAME) . ".pdf";
+
+
+
+	// // Step 2: Prepare temp PDF path
+	// $tempPdf = tempnam(sys_get_temp_dir(), 'syllabus') . '.pdf';
+
+	// // Step 3: Convert DOCX → PDF using Word COM
+	// $word = new COM("Word.Application") or die("Unable to instantiate Word");
+	// $word->Visible = 0;
+	// $doc = $word->Documents->Open($tempDocx);
+	// $doc->ExportAsFixedFormat($tempPdf, 17); // 17 = wdExportFormatPDF
+	// $doc->Close(false);
+	// $word->Quit();
+
+	if (file_exists($generatedPdf)) {
+    header("Content-Type: application/pdf");
+    header("Content-Disposition: attachment; filename=\"syllabus.pdf\"");
+    header("Content-Length: " . filesize($generatedPdf));
+    flush();
+    readfile($generatedPdf);
+    unlink($generatedPdf);
+} else {
+    error_log("PDF not found: " . $generatedPdf);
+    echo "PDF conversion failed.";
+}
+unlink($inputDocx);
 }      
 
 
@@ -1135,12 +1128,12 @@ if (array_key_exists('submit_word', $_POST)) {
 	$headerText = "GAU, Faculty of Engineering";
 	$section->addText(
 		$headerText,
-		['bold' => true, 'size' => 16],               // font style: bold, size 16
+		['bold' => true, 'size' => 14],               // font style: bold, size 16
 		['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER] // paragraph style: centered
 	);
 
 	// Optional: add a line break after header
-	$section->addTextBreak(0.7);
+	$section->addTextBreak(1.7);
 
 	$rowStyle = [
     'cantSplit' => true,
@@ -1158,11 +1151,19 @@ if (array_key_exists('submit_word', $_POST)) {
     'spaceBefore' => 0,
     'spaceAfter'  => 0,
     'indentation' => [
-        'left' => 100
+        'left' => 5
 	],    
 	];
 
-	$table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
+    $table = $section->addTable([
+    'borderSize' => 6,
+    'borderColor' => '000000',
+    'layout' => 'fixed',
+    'alignment' => 'center'
+]);
+
+
+	// $table = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
 	if (!empty($cleanPost['eligdep']))
 	{
@@ -1200,7 +1201,7 @@ if (array_key_exists('submit_word', $_POST)) {
 
 	addCourseRow($table, "Level of Course Unit", $cleanPost['level'], $rowStyle, $paragraphStyle);
 
-	$natcre = floatval($cleanPost['theoretical']) + floatval($$cleanPost['practice']) / 2 + + floatval($cleanPost['labcre']) / 2;
+	$natcre = floatval($cleanPost['theoretical']) + floatval($cleanPost['practice']) / 2 + + floatval($cleanPost['labcre']) / 2;
 
 	addCourseRow($table, "National Credits", $natcre, $rowStyle, $paragraphStyle);
 
@@ -1225,8 +1226,8 @@ if (array_key_exists('submit_word', $_POST)) {
 	$ectstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 	$contribstable = $section->addTable(['borderSize' => 6, 'borderColor' => '000000']);
 
-	addOutcomesRow($outcomestable, $cleanPost, $rowStyle, $paragraphStyle);
-	addContribsRow($outcomestable, $cleanPost, $rowStyle, $paragraphStyle);
+	addOutcomesRow($outcomestable, $cleanPost, $rowStyleML, $paragraphStyle);
+	addContribsRow($outcomestable, $cleanPost, $rowStyleML, $paragraphStyle);
 	addContentsRow($contenttable, $cleanPost, $rowStyle, $paragraphStyle);
 	addSourcesRow($sourcetable, $cleanPost, $rowStyleML, $paragraphStyle);
 	addAssessmentRow($assesstable, $cleanPost, $rowStyle, $paragraphStyle);
