@@ -413,9 +413,9 @@ function addContribsRow(
 
     // Sub-header row
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-    $table->addCell(8200, ['valign' => 'center'])->addText("", [], $paragraphStyle);
-    $table->addCell(1300, ['valign' => 'center'])
-          ->addText("CL", [], ['align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0]);
+    $table->addCell(8500, ['valign' => 'center'])->addText("", [], $paragraphStyle);
+    $table->addCell(1000, ['valign' => 'center'])
+          ->addText("CL", [], ['align' => 'left', 'spaceBefore' => 0, 'spaceAfter' => 0]);
 
     // Collect contributions
     $contribs0 = [];
@@ -439,11 +439,11 @@ function addContribsRow(
         ])->addText($idx + 1, [], ['align' => 'left']);
 
         // Contribution text cell (middle)
-        $table->addCell(7900, ['wrapText' => true, 'valign' => 'center'])
+        $table->addCell(8200, ['wrapText' => true, 'valign' => 'center'])
               ->addText($contrib, [], array_merge($paragraphStyle, ['indent' => 200]));
 
         // CL cell (right)
-        $table->addCell(1300, ['valign' => 'center'])
+        $table->addCell(1000, ['valign' => 'center'])
               ->addText($contribs1[$idx] ?? '', [], $paragraphStyle);
     }
 
@@ -479,10 +479,10 @@ function addOutcomesRow(
 
     // Sub-header row
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-    $table->addCell(8200, ['valign' => 'center'])
+    $table->addCell(8500, ['valign' => 'center'])
           ->addText("When this course has been completed the student should be able to", [], $paragraphStyle);
-    $table->addCell(1300, ['valign' => 'center'])
-          ->addText("Assessment", [], ['align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0]);
+    $table->addCell(1000, ['valign' => 'center'])
+          ->addText("Assess.", [], ['align' => 'left', 'spaceBefore' => 0, 'spaceAfter' => 0]);
 
     // Collect outcomes
     $outcomes0 = [];
@@ -506,11 +506,11 @@ function addOutcomesRow(
         ])->addText($idx + 1, [], ['align' => 'left']);
 
         // Outcome text cell (middle) with indent
-        $table->addCell(7900, ['wrapText' => true, 'valign' => 'center'])
+        $table->addCell(8200, ['wrapText' => true, 'valign' => 'center'])
               ->addText($outcome, [], array_merge($paragraphStyle, ['indent' => 200]));
 
         // Assessment cell (right)
-        $table->addCell(1300, ['valign' => 'center'])
+        $table->addCell(1000, ['valign' => 'center'])
               ->addText($outcomes1[$idx] ?? '', [], $paragraphStyle);
     }
 

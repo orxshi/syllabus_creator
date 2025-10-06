@@ -30,6 +30,16 @@ function generateSyllabusDocx($cleanPost)
 
 	$section = $phpWord->addSection();
 
+    // Add a footer to the section
+    $footer = $section->addFooter();
+
+    // Add page number
+    $footer->addPreserveText(
+    '{PAGE}', 
+    null, // font style
+    array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER) // paragraph style
+    );
+
 	// Header text
 	$headerText = "GAU, Faculty of Engineering";
 	$section->addText(

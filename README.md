@@ -4,7 +4,7 @@ This is a course syllabus generator. The form collects information from the user
 
 Open the docx file with LibreOffice not MS Word.
 
-Usage of LaTeX for PDF generation is under development.
+Usage of LaTeX for PDF generation is under development
 
 ![screenshot](img1.png)
 
