@@ -49,41 +49,41 @@ function addCourseRow(
     \PhpOffice\PhpWord\Element\Table $table,
     string $left,
     string $right,
-    array $rowStyle = [],
-    array $paragraphStyle = []
+    float $tableWidth,
+    array $rowStyle = []    
 ): void {
 
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
     $table->addCell(
-        4500,
+        $tableWidth * 0.50,
         ['valign' => 'center']
-    )->addText($left, ['bold' => true], $paragraphStyle);
+    )->addText($left, ['bold' => true]);
 
     $table->addCell(
-        5000,
-        ['valign' => 'center', 'wrapText' => true]
-    )->addText($right, null, $paragraphStyle);
+        $tableWidth * 0.50,
+        ['valign' => 'center']
+    )->addText($right, null);
 }
 
 function addObjectivesRow(
     \PhpOffice\PhpWord\Element\Table $table,
     array $cleanPost,
-    array $rowStyle = [],
-    array $paragraphStyle = []
+    float $tableWidth,
+    array $rowStyle = []    
 ): void {
 
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
     $cell = $table->addCell(
-        0,
-        ['valign' => 'center', 'wrapText' => true, 'gridSpan' => 2]
+        $tableWidth,
+        ['valign' => 'center', 'wrapText' => true]
     );
 
     $cell->addText(
         "Objectives of the Course:",
         ['bold' => true],
-        array_merge($paragraphStyle, ['spaceBefore' => 100, 'spaceAfter' => 120])
+        ['spaceBefore' => 100, 'spaceAfter' => 120]
     );
 
     // Collect objectives from $_POST
@@ -114,21 +114,21 @@ function addObjectivesRow(
 function addSourcesRow(
     \PhpOffice\PhpWord\Element\Table $table,
     array $cleanPost,
-    array $rowStyle = [],
-    array $paragraphStyle = []
+    float $tableWidth,
+    array $rowStyle = []    
 ): void {
 
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
     $cell = $table->addCell(
-        9500,
+        $tableWidth,
         ['valign' => 'center', 'wrapText' => true]
     );
 
     $cell->addText(
         "Recommended Sources",
         ['bold' => true],
-        array_merge($paragraphStyle, ['spaceBefore' => 100, 'spaceAfter' => 120])
+        ['spaceBefore' => 100, 'spaceAfter' => 120]
     );
 
     $sources = [];
@@ -157,29 +157,28 @@ function addSourcesRow(
 function addContentsRow(
     \PhpOffice\PhpWord\Element\Table $table,
     array $cleanPost,
-    array $rowStyle = [],
-    array $paragraphStyle = []
+    float $tableWidth,
+    array $rowStyle = []    
 ): void {
 
     // First row: Course Contents spanning all 4 columns
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
     $cell = $table->addCell(
-        0,
+        $tableWidth,
         ['valign' => 'center', 'gridSpan' => 4]
     );
     $cell->addText(
         "Course Contents",
-        ['bold' => true],
-        array_merge($paragraphStyle)
+        ['bold' => true]        
     );
 
     // Second row: Week | Empty | Empty | Exams
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
-    $table->addCell(1000, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Week", [], $paragraphStyle);
-    $table->addCell(1500, ['cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0], $paragraphStyle);
-	$table->addCell(6000, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0], $paragraphStyle);
-    $table->addCell(1000, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Exams", [], $paragraphStyle);
+    $table->addCell($tableWidth * 0.10, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Week", []);
+    $table->addCell($tableWidth * 0.15, ['cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0]);
+	$table->addCell($tableWidth * 0.65, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0]);
+    $table->addCell($tableWidth * 0.10, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Exams", []);
 
 	$conweeks = [];
 	$conchapters = [];
@@ -198,26 +197,26 @@ function addContentsRow(
 	foreach ($conweeks as $idx => $conweek) {
 		$table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
-	    $table->addCell(1000, ['valign' => 'center'])->addText(($idx + 1), [], $paragraphStyle);    	
-    	$table->addCell(1500, ['valign' => 'center'])->addText(!empty($conchapters[$idx]) ? "Chapter {$conchapters[$idx]}" : '', [], $paragraphStyle);
-    	$table->addCell(6000, ['valign' => 'center'])->addText($consubjects[$idx] ?? '', [], $paragraphStyle);
-    	$table->addCell(1000, ['valign' => 'center'])->addText($conlabs[$idx] ?? '', [], $paragraphStyle);
+	    $table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText(($idx + 1), []);    	
+    	$table->addCell($tableWidth * 0.15, ['valign' => 'center'])->addText(!empty($conchapters[$idx]) ? "Chapter {$conchapters[$idx]}" : '', []);
+    	$table->addCell($tableWidth * 0.65, ['valign' => 'center'])->addText($consubjects[$idx] ?? '', []);
+    	$table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText($conlabs[$idx] ?? '', []);
 	}
 }
 
 function addAssessmentRow(
     \PhpOffice\PhpWord\Element\Table $table,
     array $cleanPost,
-    array $rowStyle = [],
-    array $paragraphStyle = [],
+    float $tableWidth,
+    array $rowStyle = []
 ): void {
 
     // Top row: Assessment
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
     $table->addCell(
-        9500, // total table width
+        $tableWidth, // total table width
         ['valign' => 'center', 'gridSpan' => 2]
-    )->addText("Assessment", ['bold' => true], $paragraphStyle);
+    )->addText("Assessment", ['bold' => true]);
 
     // Gather activities and percentages
     $activities = [];
@@ -234,22 +233,14 @@ function addAssessmentRow(
     foreach ($activities as $activity) {
         $maxLength = max($maxLength, strlen($activity));
     }
-    $activityColWidth = $maxLength * 100; // tweak factor if needed
-    $totalWidth = 9500;
-    $percentColWidth = $totalWidth - $activityColWidth;
+    $activityColWidth = $maxLength * 100; // tweak factor if needed    
+    $percentColWidth = $tableWidth - $activityColWidth;
 
     // Add activity rows
     foreach ($activities as $idx => $activity) {
         $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-        $table->addCell($activityColWidth)->addText($activity, [], $paragraphStyle);
-        $table->addCell($percentColWidth)->addText($activitiesper[$idx] . " %", [], $paragraphStyle);
-    }
-
-    // Handle case with no activities
-    if (empty($activities)) {
-        $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-        $table->addCell($totalWidth * 0.7)->addText("", [], $paragraphStyle);
-        $table->addCell($totalWidth * 0.3)->addText("", [], $paragraphStyle);
+        $table->addCell($activityColWidth)->addText($activity, []);
+        $table->addCell($percentColWidth)->addText($activitiesper[$idx] . " %", []);
     }
 }
 
@@ -260,41 +251,35 @@ function addAssessmentRow(
 function addECTSRow(
     \PhpOffice\PhpWord\Element\Table $table,
     array $cleanPost,
-    array $rowStyle = [],
-    array $paragraphStyle = []
+    float $tableWidth,
+    array $rowStyle = []    
 ): void {
 
 	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
 	$cell = $table->addCell(
-        0,
+        $tableWidth,
         ['valign' => 'center', 'gridSpan' => 4]
     );
 
 	$cell->addText(
         "ECTS Allocated Based on the Student Workload",
-        ['bold' => true],
-        $paragraphStyle
+        ['bold' => true]        
     );
 
 	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
 	$ps = [
-    'spaceBefore' => 0,
-    'spaceAfter'  => 0,
+    'indentation' => [
+        'left' => 0
+	],
     'align' => 'center'
 	];
 
-	$psleft = [
-    'spaceBefore' => 0,
-    'spaceAfter'  => 0,
-    'align' => 'left'
-	];
-
-	$table->addCell(5700, ['valign' => 'center'])->addText("Activities", [], $ps);
-    $table->addCell(1000, ['valign' => 'center'])->addText("Number", [], $ps);
-	$table->addCell(1000, ['valign' => 'center'])->addText("Duration (hour)", [], $ps);
-    $table->addCell(1500, ['valign' => 'center'])->addText("Total Workload (hour)", [], $ps);
+	$table->addCell($tableWidth * 0.68, ['valign' => 'center'])->addText("Activities", []);
+    $table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText("Number", [], $ps);
+	$table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText("Duration (hour)", [], $ps);
+    $table->addCell($tableWidth * 0.12, ['valign' => 'center'])->addText("Total Workload (hour)", [], $ps);
 
 	$ectsacts = [];
 $ectsnms = [];
@@ -316,44 +301,44 @@ for ($i = 0; $i < 10; $i++) {
 	{
 		$table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
-		$table->addCell(5700, ['valign' => 'center'])->addText($ectsact, [], $paragraphStyle);
-    	$table->addCell(1000, ['valign' => 'center'])->addText($ectsnms[$idx], [], $ps);
-		$table->addCell(1000, ['valign' => 'center'])->addText($ectsdurs[$idx], [], $ps);
-    	$table->addCell(1500, ['valign' => 'center'])->addText(floatval($ectsnms[$idx]) * floatval($ectsdurs[$idx]), [], $ps);
+		$table->addCell($tableWidth * 0.68, ['valign' => 'center'])->addText($ectsact, []);
+    	$table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText($ectsnms[$idx], [], $ps);
+		$table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText($ectsdurs[$idx], [], $ps);
+    	$table->addCell($tableWidth * 0.12, ['valign' => 'center'])->addText(floatval($ectsnms[$idx]) * floatval($ectsdurs[$idx]), [], $ps);
 	}
 
 	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
 	$cell = $table->addCell(
-        9500,
+        $tableWidth * 0.88,
         ['valign' => 'center', 'gridSpan' => 3]
     );
 
-	$cell->addText("Total Workload", [], $paragraphStyle);
+	$cell->addText("Total Workload", []);
 
-	$cell = $table->addCell(2000, ['valign' => 'center'])->addText($sumects, [], $ps);
+	$cell = $table->addCell($tableWidth * 0.12, ['valign' => 'center'])->addText($sumects, [], $ps);
 
 	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
 	$cell = $table->addCell(
-        9500,
+        $tableWidth * 0.88,
         ['valign' => 'center', 'gridSpan' => 3]
     );
 
-	$cell->addText("Total Workload/30 (h)", [], $paragraphStyle);
+	$cell->addText("Total Workload/30 (h)", []);
 
-	$cell = $table->addCell(2000, ['valign' => 'center'])->addText(number_format($sumects/30,2), [], $ps);
+	$cell = $table->addCell($tableWidth * 0.12, ['valign' => 'center'])->addText(number_format($sumects/30,2), [], $ps);
 
 	$table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
 	$cell = $table->addCell(
-        9500,
+        $tableWidth * 0.88,
         ['valign' => 'center', 'gridSpan' => 3]
     );
 
-	$cell->addText("ECTS Credit of the Course", [], $paragraphStyle);
+	$cell->addText("ECTS Credit of the Course", []);
 
-	$cell = $table->addCell(2000, ['valign' => 'center'])->addText(round($sumects/30), [], $ps);
+	$cell = $table->addCell($tableWidth * 0.12, ['valign' => 'center'])->addText(round($sumects/30), [], $ps);
 	
 
 	
@@ -402,20 +387,20 @@ for ($i = 0; $i < 10; $i++) {
 function addContribsRow(
     \PhpOffice\PhpWord\Element\Table $table,
     array $cleanPost,
-    array $rowStyle = [],
-    array $paragraphStyle = []
+    float $tableWidth,
+    array $rowStyle = []    
 ): void {
 
     // Header row
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-    $cell = $table->addCell(0, ['valign' => 'center', 'gridSpan' => 2]);
-    $cell->addText("Course’s Contribution to Program", ['bold' => true], $paragraphStyle);
+    $cell = $table->addCell($tableWidth, ['valign' => 'center', 'gridSpan' => 3]);
+    $cell->addText("Course’s Contribution to Program", ['bold' => true]);
 
     // Sub-header row
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-    $table->addCell(8500, ['valign' => 'center'])->addText("", [], $paragraphStyle);
-    $table->addCell(1000, ['valign' => 'center'])
-          ->addText("CL", [], ['align' => 'left', 'spaceBefore' => 0, 'spaceAfter' => 0]);
+    $table->addCell($tableWidth * 0.90, ['valign' => 'center', 'gridSpan' => 2])->addText("", []);
+    $table->addCell($tableWidth * 0.10, ['valign' => 'center'])
+          ->addText("CL", []);
 
     // Collect contributions
     $contribs0 = [];
@@ -432,24 +417,20 @@ function addContribsRow(
         $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
         // Number cell (left)
-        $table->addCell(300, [
-            'valign' => 'center',
-            'borderRightSize' => 6,
-            'borderRightColor' => '000000'
-        ])->addText($idx + 1, [], ['align' => 'left']);
+        $table->addCell($tableWidth * 0.03, ['valign' => 'center'])->addText($idx + 1, []);
 
         // Contribution text cell (middle)
-        $table->addCell(8200, ['wrapText' => true, 'valign' => 'center'])
-              ->addText($contrib, [], array_merge($paragraphStyle, ['indent' => 200]));
+        $table->addCell($tableWidth * 0.87, ['wrapText' => true, 'valign' => 'center'])
+              ->addText($contrib, []);
 
         // CL cell (right)
-        $table->addCell(1000, ['valign' => 'center'])
-              ->addText($contribs1[$idx] ?? '', [], $paragraphStyle);
+        $table->addCell($tableWidth * 0.10, ['valign' => 'center'])
+              ->addText($contribs1[$idx] ?? '', []);
     }
 
     // Footer row for Contribution Level explanation
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-    $table->addCell(0, ['gridSpan' => 2, 'valign' => 'center'])
+    $table->addCell(0, ['gridSpan' => 3, 'valign' => 'center'])
           ->addText(
               "CL: Contribution Level (1: Very Low, 2: Low, 3: Moderate, 4: High, 5: Very High)",
               [],
@@ -468,21 +449,21 @@ function addContribsRow(
 function addOutcomesRow(
     \PhpOffice\PhpWord\Element\Table $table,
     array $cleanPost,
-    array $rowStyle = [],
-    array $paragraphStyle = []
+    float $tableWidth,
+    array $rowStyle = []    
 ): void {
 
     // Header row
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-    $cell = $table->addCell(0, ['valign' => 'center', 'gridSpan' => 2]);
-    $cell->addText("Learning Outcomes", ['bold' => true], $paragraphStyle);
+    $cell = $table->addCell($tableWidth, ['valign' => 'center', 'gridSpan' => 3]);
+    $cell->addText("Learning Outcomes", ['bold' => true]);
 
     // Sub-header row
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-    $table->addCell(8500, ['valign' => 'center'])
-          ->addText("When this course has been completed the student should be able to", [], $paragraphStyle);
-    $table->addCell(1000, ['valign' => 'center'])
-          ->addText("Assess.", [], ['align' => 'left', 'spaceBefore' => 0, 'spaceAfter' => 0]);
+    $table->addCell($tableWidth * 0.90, ['valign' => 'center', 'gridSpan' => 2])
+          ->addText("When this course has been completed the student should be able to", []);
+    $table->addCell($tableWidth * 0.10, ['valign' => 'center'])
+          ->addText("Assess.", []);
 
     // Collect outcomes
     $outcomes0 = [];
@@ -499,24 +480,22 @@ function addOutcomesRow(
         $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
         // Number cell (left)
-        $table->addCell(300, [
-            'valign' => 'center',
-            'borderRightSize' => 6,
-            'borderRightColor' => '000000'
-        ])->addText($idx + 1, [], ['align' => 'left']);
+        $table->addCell($tableWidth * 0.03, ['valign' => 'center'])->addText($idx + 1, []);
 
         // Outcome text cell (middle) with indent
-        $table->addCell(8200, ['wrapText' => true, 'valign' => 'center'])
-              ->addText($outcome, [], array_merge($paragraphStyle, ['indent' => 200]));
+        $table->addCell($tableWidth * 0.87, ['wrapText' => true, 'valign' => 'center'])
+              ->addText($outcome, []);
 
         // Assessment cell (right)
-        $table->addCell(1000, ['valign' => 'center'])
-              ->addText($outcomes1[$idx] ?? '', [], $paragraphStyle);
+        $table->addCell($tableWidth * 0.10, ['valign' => 'center'])
+              ->addText($outcomes1[$idx] ?? '', []);
     }
+
+    
 
     // Assessment Methods row
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
-    $table->addCell(0, ['gridSpan' => 2, 'valign' => 'center'])
+    $table->addCell($tableWidth, ['gridSpan' => 3, 'valign' => 'center'])
           ->addText(
               "Assessment Methods: 1. Written Exam, 2. Assignment, 3. Project/Report, 4. Presentation, 5. Lab Work",
               [],
