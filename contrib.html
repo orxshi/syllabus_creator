@@ -1,64 +1,98 @@
 <div style="padding:10px;">
 
+  <!-- Tooltip -->
   <div style="margin-bottom:10px;">
-      <span style="cursor:pointer; border-bottom:1px dotted #000;" title="Contribution level:
+    <span style="cursor:pointer; border-bottom:1px dotted #000;" 
+          title="Contribution level:
 1: Very low
 2: Low
 3: Moderate
 4: High
 5: Very high">
-          Help
-      </span>
+      Help
+    </span>
   </div>
 
-  <table id="tabcontrib" class="table table-bordered">
-      <colgroup>
-          <col style="width:85%;"> <!-- Contribution column wide -->
-          <col style="width:15%;"> <!-- Level column narrow -->
-      </colgroup>
-      <thead>
-          <tr>
-              <th>Contribution</th>
-              <th>Level</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr>
-              <td><textarea id="contrib0" name="contrib0" placeholder="Contribution 1" class="form-control"></textarea></td>
-              <td><input class="form-control" type="text" id="contribval0" name="contribval0" placeholder="2"></td>
-          </tr>
-          <tr>
-              <td><textarea id="contrib1" name="contrib1" placeholder="Contribution 2" class="form-control"></textarea></td>
-              <td><input class="form-control" type="text" id="contribval1" name="contribval1" placeholder="3"></td>
-          </tr>
-          <tr>
-              <td><textarea id="contrib2" name="contrib2" placeholder="Contribution 3" class="form-control"></textarea></td>
-              <td><input class="form-control" type="text" id="contribval2" name="contribval2" placeholder="4"></td>
-          </tr>
-          <tr>
-              <td><textarea id="contrib3" name="contrib3" placeholder="Contribution 4" class="form-control"></textarea></td>
-              <td><input class="form-control" type="text" id="contribval3" name="contribval3"></td>
-          </tr>
-          <tr>
-              <td><textarea id="contrib4" name="contrib4" placeholder="Contribution 5" class="form-control"></textarea></td>
-              <td><input class="form-control" type="text" id="contribval4" name="contribval4"></td>
-          </tr>
-          <tr>
-              <td><textarea id="contrib5" name="contrib5" placeholder="Contribution 6" class="form-control"></textarea></td>
-              <td><input class="form-control" type="text" id="contribval5" name="contribval5"></td>
-          </tr>
-          <tr>
-              <td><textarea id="contrib6" name="contrib6" placeholder="Contribution 7" class="form-control"></textarea></td>
-              <td><input class="form-control" type="text" id="contribval6" name="contribval6"></td>
-          </tr>
-          <tr>
-              <td><textarea id="contrib7" name="contrib7" placeholder="Contribution 8" class="form-control"></textarea></td>
-              <td><input class="form-control" type="text" id="contribval7" name="contribval7"></td>
-          </tr>
-          <tr>
-              <td><textarea id="contrib8" name="contrib8" placeholder="Contribution 9" class="form-control"></textarea></td>
-              <td><input class="form-control" type="text" id="contribval8" name="contribval8"></td>
-          </tr>
-      </tbody>
+  <!-- Contributions table -->
+  <table id="tabcontrib" class="table table-sm mb-0">
+    <colgroup>
+      <col style="width:85%;">
+      <col style="width:15%;">
+    </colgroup>
+    <thead class="border-bottom-0">
+      <tr>
+        <th class="text-start">Contribution</th>
+        <th class="text-start">Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><textarea id="contrib0" name="contrib0" placeholder="Contribution 1" 
+                      class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
+        <td><input class="form-control form-control-sm border-0 p-1" type="text" id="contribval0" name="contribval0" placeholder="2"></td>
+      </tr>
+      <tr>
+        <td><textarea id="contrib1" name="contrib1" placeholder="Contribution 2" 
+                      class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
+        <td><input class="form-control form-control-sm border-0 p-1" type="text" id="contribval1" name="contribval1" placeholder="3"></td>
+      </tr>
+      <tr>
+        <td><textarea id="contrib2" name="contrib2" placeholder="Contribution 3" 
+                      class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
+        <td><input class="form-control form-control-sm border-0 p-1" type="text" id="contribval2" name="contribval2" placeholder="4"></td>
+      </tr>
+      <tr>
+        <td><textarea id="contrib3" name="contrib3" placeholder="Contribution 4" 
+                      class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
+        <td><input class="form-control form-control-sm border-0 p-1" type="text" id="contribval3" name="contribval3"></td>
+      </tr>
+      <tr>
+        <td><textarea id="contrib4" name="contrib4" placeholder="Contribution 5" 
+                      class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
+        <td><input class="form-control form-control-sm border-0 p-1" type="text" id="contribval4" name="contribval4"></td>
+      </tr>
+      <tr>
+        <td><textarea id="contrib5" name="contrib5" placeholder="Contribution 6" 
+                      class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
+        <td><input class="form-control form-control-sm border-0 p-1" type="text" id="contribval5" name="contribval5"></td>
+      </tr>
+      <tr>
+        <td><textarea id="contrib6" name="contrib6" placeholder="Contribution 7" 
+                      class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
+        <td><input class="form-control form-control-sm border-0 p-1" type="text" id="contribval6" name="contribval6"></td>
+      </tr>
+      <tr>
+        <td><textarea id="contrib7" name="contrib7" placeholder="Contribution 8" 
+                      class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
+        <td><input class="form-control form-control-sm border-0 p-1" type="text" id="contribval7" name="contribval7"></td>
+      </tr>
+      <tr>
+        <td><textarea id="contrib8" name="contrib8" placeholder="Contribution 9" 
+                      class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
+        <td><input class="form-control form-control-sm border-0 p-1" type="text" id="contribval8" name="contribval8"></td>
+      </tr>
+    </tbody>
   </table>
 </div>
+
+<style>
+  /* Minimal starting height, auto-expanding */
+  textarea.form-control.auto-height {
+    resize: vertical;
+    height: auto; /* rows determine initial height */
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  // Auto-resize all textareas with class "auto-height"
+  function autoResizeTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+
+  document.querySelectorAll('.auto-height').forEach(textarea => {
+    autoResizeTextarea(textarea); // initial height
+    textarea.addEventListener('input', () => autoResizeTextarea(textarea));
+  });
+</script>
