@@ -45,7 +45,7 @@ The code has been tested with
 
 * Open index.html
 * Fill in form fields.
-* Or click Load to load data from JSON file, if there is any. For convenience, MT111 is available.
-* Click Generate PDF to generate PDF of the syllabus.
-* Click Generate Word to generate docx file of the syllabus.
-* Optionally, click Save to save form data in JSON file.
+* Or click Load to load from JSON file. For convenience, MT111 is available.
+* Click Generate PDF to generate PDF the syllabus.
+* Click Generate docx to generate docx of the syllabus.
+* Optionally, click Save to save form data.
