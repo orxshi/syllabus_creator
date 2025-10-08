@@ -1,106 +1,127 @@
-$(document).ready(function() {
+// Wait until DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+
+    const form = document.getElementById('myform');
+    const saveBtn = document.getElementById('save');
+    const loadBtn = document.getElementById('load');
 
     // ===== SAVE FUNCTION =====
-    $("#save").click(function(e){
-        e.preventDefault(); // prevent default action
+    saveBtn.addEventListener('click', (e) => {
+        e.preventDefault();
 
-        var jsonData = {};
-        var formData = $("#myform").serializeArray();
+        const formData = new FormData(form);
+        const jsonData = {};
 
-        // Convert form data into JSON, always keeping arrays for multiple checkboxes
-        $.each(formData, function() {
-            var name = this.name.replace("[]", ""); // remove brackets
-            if (jsonData[name]) {
-                if (!Array.isArray(jsonData[name])) {
-                    jsonData[name] = [jsonData[name]];
-                }
-                jsonData[name].push(this.value || '');
+        // Convert form data to JSON
+        for (const [key, value] of formData.entries()) {
+            if (key.endsWith('[]')) {
+                const name = key.slice(0, -2);
+                if (!jsonData[name]) jsonData[name] = [];
+                jsonData[name].push(value);
             } else {
-                // Always store as array if checkbox group
-                if (this.name.endsWith("[]")) {
-                    jsonData[name] = [this.value || ''];
-                } else {
-                    jsonData[name] = this.value || '';
-                }
+                jsonData[key] = value;
             }
-        });
+        }
 
-        // AJAX to save JSON
-        $.ajax({
-            url: "encode.php",
-            type: "POST",
-            data: jsonData,
-            success: function(data) {
-                window.location.href = 'save.php';
-            }
-        });
+        // Send via AJAX
+        fetch('encode.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(jsonData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            window.location.href = 'save.php';
+        })
+        .catch(err => console.error(err));
     });
 
     // ===== LOAD FUNCTION =====
-    $("#load").click(function(e){
+    loadBtn.addEventListener('click', (e) => {
         e.preventDefault();
 
-        var fileDialog = $('<input type="file">');
-        fileDialog.click();
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.json';
+        fileInput.click();
 
-        fileDialog.on("change", onFileSelected);
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function() {
+                try {
+                    const data = JSON.parse(reader.result);
+                    populateForm(data);
+                } catch (err) {
+                    alert('Invalid JSON file!');
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+        });
     });
 
-    // ===== FILE READ & FORM POPULATION =====
-    var onFileSelected = function(e){
-        let file = $(this)[0].files[0];
-        let reader = new FileReader();
+    // ===== POPULATE FORM FUNCTION =====
+    function populateForm(data) {
 
-        reader.readAsText(file);
+        for (const key in data) {
+            const value = data[key];
 
-        reader.onload = function() {
-            let obj = reader.result;
-            let data = JSON.parse(obj);
-
-            for (var key in data) {
-                let value = data[key];
-
-                // Handle checkbox groups (eligdep, mode, etc.)
-                if ($('input[name="'+key+'[]"]').length) {
-                    $('input[name="'+key+'[]"]').prop('checked', false); // uncheck all first
-
-                    if (Array.isArray(value)) {
-                        value.forEach(function(val){
-                            $('input[name="'+key+'[]"][value="'+val+'"]').prop('checked', true);
-                        });
-                    } else {
-                        $('input[name="'+key+'[]"][value="'+value+'"]').prop('checked', true);
-                    }
+            // 1️⃣ Handle checkbox groups (name="mode[]")
+            const checkboxes = document.querySelectorAll(`input[name="${key}[]"]`);
+            if (checkboxes.length) {
+                checkboxes.forEach(cb => cb.checked = false);
+                if (Array.isArray(value)) {
+                    value.forEach(val => {
+                        const cb = document.querySelector(`input[name="${key}[]"][value="${val}"]`);
+                        if (cb) cb.checked = true;
+                    });
+                } else {
+                    const cb = document.querySelector(`input[name="${key}[]"][value="${value}"]`);
+                    if (cb) cb.checked = true;
                 }
-                // Handle other input types
-                else {
-                    let el = $('#' + key);
-
-                    if (el.is(':checkbox')) {
-                        el.prop('checked', value == el.val());
-                    } else if (el.is('select')) {
-                        el.val(value);
-                    } else {
-                        el.val(value);
-                    }
-                }
+                continue;
             }
-        };
+
+            // 2️⃣ Handle single checkboxes
+            const checkbox = document.querySelector(`input[name="${key}"][type="checkbox"]`);
+            if (checkbox) {
+                checkbox.checked = (value == checkbox.value || value === true);
+                continue;
+            }
+
+            // 3️⃣ Handle selects
+            const select = document.querySelector(`select[name="${key}"]`);
+            if (select) {
+                select.value = value;
+                continue;
+            }
+
+            // 4️⃣ Handle assessments table (act0, actper0, act1, etc.)
+            if (key.startsWith("act") || key.startsWith("actper")) {
+                const input = document.querySelector(`input[name="${key}"]`);
+                if (input) input.value = value;
+                continue;
+            }
+
+            // 5️⃣ Handle ECTS table (ectsact1..ectsactN, ectsnm1.., ectsdur1..)
+            if (key.startsWith("ectsact") || key.startsWith("ectsnm") || key.startsWith("ectsdur")) {
+                const input = document.querySelector(`input[name="${key}"]`);
+                if (input) input.value = value;
+                continue;
+            }
+
+            // 6️⃣ Handle contributions, outcomes, objectives, sources, content, etc.
+            const input = document.querySelector(`input[name="${key}"], textarea[name="${key}"]`);
+            if (input) input.value = value;
+        }
+    }
+
+    // ===== RESET FUNCTION =====
+    window.resetAll = function() {
+        form.reset();
     };
 
 });
-
-// ===== RESET FUNCTION =====
-function resetAll() {
-    // Reset all text inputs
-    $("input[type='text']").val('');
-
-    // Reset all textareas
-    $("textarea").val('');
-
-    // Reset all checkboxes
-    $("input[type='checkbox']").prop('checked', false);
-
-    // Reset all selects
-    $("select").prop('selectedIndex', 0);
-}

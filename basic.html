@@ -1,0 +1,129 @@
+<!-- basic.html -->
+<div class="mx-auto" style="max-width: 400px;">
+
+  <!-- Course Name & Code -->
+  <div class="row mb-3 g-2">
+      <div class="col-md-7">
+          <label for="coursename" class="form-label">Course Name</label>
+          <input type="text" class="form-control" id="coursename" name="coursename" placeholder="Physics I">
+      </div>
+      <div class="col-md-4">
+          <label for="coursecode" class="form-label">Course Code</label>
+          <input type="text" class="form-control" id="coursecode" name="coursecode" placeholder="PHYS101">
+      </div>      
+  </div>
+
+  <!-- Course Type & Prerequisites -->
+  <div class="row mb-3 g-2">
+      <div class="col-md-7">
+          <label for="coursetype" class="form-label">Course Type</label>
+          <select class="form-select" id="coursetype" name="coursetype">
+              <option value="Compulsory">Compulsory</option>
+              <option value="Technical elective">Technical elective</option>
+              <option value="Non-technical elective">Non-technical elective</option>
+          </select>
+      </div>
+      <div class="col-md-4">
+          <label for="prerequisite" class="form-label">Prerequisites</label>
+          <input type="text" class="form-control" id="prerequisite" name="prerequisite" placeholder="MTXXX">
+      </div>      
+  </div>
+
+  <hr>
+
+  <!-- Hours per week -->
+  <div class="row mb-3 g-2">
+    <div class="col-md-4">
+      <label for="theoretical" class="form-label">Theory (hr/week)</label>
+      <input type="number" class="form-control" id="theoretical" name="theoretical" placeholder="3">
+    </div>
+    <div class="col-md-4">
+      <label for="practice" class="form-label">Practice (hr/week)</label>
+      <input type="number" class="form-control" id="practice" name="practice" placeholder="2">
+    </div>
+    <div class="col-md-4">
+      <label for="labcre" class="form-label">Lab (hr/week)</label>
+      <input type="number" class="form-control" id="labcre" name="labcre" placeholder="0">
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Year, Semester, Level -->
+  <div class="row mb-3 g-2">
+    <div class="col-md-3">
+      <label for="yearofstudy" class="form-label">Year</label>
+      <input type="number" class="form-control" id="yearofstudy" name="yearofstudy" placeholder="3">
+    </div>
+    <div class="col-md-3">
+      <label for="semdel" class="form-label">Semester</label>
+      <input type="number" class="form-control" id="semdel" name="semdel" placeholder="3">
+    </div>
+    <div class="col-md-5">
+      <label for="level" class="form-label">Level</label>
+      <select class="form-select" id="level" name="level">
+        <option value="1st year BSc">1st year BSc</option>
+        <option value="2nd year BSc">2nd year BSc</option>
+        <option value="3rd year BSc">3rd year BSc</option>
+        <option value="4th year BSc">4th year BSc</option>
+        <option value="MSc">MSc</option>
+        <option value="PhD">PhD</option>
+      </select>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Eligible Departments -->
+  <div class="mb-3">
+    <label class="form-label">Eligible Departments</label>
+    <div class="border p-2" style="max-height: 150px; overflow-y: auto;">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="All departments" name="eligdep[]" id="depAll">
+        <label class="form-check-label" for="depAll">All departments</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="CEN" name="eligdep[]" id="depCEN">
+        <label class="form-check-label" for="depCEN">Computer Eng.</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="EEN" name="eligdep[]" id="depEEN">
+        <label class="form-check-label" for="depEEN">Electrical Eng.</label>
+      </div>
+      <!-- Add remaining departments here -->
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Language & Mode of Delivery -->
+  <div class="row mb-3 g-2">
+    <div class="col-md-6">
+      <label for="lang" class="form-label">Language of Instruction</label>
+      <select class="form-select" id="lang" name="lang">
+        <option value="English">English</option>
+        <option value="Turkish">Turkish</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Mode of Delivery</label>
+      <div class="border p-2">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="mode[]" value="Face to face" id="modeFace">
+          <label class="form-check-label" for="modeFace">Face to face</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="mode[]" value="E-learning" id="modeElearning">
+          <label class="form-check-label" for="modeElearning">E-learning</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommended Background -->
+  <div class="mb-3">
+    <label for="recom" class="form-label">Recommended Background</label>
+    <textarea class="form-control" id="recom" name="recom" placeholder="Basic background in pre-calculus." rows="3"></textarea>
+  </div>
+
+</div> <!-- mx-auto -->
