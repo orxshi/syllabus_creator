@@ -13,6 +13,13 @@
     </span>
   </div>
 
+  <!-- Upload PLOs section -->
+  <div class="mb-3">
+    <label class="form-label fw-bold">Upload Program Learning Outcomes (PLOs)</label>
+    <input type="file" id="ploFile" accept=".txt" class="form-control form-control-sm">
+    <button type="button" id="loadPLO" class="btn btn-secondary btn-sm mt-2">Load PLOs</button>
+  </div>
+
   <!-- Contributions table -->
   <table id="tabcontrib" class="table table-sm mb-0">
     <colgroup>
@@ -73,26 +80,18 @@
       </tr>
     </tbody>
   </table>
+
+  <div class="mt-3">
+    <button type="button" id="addContribRow" class="btn btn-outline-primary btn-sm">
+      + Add Department-Specific Contribution
+    </button>
+  </div>
 </div>
 
 <style>
-  /* Minimal starting height, auto-expanding */
   textarea.form-control.auto-height {
     resize: vertical;
-    height: auto; /* rows determine initial height */
+    height: auto;
     overflow: hidden;
   }
 </style>
-
-<script>
-  // Auto-resize all textareas with class "auto-height"
-  function autoResizeTextarea(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
-  }
-
-  document.querySelectorAll('.auto-height').forEach(textarea => {
-    autoResizeTextarea(textarea); // initial height
-    textarea.addEventListener('input', () => autoResizeTextarea(textarea));
-  });
-</script>

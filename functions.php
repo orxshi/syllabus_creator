@@ -402,14 +402,15 @@ function addContribsRow(
     $table->addCell($tableWidth * 0.10, ['valign' => 'center'])
           ->addText("CL", []);
 
-    // Collect contributions
+    // Collect all contributions dynamically
+    $i = 0;
     $contribs0 = [];
     $contribs1 = [];
-    for ($i = 0; $i < 9; $i++) {
-        if (!empty($cleanPost["contrib" . $i])) {
-            $contribs0[] = $cleanPost["contrib" . $i];
-            $contribs1[] = $cleanPost["contribval" . $i];
-        }
+
+    while (isset($cleanPost["contrib$i"]) && trim($cleanPost["contrib$i"]) !== '') {
+        $contribs0[] = $cleanPost["contrib$i"];
+        $contribs1[] = isset($cleanPost["contribval$i"]) ? $cleanPost["contribval$i"] : '';
+        $i++;
     }
 
     // Add contribution rows
@@ -417,10 +418,10 @@ function addContribsRow(
         $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
         // Number cell (left)
-        $table->addCell($tableWidth * 0.03, ['valign' => 'center'])->addText($idx + 1, []);
+        $table->addCell($tableWidth * 0.04, ['valign' => 'center'])->addText($idx + 1, []);
 
         // Contribution text cell (middle)
-        $table->addCell($tableWidth * 0.87, ['wrapText' => true, 'valign' => 'center'])
+        $table->addCell($tableWidth * 0.86, ['wrapText' => true, 'valign' => 'center'])
               ->addText($contrib, []);
 
         // CL cell (right)
@@ -437,6 +438,7 @@ function addContribsRow(
               ['align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0]
           );
 }
+
 
 
 
