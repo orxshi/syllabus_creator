@@ -170,7 +170,15 @@ if (array_key_exists('submit_pdf', $_POST))
     $tempDocx = generateSyllabusDocx($cleanPost, 9500, 80, 1);
 
     $outputDir = sys_get_temp_dir();
-    $libreoffice = __DIR__ . "\\libre\\program\\soffice.exe";
+    // $libreoffice = __DIR__ . "\\libre\\program\\soffice.exe";
+    // $libreoffice = __DIR__ . "/libre/program/soffice.exe";
+
+	if (stripos(PHP_OS, 'WIN') === 0) {
+    	$libreoffice = __DIR__ . "/libre/program/soffice.exe";
+	} else {
+    	$libreoffice = __DIR__ . '/libre/program/soffice';
+	}
+
     $cmd = "\"$libreoffice\" --headless --convert-to pdf --outdir \"$outputDir\" \"$tempDocx\"";
     exec($cmd . " 2>&1", $output, $return_var);
 
