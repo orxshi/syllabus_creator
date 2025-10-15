@@ -174,10 +174,22 @@ if (array_key_exists('submit_pdf', $_POST))
     // $libreoffice = __DIR__ . "/libre/program/soffice.exe";
 
 	if (stripos(PHP_OS, 'WIN') === 0) {
-    	$libreoffice = __DIR__ . "/libre/program/soffice.exe";
-	} else {
-    	$libreoffice = __DIR__ . '/libre/program/soffice';
-	}
+    $libreoffice = __DIR__ . "/libre/program/soffice.exe";
+} else {
+    $libreoffice = __DIR__ . "/libre/program/soffice";
+}
+
+echo "LibreOffice path: $libreoffice<br>";
+
+if (!file_exists($libreoffice)) {
+    die("Error: LibreOffice executable not found at $libreoffice");
+}
+
+if (!is_executable($libreoffice)) {
+    die("Error: LibreOffice is not executable. Run chmod +x on $libreoffice");
+}
+
+echo "LibreOffice is ready to run ✅";
 
     $cmd = "\"$libreoffice\" --headless --convert-to pdf --outdir \"$outputDir\" \"$tempDocx\"";
     exec($cmd . " 2>&1", $output, $return_var);
