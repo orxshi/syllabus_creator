@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('myform');
     const saveBtn = document.getElementById('save');
-    const loadBtn = document.getElementById('load');
 
     // Disable browser autofill
     form.setAttribute('autocomplete', 'off');
@@ -10,8 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== SAVE FUNCTION =====
     saveBtn.addEventListener('click', (e) => {
-        e.preventDefault();
+        e.preventDefault(); // prevent form submission
 
+        if (!validateForm()) return; // stop if validation fails
+
+        // Collect form data
         const formData = new FormData(form);
         const jsonData = {};
         for (const [key, value] of formData.entries()) {
@@ -19,7 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const name = key.slice(0, -2);
                 if (!jsonData[name]) jsonData[name] = [];
                 jsonData[name].push(value);
-            } else jsonData[key] = value;
+            } else {
+                jsonData[key] = value;
+            }
         }
 
         // Save JSON
@@ -54,32 +58,41 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(err => console.error(err));
     });
 
-    // ===== LOAD FUNCTION =====
-    loadBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = '.json';
-        fileInput.click();
+    // ===== VALIDATION =====
+    function validateForm() {
+        let valid = true;
+        const invalidFields = [];
 
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function() {
-                try { populateForm(JSON.parse(reader.result)); }
-                catch(err) { alert('Invalid JSON file!'); console.error(err); }
-            };
-            reader.readAsText(file);
+        // Example: required fields
+        const requiredFields = [
+            { id: 'coursename', label: 'Course name' },
+            { id: 'coursecode', label: 'Course code' },
+            { id: 'yearofstudy', label: 'Year of study' },
+            { id: 'semdel', label: 'Semester of delivery' }
+        ];
+
+        requiredFields.forEach(field => {
+            const el = document.getElementById(field.id);
+            if (!el || !el.value.trim()) {
+                if (el) el.classList.add('is-invalid');
+                invalidFields.push(field.label);
+                valid = false;
+            } else if (el) el.classList.remove('is-invalid');
         });
-    });
+
+        if (!valid && invalidFields.length) {
+            alert(`Please check the following fields:\n- ${invalidFields.join('\n- ')}`);
+        }
+
+        return valid;
+    }
 
     // ===== POPULATE FORM =====
-    function populateForm(data) {
+    window.populateForm = function(data) {
         for (const key in data) {
             const value = data[key];
 
-            // Checkbox groups
+            // Checkboxes
             const checkboxes = document.querySelectorAll(`input[name="${key}[]"]`);
             if (checkboxes.length) {
                 checkboxes.forEach(cb => cb.checked = false);
@@ -87,13 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const cb = document.querySelector(`input[name="${key}[]"][value="${val}"]`);
                     if (cb) cb.checked = true;
                 });
-                continue;
-            }
-
-            // Single checkbox
-            const checkbox = document.querySelector(`input[name="${key}"][type="checkbox"]`);
-            if (checkbox) {
-                checkbox.checked = (value == checkbox.value || value === true);
                 continue;
             }
 
@@ -107,34 +113,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ===== RESET FUNCTION =====
-    window.resetAll = function() { form.reset(); };
-
-    // ===== AUTO LOAD JSON IF EXISTS =====
-const urlParams = new URLSearchParams(window.location.search);
-const courseCode = urlParams.get('course'); // must match filename
-
-if (courseCode) {
-    const courseInput = document.getElementById('coursecode');
-    if (courseInput) courseInput.value = courseCode;
-    // if (courseInput) {
-        // courseInput.value = courseCode;   // show the course code
-        // courseInput.disabled = true;       // make it read-only
-    // }
-    
-
-    // Add cache-buster
-    const jsonPath = `json/${courseCode}.json?cb=${Date.now()}`;
-
-    fetch(jsonPath, { method: 'HEAD' })
-        .then(res => {
-            if (res.ok) return fetch(jsonPath).then(r => r.json());
-            throw new Error('JSON not found');
-        })
-        .then(data => populateForm(data))
-        .catch(() => {
-            console.log(`No JSON found for ${courseCode}, form left empty.`);
-            form.reset();
-        });
-}
+    // ===== FETCH JSON =====
+    window.fetchAndPopulateJSON = function(courseCode) {
+        const jsonPath = `json/${courseCode}.json?cb=${Date.now()}`;
+        fetch(jsonPath)
+            .then(res => {
+                if (!res.ok) throw new Error('JSON not found');
+                return res.json();
+            })
+            .then(data => populateForm(data))
+            .catch(() => console.log(`No JSON found for ${courseCode}.`));
+    }
 });

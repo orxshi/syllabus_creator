@@ -9,6 +9,9 @@
     "yearofstudy": "1",
     "semdel": "1",
     "level": "1st year BSc",
+    "eligdep": [
+        "All departments"
+    ],
     "lang": "English",
     "mode": [
         "Face to face",
@@ -18,16 +21,9 @@
     "obj0": "Conceptual overview of law and methods in engineering subjects",
     "obj1": "To understand the major theoretical background of functions, limits, derivatives and their application in\nengineering problems",
     "obj2": "",
-    "obj3": "",
-    "obj4": "",
-    "obj5": "",
-    "obj6": "",
-    "obj7": "",
     "source0": "Textbook: \"Calculus a Complete Course\", Robert A. Adams, Pearson 6th Edn 2006",
     "source1": "\"Calculus Early Transcendental Functions\", Robert T.Smith & Roland B. Minton 4th Edition,2012",
     "source2": "\"Calculus Early Transcendental\" Briggs Cochran, William Briggs, Lyle Cochran, Bernard Gillett",
-    "source3": "",
-    "source4": "",
     "act0": "Attendance and Assignment and Quiz",
     "actper0": "20",
     "act1": "Midterm Exam (Written)",

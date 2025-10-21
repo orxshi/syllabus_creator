@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Syllabus Creator</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 20px;
-      background-color: #ffffff;
-      overflow-y: scroll;
-    }
-    .form-wrapper {
-      width: 100%;
-      max-width: 800px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllabus Creator</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="styles.css" rel="stylesheet">
+<style>
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    background-color: #ffffff;
+    overflow-y: scroll;
+  }
+  .form-wrapper {
+    width: 100%;
+    max-width: 800px;
+  }
+</style>
 </head>
 <body>
 
@@ -28,8 +29,7 @@
     <div class="row gx-5 align-items-start">
       <div class="col-md-2 mb-3">
         <div class="d-grid gap-2">
-          <!-- <input type="button" id="load" name="load" class="btn btn-outline-secondary" value="Load"/> -->
-          <input type="button" id="save" name="save" class="btn btn-outline-primary" value="Save"/>
+          <input type="button" id="save" class="btn btn-outline-primary" value="Save"/>
           <input type="reset" class="btn btn-outline-secondary" value="Reset"/>
         </div>
       </div>
@@ -75,6 +75,7 @@
       </div>
     </div>
 
+    <!-- hidden input to store course code -->
     <input type="hidden" name="coursecode" id="coursecode" value="">
   </form>
 </div>
@@ -83,24 +84,81 @@
 <script src="tab.js"></script>
 <script src="contrib.js"></script>
 <script src="saveload.js"></script>
+<script src="spinner.js"></script>
 <script>
+  // Get course code from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const courseCode = urlParams.get('course');
+  const courseInput = document.getElementById('coursecode');
+
+  if (courseCode && courseInput) {
+      courseInput.value = courseCode; // set hidden input
+  }
+
   const loadTabContent = (id, file, callback) => {
-    fetch(file)
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById(id).innerHTML = html;
-        if (callback) callback();
-      });
+      fetch(file)
+          .then(res => res.text())
+          .then(html => {
+              document.getElementById(id).innerHTML = html;
+              if (callback) callback();
+          });
   };
 
-  loadTabContent('basic-placeholder', 'basic.html');
-  loadTabContent('objectives-placeholder', 'objectives.html');
-  loadTabContent('source-placeholder', 'sources.html');
-  loadTabContent('assess-placeholder', 'assess.html');
-  loadTabContent('outcome-placeholder', 'outcome.html');
-  loadTabContent('ects-placeholder', 'ects.html');
-  loadTabContent('contents-placeholder', 'contents.html');
-  loadTabContent('contrib-placeholder', 'contrib.html', () => { initContribTab(); });
+  // Load all tabs
+  loadTabContent('basic-placeholder', 'basic.html', () => {
+      initSpinners();
+      if (courseCode) fetchAndPopulateJSON(courseCode);
+  });
+  loadTabContent('objectives-placeholder', 'objectives.html', () => {
+      const objectivesContainer = document.getElementById('objectivesContainer');
+      const addBtn = document.getElementById('addObjectiveBtn');
+      let objCount = 3;
+      addBtn.addEventListener('click', () => {
+          if (objCount >= 8) { addBtn.style.display = 'none'; return; }
+          const div = document.createElement('div');
+          div.classList.add('mb-3');
+          const textarea = document.createElement('textarea');
+          textarea.classList.add('form-control');
+          textarea.id = `obj${objCount}`;
+          textarea.name = `obj${objCount}`;
+          textarea.placeholder = `Objective ${objCount + 1}`;
+          textarea.rows = 2;
+          div.appendChild(textarea);
+          objectivesContainer.appendChild(div);
+          objCount++;
+          if (objCount >= 8) addBtn.style.display = 'none';
+      });
+      if (courseCode) fetchAndPopulateJSON(courseCode);
+  });
+  loadTabContent('source-placeholder', 'sources.html', () => {
+      const sourcesContainer = document.getElementById('sourcesContainer');
+      const addBtn = document.getElementById('addSourceBtn');
+      let sourceCount = 3;
+      addBtn.addEventListener('click', () => {
+          if (sourceCount >= 5) return;
+          const div = document.createElement('div');
+          div.classList.add('mb-3');
+          const textarea = document.createElement('textarea');
+          textarea.classList.add('form-control');
+          textarea.id = `source${sourceCount}`;
+          textarea.name = `source${sourceCount}`;
+          textarea.placeholder = `Source ${sourceCount + 1}`;
+          textarea.rows = 2;
+          div.appendChild(textarea);
+          sourcesContainer.appendChild(div);
+          sourceCount++;
+          if (sourceCount >= 5) addBtn.style.display = 'none';
+      });
+      if (courseCode) fetchAndPopulateJSON(courseCode);
+  });
+  loadTabContent('assess-placeholder', 'assess.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
+  loadTabContent('outcome-placeholder', 'outcome.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
+  loadTabContent('ects-placeholder', 'ects.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
+  loadTabContent('contents-placeholder', 'contents.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
+  loadTabContent('contrib-placeholder', 'contrib.html', () => {
+      initContribTab();
+      if (courseCode) fetchAndPopulateJSON(courseCode);
+  });
 </script>
 
 </body>

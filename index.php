@@ -22,7 +22,7 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="mb-4">Available syllabi (docx)</h1>
+    <h3 class="mb-4">List of syllabi (docx)</h3>
 
     <div class="list-group mb-3">
       <?php
