@@ -1,8 +1,14 @@
 <?php
-ini_set('display_errors', 1);
+$jsonFolder = 'json';
+if (!is_dir($jsonFolder)) mkdir($jsonFolder, 0777, true);
 
-$input = $_POST;
-$json_str_done = json_encode($input);
-$file = '.mycourse.json';
-file_put_contents($file, $json_str_done);
-?>
+// Read raw JSON from fetch
+$input = json_decode(file_get_contents('php://input'), true);
+
+// Use coursecode as filename
+$courseCode = preg_replace('/[^a-zA-Z0-9_-]/', '', $input['coursecode'] ?? 'syllabus');
+
+$file = "$jsonFolder/$courseCode.json";
+file_put_contents($file, json_encode($input, JSON_PRETTY_PRINT));
+
+echo "saved";

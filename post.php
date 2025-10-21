@@ -211,19 +211,28 @@ echo "LibreOffice is ready to run ✅";
     exit;
 }      
 
-if (array_key_exists('submit_word', $_POST))
-{
+$docFolder = 'doc';
+if (!is_dir($docFolder)) mkdir($docFolder, 0777, true);
+
+if (array_key_exists('submit_word', $_POST)) {
     $cleanPost = fixPostAmpersands($_POST);
+
     $tempDocx = generateSyllabusDocx($cleanPost, 9500, 80, 1);
 
+    $courseCode = preg_replace('/[^a-zA-Z0-9_-]/', '', $_POST['coursecode'] ?? 'syllabus');
+    $docxPath = "$docFolder/$courseCode.docx";
+    copy($tempDocx, $docxPath);
+
     header("Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    header("Content-Disposition: attachment; filename=\"syllabus.docx\"");
+    header("Content-Disposition: attachment; filename=\"$courseCode.docx\"");
     header("Content-Length: " . filesize($tempDocx));
     flush();
     readfile($tempDocx);
+
     @unlink($tempDocx);
     exit;
 }
+
 
 
 
