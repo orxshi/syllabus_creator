@@ -1,0 +1,44 @@
+/* General body styling */
+body {
+    padding: 2rem;
+    background-color: #f8f9fa;
+}
+
+/* Limit main container width and center it */
+.container {
+    max-width: 500px; /* adjust as needed */
+    margin: auto;
+}
+
+/* Highlight file items on hover */
+.list-group-item:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+/* Flex items for file row */
+.list-group-item.d-flex {
+    flex-wrap: wrap; /* allow buttons to wrap on small screens */
+    align-items: center;
+}
+
+/* File name spacing */
+.list-group-item span {
+    margin-right: 1rem;
+}
+
+/* Buttons container spacing */
+.list-group-item div {
+    margin-top: 0.5rem;
+}
+
+@media (min-width: 576px) {
+    .list-group-item div {
+        margin-top: 0; /* inline on larger screens */
+    }
+}
+
+/* Not-found button */
+.not-found-btn {
+    margin-top: 1.5rem;
+}

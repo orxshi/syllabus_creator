@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DOCX Files</title>
+  <title>Syllabus Creator</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
   <style>
     body {
       padding: 2rem;
@@ -21,7 +22,7 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="mb-4">DOCX Files</h1>
+    <h1 class="mb-4">Available syllabi (docx)</h1>
 
     <div class="list-group mb-3">
       <?php
