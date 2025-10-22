@@ -1,0 +1,2 @@
+To apply fundamental concepts of software design, database design, data processing and artificial intelligence in the modeling, designing, implementing, testing and deploying software solutions
+Ability to analyse and design hardware systems by applying the principles of embedded systems, microprocessors, computer networks, distributed systems and data communication

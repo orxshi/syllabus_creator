@@ -167,42 +167,31 @@ function addContentsRow(
         $tableWidth,
         ['valign' => 'center', 'gridSpan' => 4]
     );
-    $cell->addText(
-        "Course Contents",
-        ['bold' => true]        
-    );
+    $cell->addText("Course Contents", ['bold' => true]);
 
-    // Second row: Week | Empty | Empty | Exams
+    // Second row: Headers
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText("Week", []);
+    $table->addCell($tableWidth * 0.15); // Chapter
+    $table->addCell($tableWidth * 0.65); // Subject
+    $table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText("Exams", []);
 
-    $table->addCell($tableWidth * 0.10, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Week", []);
-    $table->addCell($tableWidth * 0.15, ['cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0]);
-	$table->addCell($tableWidth * 0.65, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0]);
-    $table->addCell($tableWidth * 0.10, ['valign' => 'center', 'cellMarginTop' => 0, 'cellMarginBottom' => 0, 'cellMarginLeft' => 0, 'cellMarginRight' => 0])->addText("Exams", []);
-
-	$conweeks = [];
-	$conchapters = [];
-	$consubjects = [];
-	$conlabs = [];
-    
     for ($i = 0; $i < 15; $i++) {
-        // if (!empty($cleanPost["consub" . $i])) {
-            $conweeks[] = $cleanPost["conweek" . $i];
-            $conchapters[] = $cleanPost["conchp" . $i];
-            $consubjects[] = $cleanPost["consub" . $i];
-            $conlabs[] = $cleanPost["conlab" . $i];
-        // }
+        $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+
+        // Week number is generated dynamically
+        $week = $i + 1;
+
+        $table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText($week, []);    
+        $table->addCell($tableWidth * 0.15, ['valign' => 'center'])
+              ->addText(!empty($cleanPost["conchp" . $i]) ? "Chapter {$cleanPost["conchp" . $i]}" : '', []);
+        $table->addCell($tableWidth * 0.65, ['valign' => 'center'])
+              ->addText($cleanPost["consub" . $i] ?? '', []);
+        $table->addCell($tableWidth * 0.10, ['valign' => 'center'])
+              ->addText($cleanPost["conlab" . $i] ?? '', []);
     }
-
-	foreach ($conweeks as $idx => $conweek) {
-		$table->addRow($rowStyle['height'] ?? null, $rowStyle);
-
-	    $table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText(($idx + 1), []);    	
-    	$table->addCell($tableWidth * 0.15, ['valign' => 'center'])->addText(!empty($conchapters[$idx]) ? "Chapter {$conchapters[$idx]}" : '', []);
-    	$table->addCell($tableWidth * 0.65, ['valign' => 'center'])->addText($consubjects[$idx] ?? '', []);
-    	$table->addCell($tableWidth * 0.10, ['valign' => 'center'])->addText($conlabs[$idx] ?? '', []);
-	}
 }
+
 
 function addAssessmentRow(
     \PhpOffice\PhpWord\Element\Table $table,

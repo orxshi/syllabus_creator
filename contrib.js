@@ -1,79 +1,82 @@
 function initContribTab() {
-  const tableBody = document.querySelector('#tabcontrib tbody');
+  const contribBody = document.getElementById("contribBody");
+  const deptSelect = document.getElementById("departmentSelect");
 
-  // --- Auto-resize function ---
-  function autoResizeTextarea(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
+  // Create one PLO row
+  function createRow(text, index) {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td class="text-center">${index + 1}</td>
+      <td>
+        <textarea id="contrib${index}" name="contrib${index}"
+          class="form-control form-control-sm border-0 p-1 auto-height"
+          rows="1">${text}</textarea>
+      </td>
+      <td class="text-center">
+        <input type="number" 
+          class="form-control spinner-only form-control-sm text-center border-0"
+          id="contribval${index}" name="contribval${index}"
+          min="1" max="5" step="1" value="3">
+      </td>
+    `;
+    return row;
   }
 
-  function enableAutoResize() {
-    document.querySelectorAll('.auto-height').forEach(textarea => {
-      autoResizeTextarea(textarea);
-      textarea.addEventListener('input', () => autoResizeTextarea(textarea));
+  // Load text file and return lines
+  async function loadPLOFile(file) {
+    const res = await fetch(file);
+    if (!res.ok) return []; // return empty array if file not found
+    const text = await res.text();
+    return text.split(/\r?\n/).filter(line => line.trim() !== "");
+  }
+
+  // Load faculty common PLOs initially
+  async function loadFacultyPLOs() {
+    const facultyPLOs = await loadPLOFile("plo/plo.txt");
+    contribBody.innerHTML = "";
+    facultyPLOs.forEach((plo, i) => {
+      contribBody.appendChild(createRow(plo, i));
+    });
+    initSpinners();
+  }
+
+  // Initialize spinners for contribution values
+  function initSpinners() {
+    document.querySelectorAll(".spinner-only").forEach(input => {
+      input.addEventListener("input", () => {
+        let val = parseInt(input.value);
+        if (isNaN(val) || val < 1) input.value = 1;
+        else if (val > 5) input.value = 5;
+      });
     });
   }
 
-  enableAutoResize();
+  // Initial load
+  loadFacultyPLOs();
 
-  // --- Load PLOs from .txt file ---
-  const fileInput = document.getElementById('ploFile');
-  const loadBtn = document.getElementById('loadPLO');
+  // When department changes
+  deptSelect.addEventListener("change", async () => {
+    const dept = deptSelect.value;
 
-  if (loadBtn && fileInput) {
-    loadBtn.addEventListener('click', () => {
-      const file = fileInput.files[0];
-      if (!file) {
-        alert('Please choose a .txt file first.');
-        return;
-      }
+    if (dept === "fc") {
+      // Faculty common: only load common PLOs
+      await loadFacultyPLOs();
+      return;
+    }
 
-      const reader = new FileReader();
-      reader.onload = e => {
-        const lines = e.target.result
-          .split(/\r?\n/)
-          .map(l => l.trim())
-          .filter(l => l !== '');
+    try {
+      const facultyPLOs = await loadPLOFile("plo/plo.txt");
+      const deptPLOs = await loadPLOFile(`plo/plo_${dept}.txt`);
+      const allPLOs = [...facultyPLOs, ...deptPLOs];
 
-        const max = Math.min(lines.length, 9); // only fill up to 9
-
-        for (let i = 0; i < max; i++) {
-          const textarea = document.getElementById(`contrib${i}`);
-          if (textarea) {
-            textarea.value = lines[i];
-            autoResizeTextarea(textarea);
-          }
-        }
-
-        if (lines.length > 9) {
-          alert('Only the first 9 PLOs were loaded (extra lines ignored).');
-        }
-      };
-      reader.readAsText(file);
-    });
-  }
-
-  // --- Add new row for department-specific contributions ---
-  const addBtn = document.getElementById('addContribRow');
-  if (addBtn) {
-    addBtn.addEventListener('click', () => {
-      const rowCount = tableBody.querySelectorAll('tr').length;
-      const newRow = document.createElement('tr');
-      newRow.innerHTML = `
-        <td>
-          <textarea id="contrib${rowCount}" name="contrib${rowCount}"
-            placeholder="Contribution ${rowCount + 1}"
-            class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea>
-        </td>
-        <td>
-          <input class="form-control form-control-sm border-0 p-1"
-            type="text" id="contribval${rowCount}" name="contribval${rowCount}" placeholder="">
-        </td>
-      `;
-      tableBody.appendChild(newRow);
-      const newTextarea = newRow.querySelector('textarea');
-      autoResizeTextarea(newTextarea);
-      newTextarea.addEventListener('input', () => autoResizeTextarea(newTextarea));
-    });
-  }
+      contribBody.innerHTML = "";
+      allPLOs.forEach((plo, i) => {
+        contribBody.appendChild(createRow(plo, i));
+      });
+      initSpinners();
+    } catch (err) {
+      console.error(err);
+      alert("Could not load department-specific PLOs.");
+    }
+  });
 }

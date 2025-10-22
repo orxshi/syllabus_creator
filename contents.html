@@ -1,147 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Contents</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"> <!-- your consolidated CSS -->
+<style>
+  /* Auto-resize textareas */
+  textarea.auto-height {
+      resize: vertical;
+      height: auto;
+      overflow: hidden;
+  }
+
+  /* Vertical alignment in table cells */
+  th, td {
+      vertical-align: middle;
+  }
+</style>
+</head>
+<body class="bg-white p-3">
+
 <div class="p-2">
 
-    <!-- Contents Table -->
-    <table id="tabcontents" class="table table-sm mb-0">
-        <colgroup>
-            <col style="width:60px;">
-            <col style="width:80px;">
-            <col style="width:auto;">
-            <col style="width:130px;">
-        </colgroup>
-        <thead class="border-bottom-0">
-            <tr>
-                <th>Week</th>
-                <th>Chapter</th>
-                <th>Subject</th>
-                <th>Exams</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Week 1 -->
-            <tr>
-                <td><input type="text" id="conweek0" name="conweek0" value="1" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp0" name="conchp0" placeholder="1" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub0" name="consub0" placeholder="Introduction" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab0" name="conlab0" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 2 -->
-            <tr>
-                <td><input type="text" id="conweek1" name="conweek1" value="2" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp1" name="conchp1" placeholder="2,3" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub1" name="consub1" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab1" name="conlab1" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 3 -->
-            <tr>
-                <td><input type="text" id="conweek2" name="conweek2" value="3" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp2" name="conchp2" placeholder="4-6" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub2" name="consub2" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab2" name="conlab2" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 4 -->
-            <tr>
-                <td><input type="text" id="conweek3" name="conweek3" value="4" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp3" name="conchp3" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub3" name="consub3" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab3" name="conlab3" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 5 -->
-            <tr>
-                <td><input type="text" id="conweek4" name="conweek4" value="5" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp4" name="conchp4" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub4" name="consub4" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab4" name="conlab4" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 6 -->
-            <tr>
-                <td><input type="text" id="conweek5" name="conweek5" value="6" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp5" name="conchp5" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub5" name="consub5" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab5" name="conlab5" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 7 -->
-            <tr>
-                <td><input type="text" id="conweek6" name="conweek6" value="7" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp6" name="conchp6" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub6" name="consub6" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab6" name="conlab6" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 8 -->
-            <tr>
-                <td><input type="text" id="conweek7" name="conweek7" value="8" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp7" name="conchp7" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub7" name="consub7" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab7" name="conlab7" class="form-control form-control-sm border-0 p-1" value="Midterm exam"></td>
-            </tr>
-            <!-- Week 9 -->
-            <tr>
-                <td><input type="text" id="conweek8" name="conweek8" value="9" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp8" name="conchp8" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub8" name="consub8" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab8" name="conlab8" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 10 -->
-            <tr>
-                <td><input type="text" id="conweek9" name="conweek9" value="10" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp9" name="conchp9" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub9" name="consub9" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab9" name="conlab9" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 11 -->
-            <tr>
-                <td><input type="text" id="conweek10" name="conweek10" value="11" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp10" name="conchp10" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub10" name="consub10" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab10" name="conlab10" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 12 -->
-            <tr>
-                <td><input type="text" id="conweek11" name="conweek11" value="12" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp11" name="conchp11" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub11" name="consub11" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab11" name="conlab11" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 13 -->
-            <tr>
-                <td><input type="text" id="conweek12" name="conweek12" value="13" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp12" name="conchp12" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub12" name="consub12" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab12" name="conlab12" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 14 -->
-            <tr>
-                <td><input type="text" id="conweek13" name="conweek13" value="14" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp13" name="conchp13" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub13" name="consub13" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab13" name="conlab13" class="form-control form-control-sm border-0 p-1"></td>
-            </tr>
-            <!-- Week 15 -->
-            <tr>
-                <td><input type="text" id="conweek14" name="conweek14" value="15" class="form-control form-control-sm border-0 p-1" readonly></td>
-                <td><input type="text" id="conchp14" name="conchp14" class="form-control form-control-sm border-0 p-1"></td>
-                <td><textarea id="consub14" name="consub14" class="form-control form-control-sm border-0 p-1 auto-height" rows="1"></textarea></td>
-                <td><input type="text" id="conlab14" name="conlab14" class="form-control form-control-sm border-0 p-1" value="Final exam"></td>
-            </tr>
-        </tbody>
-    </table>
+  <!-- Contents Table -->
+  <table id="tabcontents" class="table table-sm mb-0">
+    <colgroup>
+      <col style="width:60px;">
+      <col style="width:80px;">
+      <col style="width:auto;">
+      <col style="width:130px;">
+    </colgroup>
+    <thead class="border-bottom-0">
+      <tr>
+        <th>Week</th>
+        <th>Chapter</th>
+        <th>Subject</th>
+        <th>Exams</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Weeks 1–15 -->
+      <tr>
+        <td class="week-label">1</td>
+        <td><input type="number" name="conchp0" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub0" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab0" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">2</td>
+        <td><input type="number" name="conchp1" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub1" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab1" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">3</td>
+        <td><input type="number" name="conchp2" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub2" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab2" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">4</td>
+        <td><input type="number" name="conchp3" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub3" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab3" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">5</td>
+        <td><input type="number" name="conchp4" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub4" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab4" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">6</td>
+        <td><input type="number" name="conchp5" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub5" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab5" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">7</td>
+        <td><input type="number" name="conchp6" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub6" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab6" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">8</td>
+        <td><input type="number" name="conchp7" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub7" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab7" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">9</td>
+        <td><input type="number" name="conchp8" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub8" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab8" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">10</td>
+        <td><input type="number" name="conchp9" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub9" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab9" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">11</td>
+        <td><input type="number" name="conchp10" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub10" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab10" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">12</td>
+        <td><input type="number" name="conchp11" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub11" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab11" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">13</td>
+        <td><input type="number" name="conchp12" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub12" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab12" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">14</td>
+        <td><input type="number" name="conchp13" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub13" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab13" class="form-control form-control-sm"></td>
+      </tr>
+      <tr>
+        <td class="week-label">15</td>
+        <td><input type="number" name="conchp14" class="form-control form-control-sm spinner-only"></td>
+        <td><textarea name="consub14" class="form-control form-control-sm auto-height" rows="1"></textarea></td>
+        <td><input type="text" name="conlab14" class="form-control form-control-sm"></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
-<style>
-    textarea.form-control {
-        resize: vertical;
-        height: auto;
-    }
-</style>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Auto-resize all textareas
-    function autoResizeTextarea(textarea) {
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
-    }
+  // Auto-resize all textareas
+  function autoResizeTextarea(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+  }
 
-    document.querySelectorAll('.auto-height').forEach(textarea => {
-        autoResizeTextarea(textarea); // initial resize
-        textarea.addEventListener('input', () => autoResizeTextarea(textarea));
-    });
+  document.querySelectorAll('.auto-height').forEach(textarea => {
+      autoResizeTextarea(textarea); // initial resize
+      textarea.addEventListener('input', () => autoResizeTextarea(textarea));
+  });
 </script>
+
+</body>
+</html>

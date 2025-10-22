@@ -1,73 +1,189 @@
-/* General body styling */
+/* ===============================
+   General body styling
+   =============================== */
 body {
     padding: 2rem;
     background-color: #f8f9fa;
+    color: #212529;
+    font-family: system-ui, sans-serif;
 }
 
-/* Limit main container width and center it */
+/* ===============================
+   Container
+   =============================== */
 .container {
-    max-width: 500px; /* adjust as needed */
+    max-width: 500px;
     margin: auto;
 }
 
-/* Highlight file items on hover */
+/* ===============================
+   Table styling
+   =============================== */
+table {
+    font-size: 0.875rem;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table th {
+    font-weight: bold;
+    border-bottom: 1px solid #dee2e6;
+}
+
+table td {
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+/* ===============================
+   Inputs and textareas in tables
+   =============================== */
+table input,
+table textarea {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    padding: 0.25rem 0.5rem;
+    width: 100%;
+    font-size: 0.875rem;
+    resize: vertical;
+}
+
+/* Specific tables by ID */
+#tabcontents input,
+#tabcontents textarea,
+#taboutcome input,
+#taboutcome textarea,
+#tabcontrib input,
+#tabcontrib textarea {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    padding: 0.25rem 0.5rem;
+    width: 100%;
+    font-size: 0.875rem;
+    resize: vertical;
+}
+
+/* ===============================
+   List group styling
+   =============================== */
 .list-group-item:hover {
     background-color: #e9ecef;
     cursor: pointer;
 }
 
-/* Flex items for file row */
 .list-group-item.d-flex {
-    flex-wrap: wrap; /* allow buttons to wrap on small screens */
+    flex-wrap: wrap;
     align-items: center;
 }
 
-/* File name spacing */
 .list-group-item span {
     margin-right: 1rem;
 }
 
-/* Buttons container spacing */
 .list-group-item div {
     margin-top: 0.5rem;
 }
 
 @media (min-width: 576px) {
     .list-group-item div {
-        margin-top: 0; /* inline on larger screens */
+        margin-top: 0;
     }
 }
 
-/* Not-found button */
 .not-found-btn {
     margin-top: 1.5rem;
 }
 
-/* Force faint placeholder color overriding Bootstrap */
+/* ===============================
+   Form placeholder styling
+   =============================== */
 input::placeholder,
 textarea::placeholder,
 .form-control::placeholder {
-  color: rgba(0, 0, 0, 0.25) !important;  /* faint gray */
-  font-style: italic;
-  opacity: 1
+    color: rgba(0, 0, 0, 0.25) !important;
+    font-style: italic;
+    opacity: 1;
 }
 
-/* Optional: keep actual input text dark */
 input, textarea {
-    color: #212529; /* dark text */
+    color: #212529;
 }
 
-/* Clean invalid input: red border only, no icon, no padding shift */
+/* ===============================
+   Invalid input styling
+   =============================== */
 .is-invalid {
-  border-color: #dc3545 !important;
-  background-color: #fff6f6 !important;
-  box-shadow: none !important;
-  background-image: none !important; /* remove icon */
-  padding-right: 0.75rem !important; /* reset to normal padding */
+    border-color: #dc3545 !important;
+    background-color: #fff6f6 !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    padding-right: 0.75rem !important;
 }
 
-/* Prevent Bootstrap from showing the default exclamation icon */
-.is-invalid:focus,
-.is-invalid {
-  background-image: none !important;
+/* ===============================
+   Tooltip / Help styling
+   =============================== */
+.tooltip-span {
+    cursor: pointer;
+    border-bottom: 1px dotted #000; /* dashed underline */
+    text-decoration: none;           /* remove any solid underline */
+}
+
+.text-decoration-underline {
+    text-decoration: underline !important;
+}
+
+/* ===============================
+   Textarea auto-height
+   =============================== */
+textarea.auto-height {
+    resize: vertical;
+    height: auto;
+    overflow: hidden;
+}
+
+/* ===============================
+   Spinner-only inputs
+   =============================== */
+.spinner-only {
+    appearance: textfield;          /* standard */
+    -webkit-appearance: textfield;  /* Chrome, Safari */
+    -moz-appearance: textfield;     /* Firefox */
+}
+
+.spinner-only::-webkit-outer-spin-button,
+.spinner-only::-webkit-inner-spin-button {
+    appearance: none;               /* standard */
+    -webkit-appearance: none;       /* Chrome, Safari */
+    margin: 0;
+}
+
+/* ===============================
+   Contribution / Outcomes Tables
+   =============================== */
+#tabcontrib th, #tabcontrib td,
+#taboutcome th, #taboutcome td {
+    vertical-align: middle;
+    font-size: 0.875rem;
+}
+
+/* ===============================
+   Utility classes
+   =============================== */
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+.p-1 {
+    padding: 0.25rem !important;
+}
+
+.p-2 {
+    padding: 0.5rem !important;
 }
