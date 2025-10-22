@@ -43,7 +43,35 @@
     </thead>
     <tbody id="contribBody">
       <!-- PLO rows will be loaded dynamically -->
+      <!-- Example of a dynamically loaded row -->
+      <!--
+      <tr>
+        <td class="text-center">1</td>
+        <td>PLO description here</td>
+        <td class="text-center">
+          <input type="number" class="spinner-only contribution" min="1" max="5" value="1">
+        </td>
+      </tr>
+      -->
     </tbody>
   </table>
 
 </div>
+
+<script>
+  // If rows are loaded dynamically, ensure each contribution input uses spinner-only with min/max
+  const contribBody = document.getElementById('contribBody');
+
+  const observer = new MutationObserver(() => {
+    const inputs = contribBody.querySelectorAll('input.contribution');
+    inputs.forEach(input => {
+      input.type = 'number';
+      input.classList.add('spinner-only');
+      input.min = 1;
+      input.max = 5;
+      if (!input.value) input.value = 1;
+    });
+  });
+
+  observer.observe(contribBody, { childList: true, subtree: true });
+</script>

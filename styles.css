@@ -148,17 +148,22 @@ textarea.auto-height {
    Spinner-only inputs
    =============================== */
 .spinner-only {
-    appearance: textfield;          /* standard */
-    -webkit-appearance: textfield;  /* Chrome, Safari */
-    -moz-appearance: textfield;     /* Firefox */
+    /* Use default appearance so arrows show */
+    appearance: auto;            /* standard */
+    -webkit-appearance: auto;    /* Chrome, Safari */
+    -moz-appearance: auto;       /* Firefox */
+    width: 100%;
 }
 
+/* Remove rules that hide arrows */
+/*
 .spinner-only::-webkit-outer-spin-button,
 .spinner-only::-webkit-inner-spin-button {
-    appearance: none;               /* standard */
-    -webkit-appearance: none;       /* Chrome, Safari */
+    appearance: none;
+    -webkit-appearance: none;
     margin: 0;
 }
+*/
 
 /* ===============================
    Contribution / Outcomes Tables

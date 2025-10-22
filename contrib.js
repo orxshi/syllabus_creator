@@ -40,18 +40,7 @@ function initContribTab() {
     initSpinners();
   }
 
-  // Initialize spinners for contribution values
-  function initSpinners() {
-    document.querySelectorAll(".spinner-only").forEach(input => {
-      input.addEventListener("input", () => {
-        let val = parseInt(input.value);
-        if (isNaN(val) || val < 1) input.value = 1;
-        else if (val > 5) input.value = 5;
-      });
-    });
-  }
-
-  // Initial load
+    // Initial load
   loadFacultyPLOs();
 
   // When department changes
