@@ -131,34 +131,61 @@
       if (courseCode) fetchAndPopulateJSON(courseCode);
   });
   loadTabContent('source-placeholder', 'sources.html', () => {
-      const sourcesContainer = document.getElementById('sourcesContainer');
-      const addBtn = document.getElementById('addSourceBtn');
-      let sourceCount = 3;
-      addBtn.addEventListener('click', () => {
-          if (sourceCount >= 5) return;
-          const div = document.createElement('div');
-          div.classList.add('mb-3');
-          const textarea = document.createElement('textarea');
-          textarea.classList.add('form-control');
-          textarea.id = `source${sourceCount}`;
-          textarea.name = `source${sourceCount}`;
-          textarea.placeholder = `Source ${sourceCount + 1}`;
-          textarea.rows = 2;
-          div.appendChild(textarea);
-          sourcesContainer.appendChild(div);
-          sourceCount++;
-          if (sourceCount >= 5) addBtn.style.display = 'none';
-      });
-      if (courseCode) fetchAndPopulateJSON(courseCode);
-  });
+    const sourcesContainer = document.getElementById('sourcesContainer');
+    const addBtn = document.getElementById('addSourceBtn');
+    let sourceCount = sourcesContainer.querySelectorAll('textarea').length;
+
+    addBtn.addEventListener('click', () => {
+        if (sourceCount >= 5) return;
+        const div = document.createElement('div');
+        div.classList.add('mb-3');
+        const textarea = document.createElement('textarea');
+        textarea.classList.add('form-control');
+        textarea.id = `source${sourceCount}`;
+        textarea.name = `source${sourceCount}`;
+        textarea.placeholder = `Source ${sourceCount + 1}`;
+        textarea.rows = 2;
+        div.appendChild(textarea);
+        sourcesContainer.appendChild(div);
+        sourceCount++;
+        if (sourceCount >= 5) addBtn.style.display = 'none';
+    });
+
+    if (courseCode) fetchAndPopulateJSON(courseCode);
+});
+
   loadTabContent('assess-placeholder', 'assess.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
   loadTabContent('outcome-placeholder', 'outcome.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
   loadTabContent('ects-placeholder', 'ects.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
   loadTabContent('contents-placeholder', 'contents.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
-  loadTabContent('contrib-placeholder', 'contrib.html', () => {
-      initContribTab();
-      if (courseCode) fetchAndPopulateJSON(courseCode);
-  });
+
+  // **Contributions tab with JSON loading**
+  loadTabContent('contrib-placeholder', 'contrib.html', async () => {
+    const saveBtn = document.getElementById('save');
+    try {
+        let savedValues = {};
+        let savedDept = "fc";
+
+        if (courseCode) {
+            const jsonPath = `json/${courseCode}.json?cb=${Date.now()}`;
+            const res = await fetch(jsonPath);
+            if (res.ok) {
+                const data = await res.json();
+                Object.keys(data).forEach(k => {
+                    if (k.startsWith("contrib")) savedValues[k] = data[k];
+                });
+                savedDept = data.departmentSelect || "fc";
+            }
+        }
+
+        await initContribTab(savedValues, savedDept);
+        if (saveBtn) saveBtn.disabled = false;
+    } catch (err) {
+        console.error("Error loading contrib tab:", err);
+        if (saveBtn) saveBtn.disabled = false;
+    }
+});
+
 </script>
 
 </body>

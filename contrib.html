@@ -1,20 +1,8 @@
 <div class="p-2">
 
-  <!-- Tooltip -->
-  <div class="mb-2">
-    <span class="tooltip-span" title="Contribution level:
-1: Very low
-2: Low
-3: Moderate
-4: High
-5: Very high">
-      Help
-    </span>
-  </div>
-
   <!-- Department Selection -->
   <div class="mb-3">
-    <select id="departmentSelect" class="form-select form-select-sm">
+    <select id="departmentSelect" name="departmentSelect" class="form-select form-select-sm">
       <option value="" disabled selected>Select a department</option>
       <option value="fc">Faculty common</option>
       <option value="me">Mechanical Engineering</option>
@@ -31,47 +19,89 @@
   <table id="tabcontrib" class="table table-sm mb-0 align-middle">
     <colgroup>
       <col style="width:5%;">
-      <col style="width:75%;">
-      <col style="width:20%;">
+      <col style="width:55%;">
+      <col style="width:8%;">
+      <col style="width:8%;">
+      <col style="width:8%;">
+      <col style="width:8%;">
+      <col style="width:8%;">
     </colgroup>
     <thead class="border-bottom-0">
       <tr>
         <th class="text-center">#</th>
         <th class="text-start">Program Learning Outcome (PLO)</th>
-        <th class="text-center">Contribution</th>
+        <th class="text-center">Very Low</th>
+        <th class="text-center">Low</th>
+        <th class="text-center">Moderate</th>
+        <th class="text-center">High</th>
+        <th class="text-center">Very High</th>
       </tr>
     </thead>
     <tbody id="contribBody">
       <!-- PLO rows will be loaded dynamically -->
-      <!-- Example of a dynamically loaded row -->
-      <!--
-      <tr>
-        <td class="text-center">1</td>
-        <td>PLO description here</td>
-        <td class="text-center">
-          <input type="number" class="spinner-only contribution" min="1" max="5" value="1">
-        </td>
-      </tr>
-      -->
     </tbody>
   </table>
-
 </div>
 
 <script>
-  // If rows are loaded dynamically, ensure each contribution input uses spinner-only with min/max
-  const contribBody = document.getElementById('contribBody');
+const contribBody = document.getElementById('contribBody');
 
-  const observer = new MutationObserver(() => {
-    const inputs = contribBody.querySelectorAll('input.contribution');
-    inputs.forEach(input => {
-      input.type = 'number';
-      input.classList.add('spinner-only');
-      input.min = 1;
-      input.max = 5;
-      if (!input.value) input.value = 1;
-    });
+// Create one PLO row with 5 radio buttons (single CL selection)
+function createRow(text, index, savedValue = '') {
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td class="text-center">${index + 1}</td>
+    <td>${text}</td>
+    <td class="text-center"><input type="radio" name="contrib${index}" value="1" ${savedValue === '1' ? 'checked' : ''}></td>
+    <td class="text-center"><input type="radio" name="contrib${index}" value="2" ${savedValue === '2' ? 'checked' : ''}></td>
+    <td class="text-center"><input type="radio" name="contrib${index}" value="3" ${savedValue === '3' ? 'checked' : ''}></td>
+    <td class="text-center"><input type="radio" name="contrib${index}" value="4" ${savedValue === '4' ? 'checked' : ''}></td>
+    <td class="text-center"><input type="radio" name="contrib${index}" value="5" ${savedValue === '5' ? 'checked' : ''}></td>
+  `;
+  return row;
+}
+
+// Load PLO file (text file with one PLO per line)
+async function loadPLOFile(file) {
+  const res = await fetch(file);
+  if (!res.ok) return [];
+  const text = await res.text();
+  return text.split(/\r?\n/).filter(line => line.trim() !== "");
+}
+
+// Initialize contribution table
+async function initContribTab(savedValuesObj = {}, savedDept = "fc") {
+  const deptSelect = document.getElementById("departmentSelect");
+  deptSelect.value = savedDept;
+
+  const facultyPLOs = await loadPLOFile("plo/plo.txt");
+  const deptPLOs = savedDept !== "fc" ? await loadPLOFile(`plo/plo_${savedDept}.txt`) : [];
+  const allPLOs = [...facultyPLOs, ...deptPLOs];
+
+  contribBody.innerHTML = "";
+  allPLOs.forEach((plo, i) => {
+    const savedValue = savedValuesObj[`contrib${i}`] || '';
+    contribBody.appendChild(createRow(plo, i, savedValue));
   });
 
-  observer.observe(contribBody, { childList: true, subtree: true });
+  // When department changes, reload department PLOs
+  deptSelect.addEventListener("change", async () => {
+    const dept = deptSelect.value;
+
+    // Save current radio button values
+    const savedValuesTemp = {};
+    contribBody.querySelectorAll('tr').forEach((tr, i) => {
+      const radio = tr.querySelector('input[type="radio"]:checked');
+      savedValuesTemp[`contrib${i}`] = radio ? radio.value : '';
+    });
+
+    const newDeptPLOs = dept === "fc" ? [] : await loadPLOFile(`plo/plo_${dept}.txt`);
+    const newAllPLOs = [...facultyPLOs, ...newDeptPLOs];
+    contribBody.innerHTML = "";
+    newAllPLOs.forEach((plo, i) => {
+      const savedValue = savedValuesTemp[`contrib${i}`] || '';
+      contribBody.appendChild(createRow(plo, i, savedValue));
+    });
+  });
+}
 </script>

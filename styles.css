@@ -192,3 +192,11 @@ textarea.auto-height {
 .p-2 {
     padding: 0.5rem !important;
 }
+
+/* Highlight checkbox groups in red when invalid */
+.is-invalid-group {
+    border: 1px solid #dc3545; /* Bootstrap danger red */
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
+

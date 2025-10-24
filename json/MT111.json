@@ -1,6 +1,6 @@
 {
-    "coursename": "Calculus I",
     "coursecode": "MT111",
+    "coursename": "Calculus I",
     "coursetype": "Compulsory",
     "prerequisite": "",
     "theoretical": "3",
@@ -9,14 +9,7 @@
     "yearofstudy": "1",
     "semdel": "1",
     "level": "1st year BSc",
-    "eligdep": [
-        "All departments"
-    ],
     "lang": "English",
-    "mode": [
-        "Face to face",
-        "E-learning"
-    ],
     "recom": "Basic background in pre-calculus",
     "obj0": "Conceptual overview of law and methods in engineering subjects",
     "obj1": "To understand the major theoretical background of functions, limits, derivatives and their application in\nengineering problems",
@@ -35,39 +28,23 @@
     "act4": "",
     "actper4": "",
     "out0": "Analyze functions and functions of graphs",
-    "outval0": "1,2",
     "out1": "Understand concept of limit and continuity",
-    "outval1": "1,2",
     "out2": "Analyze differentiation",
-    "outval2": "1",
     "out3": "Understand concept of differentiation",
-    "outval3": "1,2",
     "out4": "Understand concept of drawing graph of derivatives and limits",
-    "outval4": "1,2",
     "out5": "",
-    "outval5": "",
     "out6": "",
-    "outval6": "",
     "out7": "",
-    "outval7": "",
+    "departmentSelect": "fc",
     "contrib0": "Ability to understand and apply knowledge of mathematics, science, and engineering",
-    "contribval0": "4",
     "contrib1": "Ability to design and conduct experiments as well as to analyze and interpret",
-    "contribval1": "2",
     "contrib2": "Ability to work in multidisciplinary teams while exhibiting professional responsibility and ethical conduct",
-    "contribval2": "1",
     "contrib3": "Ability to apply systems thinking in problem solving",
-    "contribval3": "5",
     "contrib4": "Knowledge of contemporary issues while continuing to engage in lifelong learning",
-    "contribval4": "2",
     "contrib5": "Ability to use the techniques, skills and modern engineering tools necessary for engineering practice",
-    "contribval5": "3",
     "contrib6": "Ability to express their ideas and findings, in written and oral form",
-    "contribval6": "4",
     "contrib7": "Ability to design and integrate systems, components or processes to meet desired needs within realistic constraints",
-    "contribval7": "2",
-    "contrib8": "Ability to approach engineering problems and effects of their possible solutions within a well structured, ethically responsible and professional manner ",
-    "contribval8": "3",
+    "contrib8": "Ability to approach engineering problems and effects of their possible solutions within a well structured, ethically responsible and professional manner",
     "ectsact1": "Course duration in class (including the Exam week)",
     "ectsnm1": "15",
     "ectsdur1": "3",
@@ -139,5 +116,43 @@
     "conlab13": "",
     "conchp14": "",
     "consub14": "",
-    "conlab14": "Final"
+    "conlab14": "Final",
+    "eligdep": [
+        "All departments"
+    ],
+    "mode": [
+        "Face to face",
+        "E-learning"
+    ],
+    "contribval0": "4",
+    "contribval1": "2",
+    "contribval2": "1",
+    "contribval3": "5",
+    "contribval4": "2",
+    "contribval5": "3",
+    "contribval6": "4",
+    "contribval7": "2",
+    "contribval8": "3",
+    "outval0": [
+        "1",
+        "2"
+    ],
+    "outval1": [
+        "1",
+        "2"
+    ],
+    "outval2": [
+        "1"
+    ],
+    "outval3": [
+        "1",
+        "2"
+    ],
+    "outval4": [
+        "1",
+        "2"
+    ],
+    "outval5": [],
+    "outval6": [],
+    "outval7": []
 }

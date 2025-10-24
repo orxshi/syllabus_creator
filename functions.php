@@ -396,11 +396,22 @@ function addContribsRow(
     $contribs0 = [];
     $contribs1 = [];
 
-    while (isset($cleanPost["contrib$i"]) && trim($cleanPost["contrib$i"]) !== '') {
-        $contribs0[] = $cleanPost["contrib$i"];
-        $contribs1[] = isset($cleanPost["contribval$i"]) ? $cleanPost["contribval$i"] : '';
-        $i++;
-    }
+    // while (isset($cleanPost["contrib$i"]) && trim($cleanPost["contrib$i"]) !== '') {
+    //     $contribs0[] = $cleanPost["contrib$i"];
+    //     $contribs1[] = isset($cleanPost["contribval$i"]) ? $cleanPost["contribval$i"] : '';
+    //     $i++;
+    // }
+
+    for ($i = 0; isset($cleanPost["contrib$i"]); $i++) {
+    $contribText = $cleanPost["contrib$i"];             // PLO text
+    $contribCL   = $cleanPost["contribval$i"] ?? '';   // selected CL (1–5)
+    if (trim($contribText) === '') continue;
+
+    $table->addRow($rowStyle['height'] ?? null, $rowStyle);
+    $table->addCell($tableWidth * 0.04)->addText($i + 1);
+    $table->addCell($tableWidth * 0.86)->addText($contribText);
+    $table->addCell($tableWidth * 0.10)->addText($contribCL);
+}
 
     // Add contribution rows
     foreach ($contribs0 as $idx => $contrib) {
@@ -457,34 +468,38 @@ function addOutcomesRow(
           ->addText("Assess.", []);
 
     // Collect outcomes
-    $outcomes0 = [];
-    $outcomes1 = [];
+    $outcomes = [];
     for ($i = 0; $i < 7; $i++) {
         if (!empty($cleanPost["out" . $i])) {
-            $outcomes0[] = $cleanPost["out" . $i];
-            $outcomes1[] = $cleanPost["outval" . $i];
+            $outcomes[] = [
+                'text' => $cleanPost["out" . $i],
+                'methods' => $cleanPost["outval" . $i] ?? [] // array of checkbox values
+            ];
         }
     }
 
     // Add outcome rows
-    foreach ($outcomes0 as $idx => $outcome) {
+    foreach ($outcomes as $idx => $outcome) {
         $table->addRow($rowStyle['height'] ?? null, $rowStyle);
 
         // Number cell (left)
-        $table->addCell($tableWidth * 0.03, ['valign' => 'center'])->addText($idx + 1, []);
+        $table->addCell($tableWidth * 0.03, ['valign' => 'center'])
+              ->addText($idx + 1, []);
 
-        // Outcome text cell (middle) with indent
+        // Outcome text cell (middle)
         $table->addCell($tableWidth * 0.87, ['wrapText' => true, 'valign' => 'center'])
-              ->addText($outcome, []);
+              ->addText($outcome['text'], []);
 
-        // Assessment cell (right)
+        // Assessment cell (right) — convert checked checkboxes to comma-separated numbers
+        $methodsCsv = '';
+        if (is_array($outcome['methods'])) {
+            $methodsCsv = implode(',', $outcome['methods']);
+        }
         $table->addCell($tableWidth * 0.10, ['valign' => 'center'])
-              ->addText($outcomes1[$idx] ?? '', []);
+              ->addText($methodsCsv, []);
     }
 
-    
-
-    // Assessment Methods row
+    // Assessment Methods row (legend)
     $table->addRow($rowStyle['height'] ?? null, $rowStyle);
     $table->addCell($tableWidth, ['gridSpan' => 3, 'valign' => 'center'])
           ->addText(
@@ -493,6 +508,7 @@ function addOutcomesRow(
               ['align' => 'center', 'spaceBefore' => 0, 'spaceAfter' => 0]
           );
 }
+
 
 
 ?>
