@@ -76,7 +76,7 @@
     </div>
 
     <!-- hidden input to store course code -->
-    <input type="hidden" name="coursecode" id="coursecode" value="">
+    <!-- <input type="hidden" name="coursecode" id="coursecode" value=""> -->
   </form>
 </div>
 
@@ -86,14 +86,37 @@
 <script src="saveload.js"></script>
 <script src="spinner.js"></script>
 <script>
-  // Get course code from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const courseCode = urlParams.get('course');
-  const courseInput = document.getElementById('coursecode');
+  async function loadCourse()
+  {
+    const urlParams = new URLSearchParams(window.location.search);
+    const courseCode = urlParams.get('course');
 
-  if (courseCode && courseInput) {
-      courseInput.value = courseCode; // set hidden input
+    let data = {};
+
+  if (courseCode) {
+    try {
+      const res = await fetch(`json/${courseCode}.json`);
+      if (res.ok) {
+        console.log(`Loading existing data from ${courseCode}.json`);
+        data = await res.json();
+      } else {
+        console.warn(`JSON for ${courseCode} not found. Using empty form.`);
+      }
+    } catch (err) {
+      console.error(`Error fetching ${courseCode}.json:`, err);
+    }
+  } else {
+    console.log("No courseCode provided — opening fresh form.");
   }
+
+
+
+
+
+
+
+
+
 
   const loadTabContent = (id, file, callback) => {
       fetch(file)
@@ -107,7 +130,7 @@
   // Load all tabs
   loadTabContent('basic-placeholder', 'basic.html', () => {
       initSpinners();
-      if (courseCode) fetchAndPopulateJSON(courseCode);
+      fetchAndPopulateJSON(data);
   });
   loadTabContent('objectives-placeholder', 'objectives.html', () => {
       const objectivesContainer = document.getElementById('objectivesContainer');
@@ -128,7 +151,7 @@
           objCount++;
           if (objCount >= 8) addBtn.style.display = 'none';
       });
-      if (courseCode) fetchAndPopulateJSON(courseCode);
+      fetchAndPopulateJSON(data);
   });
   loadTabContent('source-placeholder', 'sources.html', () => {
     const sourcesContainer = document.getElementById('sourcesContainer');
@@ -151,40 +174,61 @@
         if (sourceCount >= 5) addBtn.style.display = 'none';
     });
 
-    if (courseCode) fetchAndPopulateJSON(courseCode);
+    fetchAndPopulateJSON(data);
 });
 
-  loadTabContent('assess-placeholder', 'assess.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
-  loadTabContent('outcome-placeholder', 'outcome.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
-  loadTabContent('ects-placeholder', 'ects.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
-  loadTabContent('contents-placeholder', 'contents.html', () => { if (courseCode) fetchAndPopulateJSON(courseCode); });
 
-  // **Contributions tab with JSON loading**
-  loadTabContent('contrib-placeholder', 'contrib.html', async () => {
-    const saveBtn = document.getElementById('save');
-    try {
-        let savedValues = {};
-        let savedDept = "fc";
+loadTabContent('assess-placeholder', 'assess.html', () => {
+    const assessContainer = document.getElementById('assessContainer');
+    const addBtn = document.getElementById('addAssessmentBtn');
+    let actCount = 4;
 
-        if (courseCode) {
-            const jsonPath = `json/${courseCode}.json?cb=${Date.now()}`;
-            const res = await fetch(jsonPath);
-            if (res.ok) {
-                const data = await res.json();
-                Object.keys(data).forEach(k => {
-                    if (k.startsWith("contrib")) savedValues[k] = data[k];
-                });
-                savedDept = data.departmentSelect || "fc";
-            }
-        }
+    addBtn.addEventListener('click', () => {
+        if (actCount >= 8) { addBtn.style.display = 'none'; return; }
 
-        await initContribTab(savedValues, savedDept);
-        if (saveBtn) saveBtn.disabled = false;
-    } catch (err) {
-        console.error("Error loading contrib tab:", err);
-        if (saveBtn) saveBtn.disabled = false;
-    }
+        const tr = document.createElement('tr');
+
+        // First cell with text input
+        const tdActivity = document.createElement('td');
+        const inputActivity = document.createElement('input');
+        inputActivity.type = 'text';
+        inputActivity.name = `act${actCount}`;
+        inputActivity.placeholder = `Activity ${actCount + 1}`;
+        inputActivity.className = 'form-control form-control-sm border-0 p-1';
+        tdActivity.appendChild(inputActivity);
+        tr.appendChild(tdActivity);
+
+        // Second cell with number input
+        const tdPercent = document.createElement('td');
+        const inputPercent = document.createElement('input');
+        inputPercent.type = 'number';
+        inputPercent.name = `actper${actCount}`;
+        inputPercent.step = 1;
+        inputPercent.min = 0;
+        inputPercent.max = 100;
+        inputPercent.className = 'form-control form-control-sm border-0 p-1 spinner-only';
+        tdPercent.appendChild(inputPercent);
+        tr.appendChild(tdPercent);
+
+        assessContainer.appendChild(tr);
+
+        actCount++;
+        if (actCount >= 8) addBtn.style.display = 'none';
+    });
+
+    fetchAndPopulateJSON(data);
 });
+
+  // loadTabContent('assess-placeholder', 'assess.html', () => { fetchAndPopulateJSON(data); });
+  loadTabContent('outcome-placeholder', 'outcome.html', () => {  fetchAndPopulateJSON(data); });
+  loadTabContent('ects-placeholder', 'ects.html', () => {  fetchAndPopulateJSON(data); });
+  loadTabContent('contents-placeholder', 'contents.html', () => {  fetchAndPopulateJSON(data); });
+  loadTabContent('contrib-placeholder', 'contrib.html', () => {  fetchAndPopulateJSON(data); });
+}
+
+loadCourse();
+
+  
 
 </script>
 

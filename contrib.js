@@ -11,11 +11,11 @@ function createRow(text, index, savedValue = '') {
     row.innerHTML = `
         <td class="text-center">${index + 1}</td>
         <td>${text}</td>
-        <td class="text-center"><input type="radio" name="contrib${index}" value="1" ${savedValue === '1' ? 'checked' : ''}></td>
-        <td class="text-center"><input type="radio" name="contrib${index}" value="2" ${savedValue === '2' ? 'checked' : ''}></td>
-        <td class="text-center"><input type="radio" name="contrib${index}" value="3" ${savedValue === '3' ? 'checked' : ''}></td>
-        <td class="text-center"><input type="radio" name="contrib${index}" value="4" ${savedValue === '4' ? 'checked' : ''}></td>
-        <td class="text-center"><input type="radio" name="contrib${index}" value="5" ${savedValue === '5' ? 'checked' : ''}></td>
+        <td class="text-center"><input type="radio" name="contribval${index}" value="1" ${savedValue === '1' ? 'checked' : ''}></td>
+        <td class="text-center"><input type="radio" name="contribval${index}" value="2" ${savedValue === '2' ? 'checked' : ''}></td>
+        <td class="text-center"><input type="radio" name="contribval${index}" value="3" ${savedValue === '3' ? 'checked' : ''}></td>
+        <td class="text-center"><input type="radio" name="contribval${index}" value="4" ${savedValue === '4' ? 'checked' : ''}></td>
+        <td class="text-center"><input type="radio" name="contribval${index}" value="5" ${savedValue === '5' ? 'checked' : ''}></td>
     `;
     return row;
 }
@@ -34,7 +34,7 @@ async function initContribTab(savedValuesObj = {}, savedDept = "fc") {
     function renderRows(savedValues) {
         contribBody.innerHTML = "";
         allPLOs.forEach((plo, i) => {
-            const savedValue = savedValues[`contrib${i}`] || '';
+            const savedValue = savedValues[`contribval${i}`] || '';
             contribBody.appendChild(createRow(plo, i, savedValue));
         });
     }
@@ -48,7 +48,7 @@ async function initContribTab(savedValuesObj = {}, savedDept = "fc") {
             const savedValuesTemp = {};
             contribBody.querySelectorAll('tr').forEach((tr, i) => {
                 const radio = tr.querySelector('input[type="radio"]:checked');
-                savedValuesTemp[`contrib${i}`] = radio ? radio.value : '';
+                savedValuesTemp[`contribval${i}`] = radio ? radio.value : '';
             });
 
             const newDeptPLOs = dept === "fc" ? [] : await loadPLOFile(`plo/plo_${dept}.txt`);

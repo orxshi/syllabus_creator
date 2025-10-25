@@ -116,15 +116,15 @@ function saveFormData(e) {
 // =======================
 // LOAD JSON AND POPULATE FORM
 // =======================
-async function fetchAndPopulateJSON(courseCode) {
-    if (!courseCode) return;
+async function fetchAndPopulateJSON(data) {
+    if (!data) return;
 
     try {
-        await new Promise(resolve => setTimeout(resolve, 400));
-        const res = await fetch(`json/${courseCode}.json`);
-        if (!res.ok) throw new Error("JSON file not found for " + courseCode);
+        // await new Promise(resolve => setTimeout(resolve, 400));
+        // const res = await fetch(`json/${courseCode}.json`);
+        // if (!res.ok) throw new Error("JSON file not found for " + courseCode);
 
-        const data = await res.json(); // flat JSON
+        // const data = await res.json(); // flat JSON
 
         // --- Populate checkboxes ---
         ["eligdep", "mode"].forEach(group => {
@@ -186,11 +186,57 @@ async function fetchAndPopulateJSON(courseCode) {
             });
         }
 
+        // --- Populate Assessments (Activities) ---
+const assessContainer = document.getElementById("assessContainer");
+if (assessContainer) {
+    let actCount = assessContainer.querySelectorAll("tr").length;
+
+    Object.keys(data).forEach(key => {
+        if (!key.startsWith("act") || key.startsWith("actper")) return;
+
+        const index = parseInt(key.replace("act", ""));
+        const activityValue = data[`act${index}`];
+        const percentValue = data[`actper${index}`];
+
+        // If we need a new row (beyond existing ones)
+        while (assessContainer.querySelectorAll("tr").length <= index) {
+            const tr = document.createElement("tr");
+
+            const tdActivity = document.createElement("td");
+            const inputActivity = document.createElement("input");
+            inputActivity.type = "text";
+            inputActivity.name = `act${actCount}`;
+            inputActivity.placeholder = `Activity ${actCount + 1}`;
+            inputActivity.className = "form-control form-control-sm border-0 p-1";
+            tdActivity.appendChild(inputActivity);
+            tr.appendChild(tdActivity);
+
+            const tdPercent = document.createElement("td");
+            const inputPercent = document.createElement("input");
+            inputPercent.type = "number";
+            inputPercent.name = `actper${actCount}`;
+            inputPercent.step = 1;
+            inputPercent.min = 0;
+            inputPercent.max = 100;
+            inputPercent.className = "form-control form-control-sm border-0 p-1 spinner-only";
+            tdPercent.appendChild(inputPercent);
+            tr.appendChild(tdPercent);
+
+            assessContainer.appendChild(tr);
+            actCount++;
+        }
+
+        // Now fill in the values
+        const actInput = assessContainer.querySelector(`[name="act${index}"]`);
+        const perInput = assessContainer.querySelector(`[name="actper${index}"]`);
+        if (actInput) actInput.value = activityValue || "";
+        if (perInput) perInput.value = percentValue || "";
+    });
+}
+
         // --- Populate department select ---
         const deptSelect = document.getElementById("departmentSelect");
         if (deptSelect && data["departmentSelect"]) deptSelect.value = data["departmentSelect"];
-
-        console.log("✅ Form populated successfully.");
     } catch (err) {
         console.error("Error loading JSON:", err);
         alert("⚠️ Could not load course data. Check console for details.");
