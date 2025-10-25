@@ -43,14 +43,21 @@ function saveFormData(e) {
 });
 
 
-    // --- Outcomes ---
-    for (let i = 0; i < 8; i++) {
-        const outText = document.getElementById(`out${i}`);
-        if (outText && outText.value.trim() !== "") data[`out${i}`] = outText.value.trim();
+    // =======================
+    // --- Outcomes (CLOs) ---
+    // =======================
+    const outcomeRows = document.querySelectorAll("#outcomeContainer tr");
+    outcomeRows.forEach((tr, i) => {
+        const textArea = tr.querySelector(`textarea[id="out${i}"]`);
+        if (textArea && textArea.value.trim() !== "")
+            data[`out${i}`] = textArea.value.trim();
 
-        const outvals = Array.from(document.querySelectorAll(`input[name="outval${i}[]"]:checked`)).map(el => el.value);
-        data[`outval${i}`] = outvals;
-    }
+        const checkedVals = Array.from(
+            tr.querySelectorAll(`input[name="outval${i}[]"]:checked`)
+        ).map(cb => cb.value);
+
+        data[`outval${i}`] = checkedVals;
+    });
 
     // --- Sources (dynamic) ---
     const sourcesContainer = document.getElementById("sourcesContainer");
@@ -149,42 +156,60 @@ async function fetchAndPopulateJSON(data) {
             });
         });
 
+        // --- Populate Sources ---
+const srcContainer = document.getElementById("sourcesContainer");
+if (!srcContainer) {
+    console.warn("Sources container not yet loaded — skipping for now.");
+} else {
+    Object.keys(data).forEach(key => {
+        if (!key.startsWith("source")) return;
+        let ta = document.getElementById(key);
+        if (!ta) {
+            const div = document.createElement("div");
+            div.classList.add("mb-3");
+            ta = document.createElement("textarea");
+            ta.classList.add("form-control");
+            ta.id = key;
+            ta.name = key;
+            ta.rows = 2;
+            ta.placeholder = `Source ${key.replace("source", "")}`;
+            div.appendChild(ta);
+            srcContainer.appendChild(div);
+        }
+        ta.value = data[key];
+    });
+}
+
         // --- Populate contributions (radios) ---
         initContribTab(data, data.departmentSelect || "fc");
 
-        // --- Populate outcomes ---
-        for (let i = 0; i < 8; i++) {
-            const outText = document.getElementById(`out${i}`);
-            if (outText && data[`out${i}`]) outText.value = data[`out${i}`];
+        // --- Populate Outcomes ---
+const outcomeContainer = document.getElementById("outcomeContainer");
+if (!outcomeContainer) {
+    console.warn("Outcome container not yet loaded — will populate later.");
+    outcomesPending = true;  // <-- Mark that we need to fill this later
+} else {
+    outcomesPending = false; // container exists now
+    let existingRows = outcomeContainer.querySelectorAll("tr").length;
+    const outKeys = Object.keys(data).filter(k => /^out\d+$/.test(k));
 
-            if (data[`outval${i}`]) {
-                document.querySelectorAll(`input[name="outval${i}[]"]`).forEach(cb => {
-                    cb.checked = data[`outval${i}`].includes(cb.value);
-                });
-            }
-        }
+    // Ensure all needed rows exist
+    for (let i = existingRows; i < outKeys.length; i++) {
+        document.getElementById("addCLOBtn")?.click();
+    }
 
-        // --- Populate sources ---
-        const container = document.getElementById("sourcesContainer");
-        if (container) {
-            Object.keys(data).forEach(key => {
-                if (!key.startsWith("source")) return;
-                let ta = document.getElementById(key);
-                if (!ta) {
-                    const div = document.createElement("div");
-                    div.classList.add("mb-3");
-                    ta = document.createElement("textarea");
-                    ta.classList.add("form-control");
-                    ta.id = key;
-                    ta.name = key;
-                    ta.rows = 2;
-                    ta.placeholder = `Source ${key.replace("source", "")}`;
-                    div.appendChild(ta);
-                    container.appendChild(div);
-                }
-                ta.value = data[key];
-            });
-        }
+    // Fill text and checkbox states
+    outKeys.forEach(key => {
+        const i = parseInt(key.replace("out", ""));
+        const ta = document.getElementById(`out${i}`);
+        if (ta) ta.value = data[key] || "";
+
+        const outvals = data[`outval${i}`] || [];
+        document.querySelectorAll(`input[name="outval${i}[]"]`).forEach(cb => {
+            cb.checked = outvals.includes(cb.value);
+        });
+    });
+}
 
         // --- Populate Assessments (Activities) ---
 const assessContainer = document.getElementById("assessContainer");

@@ -23,16 +23,11 @@
     "actper1": "35",
     "act2": "Final Exam (Written)",
     "actper2": "45",
-    "act3": "",
-    "actper3": "",
     "out0": "Analyze functions and functions of graphs",
     "out1": "Understand concept of limit and continuity",
     "out2": "Analyze differentiation",
     "out3": "Understand concept of differentiation",
     "out4": "Understand concept of drawing graph of derivatives and limits",
-    "out5": "",
-    "out6": "",
-    "out7": "",
     "departmentSelect": "fc",
     "contribval0": "4",
     "contribval1": "2",
@@ -149,8 +144,5 @@
     "outval4": [
         "1",
         "2"
-    ],
-    "outval5": [],
-    "outval6": [],
-    "outval7": []
+    ]
 }

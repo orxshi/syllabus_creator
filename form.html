@@ -179,9 +179,10 @@
 
 
 loadTabContent('assess-placeholder', 'assess.html', () => {
+      initSpinners();
     const assessContainer = document.getElementById('assessContainer');
     const addBtn = document.getElementById('addAssessmentBtn');
-    let actCount = 4;
+    let actCount = 3;
 
     addBtn.addEventListener('click', () => {
         if (actCount >= 8) { addBtn.style.display = 'none'; return; }
@@ -218,11 +219,81 @@ loadTabContent('assess-placeholder', 'assess.html', () => {
 
     fetchAndPopulateJSON(data);
 });
+loadTabContent('outcome-placeholder', 'outcome.html', () => {
+    const outcomeContainer = document.getElementById('outcomeContainer');
+    const addBtn = document.getElementById('addCLOBtn');
+    let outCount = 1; // Start from 1 since row 0 already exists
 
-  // loadTabContent('assess-placeholder', 'assess.html', () => { fetchAndPopulateJSON(data); });
-  loadTabContent('outcome-placeholder', 'outcome.html', () => {  fetchAndPopulateJSON(data); });
-  loadTabContent('ects-placeholder', 'ects.html', () => {  fetchAndPopulateJSON(data); });
-  loadTabContent('contents-placeholder', 'contents.html', () => {  fetchAndPopulateJSON(data); });
+    addBtn.addEventListener('click', () => {
+        if (outCount >= 8) { 
+            addBtn.style.display = 'none'; 
+            return; 
+        }
+
+        const tr = document.createElement('tr');
+
+        // CLO textarea cell
+        const tdCLO = document.createElement('td');
+        const taCLO = document.createElement('textarea');
+        taCLO.name = `out${outCount}`;
+        taCLO.id = `out${outCount}`;
+        taCLO.rows = 1;
+        taCLO.placeholder = `Outcome ${outCount + 1}`;
+        taCLO.className = 'form-control form-control-sm border-0 p-1';
+        tdCLO.appendChild(taCLO);
+        tr.appendChild(tdCLO);
+
+        // 5 checkbox cells
+        const methods = [
+            { id: 1, title: 'Written exam' },
+            { id: 2, title: 'Assignment' },
+            { id: 3, title: 'Project/report' },
+            { id: 4, title: 'Presentation' },
+            { id: 5, title: 'Lab work' }
+        ];
+
+        methods.forEach(m => {
+            const td = document.createElement('td');
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.id = `method${m.id}-${outCount}`;
+            cb.name = `outval${outCount}[]`;
+            cb.value = m.id;
+            cb.title = m.title;
+            td.appendChild(cb);
+            tr.appendChild(td);
+        });
+
+        outcomeContainer.appendChild(tr);
+
+        outCount++;
+        if (outCount >= 8) addBtn.style.display = 'none';
+    });
+
+    // Optionally, load existing data if present
+    fetchAndPopulateJSON(data);
+});
+
+  // loadTabContent('outcome-placeholder', 'outcome.html', () => {  fetchAndPopulateJSON(data); });
+  loadTabContent('ects-placeholder', 'ects.html', () => {
+    initSpinners();
+    fetchAndPopulateJSON(data);
+
+    // Attach the click listener here
+    const btn = document.getElementById('calcEctsBtn');
+    const result = document.getElementById('ectsResult');
+    btn.addEventListener('click', function() {
+        let totalHours = 0;
+        for (let i = 1; i <= 9; i++) {
+            let amount = parseFloat(document.getElementById(`ectsnm${i}`).value) || 0;
+            let duration = parseFloat(document.getElementById(`ectsdur${i}`).value) || 0;
+            totalHours += amount * duration;
+        }
+        let ects = Math.ceil(totalHours / 30);
+        result.textContent = `ECTS credit: ${ects}`;
+    });
+});
+  loadTabContent('contents-placeholder', 'contents.html', () => { initSpinners(); fetchAndPopulateJSON(data); });
   loadTabContent('contrib-placeholder', 'contrib.html', () => {  fetchAndPopulateJSON(data); });
 }
 

@@ -63,6 +63,7 @@ table textarea {
     width: 100%;
     font-size: 0.875rem;
     resize: vertical;
+    overflow: hidden;
 }
 
 /* ===============================
@@ -109,6 +110,7 @@ textarea::placeholder,
 
 input, textarea {
     color: #212529;
+    overflow: hidden;
 }
 
 /* ===============================

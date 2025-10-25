@@ -1,3 +1,7 @@
+<div class="mb-3">
+    <em>ECTS credit will be calculated automatically in docx file. Click Calculate ECTS button to view it immediately.</em>
+</div>
+
 <div style="padding:10px; min-width:600px;">
 
   <!-- ECTS Table -->
@@ -16,50 +20,57 @@
     </thead>
     <tbody>
       <tr>
-        <td><input type="text" id="ectsact1" name="ectsact1" placeholder="In-class lecture" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsnm1" name="ectsnm1" placeholder="13" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsdur1" name="ectsdur1" placeholder="3" class="form-control form-control-sm border-0 p-1"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="ectsact2" name="ectsact2" placeholder="Midterm exam" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsnm2" name="ectsnm2" placeholder="1" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsdur2" name="ectsdur2" placeholder="1.5" class="form-control form-control-sm border-0 p-1"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="ectsact3" name="ectsact3" placeholder="Midterm exam prep." class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsnm3" name="ectsnm3" placeholder="1" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsdur3" name="ectsdur3" placeholder="15" class="form-control form-control-sm border-0 p-1"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="ectsact4" name="ectsact4" placeholder="ECTS activity 4" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsnm4" name="ectsnm4" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsdur4" name="ectsdur4" class="form-control form-control-sm border-0 p-1"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="ectsact5" name="ectsact5" placeholder="ECTS activity 5" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsnm5" name="ectsnm5" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsdur5" name="ectsdur5" class="form-control form-control-sm border-0 p-1"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="ectsact6" name="ectsact6" placeholder="ECTS activity 6" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsnm6" name="ectsnm6" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsdur6" name="ectsdur6" class="form-control form-control-sm border-0 p-1"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="ectsact7" name="ectsact7" placeholder="ECTS activity 7" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsnm7" name="ectsnm7" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsdur7" name="ectsdur7" class="form-control form-control-sm border-0 p-1"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="ectsact8" name="ectsact8" placeholder="ECTS activity 8" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsnm8" name="ectsnm8" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsdur8" name="ectsdur8" class="form-control form-control-sm border-0 p-1"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="ectsact9" name="ectsact9" placeholder="ECTS activity 9" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsnm9" name="ectsnm9" class="form-control form-control-sm border-0 p-1"></td>
-        <td><input type="text" id="ectsdur9" name="ectsdur9" class="form-control form-control-sm border-0 p-1"></td>
-      </tr>
+  <td><input type="text" id="ectsact1" name="ectsact1" value="In-class lecture (including exam weeks)" class="form-control form-control-sm border-0 p-1"></td>
+  <td><input type="number" id="ectsnm1" name="ectsnm1" value="15" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="1"></td>
+  <td><input type="number" id="ectsdur1" name="ectsdur1" placeholder="3" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="0.5"></td>
+</tr>
+<tr>
+  <td><input type="text" id="ectsact2" name="ectsact2" value="Midterm exam" class="form-control form-control-sm border-0 p-1"></td>
+  <td><input type="number" id="ectsnm2" name="ectsnm2" value="1" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="1"></td>
+  <td><input type="number" id="ectsdur2" name="ectsdur2" placeholder="1.5" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="0.5"></td>
+</tr>
+<tr>
+  <td><input type="text" id="ectsact3" name="ectsact3" value="Midterm exam preparation" class="form-control form-control-sm border-0 p-1"></td>
+  <td><input type="number" id="ectsnm3" name="ectsnm3" value="1" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="1"></td>
+  <td><input type="number" id="ectsdur3" name="ectsdur3" placeholder="15" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="0.5"></td>
+</tr>
+<tr>
+  <td><input type="text" id="ectsact4" name="ectsact4" value="Final exam" class="form-control form-control-sm border-0 p-1"></td>
+  <td><input type="number" id="ectsnm4" name="ectsnm4" value="1" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="1"></td>
+  <td><input type="number" id="ectsdur4" name="ectsdur4" placeholder="1.5" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="0.5"></td>
+</tr>
+<tr>
+  <td><input type="text" id="ectsact5" name="ectsact5" value="Final exam preparation" class="form-control form-control-sm border-0 p-1"></td>
+  <td><input type="number" id="ectsnm5" name="ectsnm5" value="1" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="1"></td>
+  <td><input type="number" id="ectsdur5" name="ectsdur5" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="0.5"></td>
+</tr>
+<tr>
+  <td><input type="text" id="ectsact6" name="ectsact6" placeholder="ECTS activity 6" class="form-control form-control-sm border-0 p-1"></td>
+  <td><input type="number" id="ectsnm6" name="ectsnm6" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="1"></td>
+  <td><input type="number" id="ectsdur6" name="ectsdur6" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="0.5"></td>
+</tr>
+<tr>
+  <td><input type="text" id="ectsact7" name="ectsact7" placeholder="ECTS activity 7" class="form-control form-control-sm border-0 p-1"></td>
+  <td><input type="number" id="ectsnm7" name="ectsnm7" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="1"></td>
+  <td><input type="number" id="ectsdur7" name="ectsdur7" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="0.5"></td>
+</tr>
+<tr>
+  <td><input type="text" id="ectsact8" name="ectsact8" placeholder="ECTS activity 8" class="form-control form-control-sm border-0 p-1"></td>
+  <td><input type="number" id="ectsnm8" name="ectsnm8" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="1"></td>
+  <td><input type="number" id="ectsdur8" name="ectsdur8" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="0.5"></td>
+</tr>
+<tr>
+  <td><input type="text" id="ectsact9" name="ectsact9" placeholder="ECTS activity 9" class="form-control form-control-sm border-0 p-1"></td>
+  <td><input type="number" id="ectsnm9" name="ectsnm9" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="1"></td>
+  <td><input type="number" id="ectsdur9" name="ectsdur9" class="form-control form-control-sm border-0 p-1 spinner-only" min="0" max="20" step="0.5"></td>
+</tr>
+
     </tbody>
   </table>
+</div>
+
+<!-- Button and result -->
+<div class="mt-2">
+  <button id="calcEctsBtn" type="button" class="btn btn-primary btn-sm">Calculate ECTS</button>
+  <span id="ectsResult" class="ms-2"></span>
 </div>
