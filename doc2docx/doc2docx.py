@@ -1,25 +1,32 @@
 import win32com.client as win32
 import os
 
-def doc_to_docx(filename):
-    # Always work in the current folder (where the script is located)
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    abs_path = os.path.join(current_dir, filename)
+def convert_all_docs():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    doc_folder = os.path.join(base_dir, "doc")
+    docx_folder = os.path.join(base_dir, "docx")
 
-    if not os.path.exists(abs_path):
-        raise FileNotFoundError(f"File not found: {abs_path}")
+    # Create docx folder if it doesn't exist
+    os.makedirs(docx_folder, exist_ok=True)
 
+    # Start Word once
     word = win32.gencache.EnsureDispatch('Word.Application')
-    word.Visible = False  # keep Word hidden
+    word.Visible = False
 
-    doc = word.Documents.Open(abs_path)
-    docx_path = os.path.splitext(abs_path)[0] + ".docx"
-    doc.SaveAs2(docx_path, FileFormat=16)  # 16 = wdFormatXMLDocument
+    for file in os.listdir(doc_folder):
+        if file.lower().endswith(".doc") and not file.lower().endswith(".docx"):
+            doc_path = os.path.join(doc_folder, file)
+            docx_path = os.path.join(docx_folder, os.path.splitext(file)[0] + ".docx")
+            try:
+                doc = word.Documents.Open(doc_path)
+                doc.SaveAs2(docx_path, FileFormat=16)
+                doc.Close()
+                print(f"✅ Converted: {file} -> {docx_path}")
+            except Exception as e:
+                print(f"❌ Failed to convert {file}: {e}")
 
-    doc.Close()
     word.Quit()
 
-    print(f"✅ Converted successfully: {docx_path}")
 
-# Example
-doc_to_docx("CEN301.doc")
+if __name__ == "__main__":
+    convert_all_docs()

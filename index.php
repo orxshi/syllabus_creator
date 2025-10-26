@@ -18,37 +18,39 @@
     .not-found-btn {
       margin-top: 1.5rem;
     }
+    .hidden-item {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h3 class="mb-4">List of syllabi (docx)</h3>
 
-    <div class="list-group mb-3">
+    <!-- Search field -->
+    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search">
+
+    <div class="list-group mb-3" style="max-height: 400px; overflow-y: auto;">
       <?php
         $docFolder = 'doc';
-        $jsonFolder = 'json';
         $hasFiles = false;
 
         if(is_dir($docFolder)){
           $files = array_diff(scandir($docFolder), ['.', '..']);
           foreach($files as $file){
-    if(pathinfo($file, PATHINFO_EXTENSION) === 'docx'){
-        $hasFiles = true;
-        $displayName = pathinfo($file, PATHINFO_FILENAME);
+            if(strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'docx'){
+              $hasFiles = true;
+              $displayName = trim(pathinfo($file, PATHINFO_FILENAME));
 
-        echo '<div class="list-group-item d-flex justify-content-between align-items-center">';
-        echo '<span>'.$displayName.'</span>';
-        echo '<div>';
-        // Download button
-        echo '<a href="'.$docFolder.'/'.$file.'" class="btn btn-sm btn-outline-success me-2" download>Download</a>';
-        // Always show Edit button
-        echo '<a href="form.html?course='.$displayName.'" class="btn btn-sm btn-outline-primary">Edit</a>';
-        echo '</div>';
-        echo '</div>';
-    }
-}
-
+              echo '<div class="list-group-item d-flex justify-content-between align-items-center file-item">';
+              echo '<span>' . htmlspecialchars($displayName) . '</span>';
+              echo '<div>';
+              echo '<a href="' . $docFolder . '/' . $file . '" class="btn btn-sm btn-outline-success me-2" download>Download</a>';
+              echo '<a href="form.html?course=' . urlencode($displayName) . '" class="btn btn-sm btn-outline-primary">Edit</a>';
+              echo '</div>';
+              echo '</div>';
+            }
+          }
         }
 
         if(!$hasFiles){
@@ -58,9 +60,29 @@
     </div>
 
     <!-- Button to redirect if file not listed -->
-    <a href="form.html" class="btn btn-primary not-found-btn">Make new syllabus</a>
+    <a href="form.html" class="btn btn-primary not-found-btn">New syllabus</a>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JS for live search -->
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const listItems = document.querySelectorAll('.file-item');
+
+    searchInput.addEventListener('input', function() {
+      const filter = this.value.trim().toLowerCase();
+
+      listItems.forEach(item => {
+        const code = item.querySelector('span').textContent.trim().toLowerCase();
+        // Add/remove hidden class
+        if(code.includes(filter)){
+          item.classList.remove('hidden-item');
+        } else {
+          item.classList.add('hidden-item');
+        }
+      });
+    });
+  </script>
 </body>
 </html>

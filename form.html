@@ -18,7 +18,7 @@
   }
   .form-wrapper {
     width: 100%;
-    max-width: 800px;
+    max-width: 650px;
   }
 </style>
 </head>
@@ -26,18 +26,21 @@
 
 <div class="form-wrapper">
   <form method="post" action="post.php" id="myform" autocomplete="off" novalidate>
-    <div class="row gx-5 align-items-start">
-      <div class="col-md-2 mb-3">
+    <!-- <div class="row gx-5 align-items-start"> -->
+      <!-- <div class="col-md-2 mb-3">
         <div class="d-grid gap-2">
           <input type="button" id="save" class="btn btn-outline-primary" value="Save"/>
-          <input type="reset" class="btn btn-outline-secondary" value="Reset"/>
+          <input type="button" id="resetBtn" class="btn btn-outline-secondary" value="Reset"/>
         </div>
-      </div>
+      </div> -->
 
-      <div class="col-md-10">
+      
         <ul class="nav nav-tabs mb-3 justify-content-center" id="syllabusTabs" role="tablist">
+          <div class="col-md-2">
+            <input type="button" id="save" class="btn btn-outline-primary" value="Save"/>
+          </div>
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#divbasic" type="button">Basic</button>
+            <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#divbasic" type="button">General</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="obj-tab" data-bs-toggle="tab" data-bs-target="#divobj" type="button">Objectives</button>
@@ -60,6 +63,8 @@
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="contents-tab" data-bs-toggle="tab" data-bs-target="#divcontents" type="button">Contents</button>
           </li>
+          
+
         </ul>
 
         <div class="tab-content">
@@ -72,8 +77,8 @@
           <div class="tab-pane fade" id="divects"><div id="ects-placeholder"></div></div>
           <div class="tab-pane fade" id="divcontents"><div id="contents-placeholder"></div></div>
         </div>
-      </div>
-    </div>
+      <!-- </div> -->
+    <!-- </div> -->
 
     <!-- hidden input to store course code -->
     <!-- <input type="hidden" name="coursecode" id="coursecode" value=""> -->
@@ -283,21 +288,36 @@ loadTabContent('outcome-placeholder', 'outcome.html', () => {
     const btn = document.getElementById('calcEctsBtn');
     const result = document.getElementById('ectsResult');
     btn.addEventListener('click', function() {
-        let totalHours = 0;
-        for (let i = 1; i <= 9; i++) {
-            let amount = parseFloat(document.getElementById(`ectsnm${i}`).value) || 0;
-            let duration = parseFloat(document.getElementById(`ectsdur${i}`).value) || 0;
-            totalHours += amount * duration;
-        }
-        let ects = Math.ceil(totalHours / 30);
-        result.textContent = `ECTS credit: ${ects}`;
+    let totalHours = 0;
+    const rows = document.querySelectorAll("#tabects tbody tr");
+    rows.forEach((row, i) => {
+        const amount = parseFloat(row.querySelector(`[name="ectsnm${i + 1}"]`)?.value) || 0;
+        const duration = parseFloat(row.querySelector(`[name="ectsdur${i + 1}"]`)?.value) || 0;
+        totalHours += amount * duration;
     });
+    const ects = Math.ceil(totalHours / 30);
+    result.textContent = `ECTS credit: ${ects}`;
+});
 });
   loadTabContent('contents-placeholder', 'contents.html', () => { initSpinners(); fetchAndPopulateJSON(data); });
   loadTabContent('contrib-placeholder', 'contrib.html', () => {  fetchAndPopulateJSON(data); });
 }
 
 loadCourse();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 

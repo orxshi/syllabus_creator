@@ -259,6 +259,49 @@ if (assessContainer) {
     });
 }
 
+
+
+// --- Populate ECTS activities ---
+const ectsTable = document.getElementById("tabects");
+if (ectsTable) {
+    // Get all ects-related keys from JSON
+    const ectsActivities = Object.keys(data)
+        .filter(k => /^ectsact\d+$/.test(k))
+        .map(k => {
+            const i = k.match(/\d+/)[0];
+            return {
+                index: i,
+                activity: data[`ectsact${i}`],
+                amount: data[`ectsnm${i}`] || "",
+                duration: data[`ectsdur${i}`] || ""
+            };
+        });
+
+    // If JSON has ECTS data → rebuild table from JSON
+    if (ectsActivities.length > 0) {
+        const tbody = ectsTable.querySelector("tbody");
+        tbody.innerHTML = ""; // clear default rows
+
+        ectsActivities.forEach((act, idx) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><input type="text" id="ectsact${idx + 1}" name="ectsact${idx + 1}"
+                    value="${act.activity}" class="form-control form-control-sm border-0 p-1"></td>
+                <td><input type="number" id="ectsnm${idx + 1}" name="ectsnm${idx + 1}"
+                    value="${act.amount}" class="form-control form-control-sm border-0 p-1 spinner-only"
+                    min="0" max="20" step="1"></td>
+                <td><input type="number" id="ectsdur${idx + 1}" name="ectsdur${idx + 1}"
+                    value="${act.duration}" class="form-control form-control-sm border-0 p-1 spinner-only"
+                    min="0" max="20" step="0.5"></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+}
+
+
+
+
         // --- Populate department select ---
         const deptSelect = document.getElementById("departmentSelect");
         if (deptSelect && data["departmentSelect"]) deptSelect.value = data["departmentSelect"];
