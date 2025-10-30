@@ -88,6 +88,27 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="tab.js"></script>
 <script src="contrib.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch('lecturer.php')
+    .then(res => res.json())
+    .then(data => {
+      const select = document.getElementById('lecturer');
+      select.innerHTML = '<option value="">Select Lecturer</option>';
+      data.forEach(l => {
+        const opt = document.createElement('option');
+        opt.value = l.initials;
+        opt.textContent = l.name;
+        select.appendChild(opt);
+      });
+      // Once lecturers are loaded, THEN load the JSON
+      if (typeof fetchAndPopulateJSON === "function") {
+        fetchAndPopulateJSON();
+      }
+    })
+    .catch(err => console.error("Lecturers load failed:", err));
+});
+</script>
 <script src="saveload.js"></script>
 <script src="spinner.js"></script>
 <script>
@@ -136,28 +157,34 @@
   // After loading basic.html into the tab
 loadTabContent('basic-placeholder', 'basic.html', () => {
     initSpinners();
-    fetchAndPopulateJSON(data);
 
-    // Populate lecturer dropdown
-    const select = document.getElementById('lecturer');
+    // STEP 1 — Load lecturers first
     fetch('lecturer.php')
-  .then(res => res.json())
-  .then(data => {
-      const select = document.getElementById('lecturer');
-      
-      // Sort lecturers alphabetically by name
-      data.sort((a, b) => a.name.localeCompare(b.name));
+      .then(res => res.json())
+      .then(list => {
+          const select = document.getElementById('lecturer');
+          if (!select) return;
+          
+          // Sort lecturers alphabetically
+          list.sort((a, b) => a.name.localeCompare(b.name));
+          
+          // Clear and populate select
+          select.innerHTML = '';
+          list.forEach(l => {
+              const opt = document.createElement('option');
+              opt.value = l.initials;
+              opt.textContent = l.name;
+              select.appendChild(opt);
+          });
 
-      // Populate select
-      data.forEach(l => {
-          const opt = document.createElement('option');
-          opt.value = l.initials;
-          opt.textContent = l.name;
-          select.appendChild(opt);
+          // STEP 2 — Only now populate form with saved JSON
+          fetchAndPopulateJSON(data);
+      })
+      .catch(err => {
+          console.error("Error loading lecturers:", err);
+          // still populate form even if lecturers fail
+          fetchAndPopulateJSON(data);
       });
-  })
-  .catch(err => console.error("Error loading lecturers:", err));
-
 });
   loadTabContent('objectives-placeholder', 'objectives.html', () => {
       const objectivesContainer = document.getElementById('objectivesContainer');

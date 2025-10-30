@@ -91,6 +91,8 @@ function saveFormData(e) {
 const lecturerSelect = document.getElementById("lecturer");
 const lecturerInitials = lecturerSelect?.value || "XX";
 
+data["lecturer"] = lecturerInitials;
+
 const currentSemesterCode = getCurrentSemesterCode();
 const jsonFilename = `${courseCode}_${currentSemesterCode}_${lecturerInitials}`;
 
@@ -341,4 +343,6 @@ if (ectsTable) {
         console.error("Error loading JSON:", err);
         alert("⚠️ Could not load course data. Check console for details.");
     }
+
+   
 }
