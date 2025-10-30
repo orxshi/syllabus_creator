@@ -75,7 +75,7 @@ if(is_dir($docFolder)){
             ){
                 $dept = 'Faculty Common';
             } else {
-                $dept = 'Universit Common';
+                $dept = 'University Common';
             }
 
 
