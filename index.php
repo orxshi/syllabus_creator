@@ -70,11 +70,12 @@ if(is_dir($docFolder)){
             } elseif(
                 str_starts_with($displayName, 'MT') ||
                 str_starts_with($displayName, 'PS') ||
-                str_starts_with($displayName, 'CH')
+                str_starts_with($displayName, 'CH') ||
+                str_starts_with($displayName, 'ENG')
             ){
                 $dept = 'Faculty Common';
             } else {
-                $dept = 'Other Departments';
+                $dept = 'Universit Common';
             }
 
 
