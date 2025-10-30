@@ -2,6 +2,25 @@
 // saveload.js
 // =======================
 
+// Compute current academic semester
+function getCurrentSemesterCode() {
+    const now = new Date();
+    const year = now.getFullYear() % 100; // last two digits, e.g., 2025 → 25
+    const month = now.getMonth() + 1;     // JS months 0-11
+
+    let semesterCode;
+    if (month >= 8 && month <= 12) {       // Aug-Dec → Fall
+        semesterCode = `${year}Fa`;
+    } else if (month >= 1 && month <= 5) { // Jan-May → Spring
+        semesterCode = `${year}Sp`;
+    } else {                               // Jun-Jul → Summer
+        semesterCode = `${year}Su`;
+    }
+
+    return semesterCode;
+}
+
+
 // --- Attach Save Button ---
 document.addEventListener("DOMContentLoaded", () => {
     const saveBtn = document.getElementById("save");
@@ -10,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // --- SAVE FORM DATA TO SERVER AND DOWNLOAD DOCX ---
 function saveFormData(e) {
+    
     e?.preventDefault?.();
 
     const form = document.getElementById("myform");
@@ -68,16 +88,21 @@ function saveFormData(e) {
     }
 
     const courseCode = document.getElementById("coursecode")?.value || "syllabus";
+const lecturerSelect = document.getElementById("lecturer");
+const lecturerInitials = lecturerSelect?.value || "XX";
+
+const currentSemesterCode = getCurrentSemesterCode();
+const jsonFilename = `${courseCode}_${currentSemesterCode}_${lecturerInitials}`;
 
     // --- Save JSON to server (json folder) via encode.php ---
     fetch('encode.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ coursecode: courseCode, ...data }) // <-- flat JSON
-    })
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ filename: jsonFilename, ...data })
+})
     .then(res => res.text())
     .then(() => {
-        console.log(`✅ JSON saved as json/${courseCode}.json`);
+        console.log(`✅ JSON saved as json/${jsonFilename}.json`);
 
         // --- Trigger DOCX download via post.php ---
         const tempForm = document.createElement('form');
@@ -102,6 +127,13 @@ function saveFormData(e) {
                 tempForm.appendChild(input);
             }
         });
+
+        // ✅ Add the filename for post.php to use
+        const filenameInput = document.createElement('input');
+        filenameInput.type = 'hidden';
+        filenameInput.name = 'filename';
+        filenameInput.value = jsonFilename;
+        tempForm.appendChild(filenameInput);
 
         // Signal Word generation
         const submitWord = document.createElement('input');

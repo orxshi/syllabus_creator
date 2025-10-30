@@ -1,28 +1,36 @@
 <!-- basic.html -->
-<div class="mx-auto" style="max-width: 400px;">
+<div class="mx-auto" style="max-width: 500px;">
+
+ 
 
   <!-- Course Name & Code -->
   <div class="row mb-3 g-2">
-      <div class="col-md-7">
+      <div class="col-md-4">
           <label for="coursename" class="form-label">Course Name</label>
           <input type="text" class="form-control" id="coursename" name="coursename" placeholder="General Physics I">
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
           <label for="coursecode" class="form-label">Course Code</label>
           <input type="text" class="form-control" id="coursecode" name="coursecode" placeholder="PS111">
       </div>      
-  </div>
-
-  <!-- Course Type & Prerequisites -->
-  <div class="row mb-3 g-2">
-      <div class="col-md-7">
+      <div class="col-md-4">
           <label for="coursetype" class="form-label">Course Type</label>
           <select class="form-select" id="coursetype" name="coursetype">
               <option value="Compulsory">Compulsory</option>
               <option value="Technical elective">Technical elective</option>
-              <option value="Non-technical elective">Non-technical elective</option>
+              <option value="Non-technical elective">Free elective</option>
           </select>
       </div>
+  </div>
+
+  <!-- Course Type & Prerequisites -->
+  <div class="row mb-3 g-2">
+    <div class="col-md-6">
+      <label for="lecturer" class="form-label">Lecturer</label>
+      <select class="form-select" id="lecturer" name="lecturer">
+          <!-- Options will be populated by JS -->
+      </select>
+  </div>
       <div class="col-md-4">
           <label for="prerequisite" class="form-label">Prerequisites</label>
           <input type="text" class="form-control" id="prerequisite" name="prerequisite" placeholder="PS111">

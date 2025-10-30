@@ -33,29 +33,73 @@
     <div class="list-group mb-3" style="max-height: 400px; overflow-y: auto;">
       <?php
         $docFolder = 'doc';
-        $hasFiles = false;
+$hasFiles = false;
 
-        if(is_dir($docFolder)){
-          $files = array_diff(scandir($docFolder), ['.', '..']);
-          foreach($files as $file){
-            if(strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'docx'){
-              $hasFiles = true;
-              $displayName = trim(pathinfo($file, PATHINFO_FILENAME));
+// Array to store courses by department
+$departments = [];
 
-              echo '<div class="list-group-item d-flex justify-content-between align-items-center file-item">';
-              echo '<span>' . htmlspecialchars($displayName) . '</span>';
-              echo '<div>';
-              echo '<a href="' . $docFolder . '/' . $file . '" class="btn btn-sm btn-outline-success me-2" download>Download</a>';
-              echo '<a href="form.html?course=' . urlencode($displayName) . '" class="btn btn-sm btn-outline-primary">Edit</a>';
-              echo '</div>';
-              echo '</div>';
+if(is_dir($docFolder)){
+    $files = array_diff(scandir($docFolder), ['.', '..']);
+    
+    foreach($files as $file){
+        if(strtolower(pathinfo($file, PATHINFO_EXTENSION)) === 'docx'){
+            $hasFiles = true;
+            $displayName = trim(pathinfo($file, PATHINFO_FILENAME));
+            
+            // Determine department by course code prefix
+            if(str_starts_with($displayName, 'CEN')){
+                $dept = 'Computer Engineering';
+            } elseif(str_starts_with($displayName, 'EEN')){
+                $dept = 'Electrical & Electronics Engineering';
+            } elseif(str_starts_with($displayName, 'ME')){
+                $dept = 'Mechanical Engineering';
+            } elseif(str_starts_with($displayName, 'AE')){
+                $dept = 'Automotive Engineering';
+            } elseif(str_starts_with($displayName, 'IE')){
+                $dept = 'Industrial Engineering';
+            } elseif(str_starts_with($displayName, 'CVEN')){
+                $dept = 'Civil Engineering';
+            } elseif(str_starts_with($displayName, 'ESE')){
+                $dept = 'Energy Systems Engineering';
+            } elseif(str_starts_with($displayName, 'AIE')){
+                $dept = 'Artificial Intelligence Engineering';
+            } elseif(str_starts_with($displayName, 'SE')){
+                $dept = 'Software Engineering';
+            } elseif(str_starts_with($displayName, 'QS')){
+                $dept = 'Quantity Surveying';
+            } elseif(
+                str_starts_with($displayName, 'MT') ||
+                str_starts_with($displayName, 'PS') ||
+                str_starts_with($displayName, 'CH')
+            ){
+                $dept = 'Faculty Common';
+            } else {
+                $dept = 'Other Departments';
             }
-          }
-        }
 
-        if(!$hasFiles){
-          echo '<p class="text-muted">No DOCX files found in the folder.</p>';
+
+            $departments[$dept][] = $displayName;
         }
+    }
+}
+
+// Display courses categorized by department
+if($hasFiles){
+    foreach($departments as $deptName => $courses){
+        echo '<h5 class="mt-3">' . htmlspecialchars($deptName) . '</h5>';
+        foreach($courses as $course){
+            echo '<div class="list-group-item d-flex justify-content-between align-items-center file-item">';
+            echo '<span>' . htmlspecialchars($course) . '</span>';
+            echo '<div>';
+            echo '<a href="' . $docFolder . '/' . $course . '.docx" class="btn btn-sm btn-outline-success me-2" download>Download</a>';
+            echo '<a href="form.html?course=' . urlencode($course) . '" class="btn btn-sm btn-outline-primary">Edit</a>';
+            echo '</div>';
+            echo '</div>';
+        }
+    }
+} else {
+    echo '<p class="text-muted">No DOCX files found in the folder.</p>';
+}
       ?>
     </div>
 

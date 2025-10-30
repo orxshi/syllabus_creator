@@ -1,7 +1,9 @@
 {
-    "coursecode": "MT111",
+    "filename": "MT111_25Fa_OS",
     "coursename": "Calculus I",
+    "coursecode": "MT111",
     "coursetype": "Compulsory",
+    "lecturer": "OS",
     "prerequisite": "",
     "theoretical": "3",
     "practice": "2",

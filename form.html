@@ -133,10 +133,32 @@
   };
 
   // Load all tabs
-  loadTabContent('basic-placeholder', 'basic.html', () => {
-      initSpinners();
-      fetchAndPopulateJSON(data);
-  });
+  // After loading basic.html into the tab
+loadTabContent('basic-placeholder', 'basic.html', () => {
+    initSpinners();
+    fetchAndPopulateJSON(data);
+
+    // Populate lecturer dropdown
+    const select = document.getElementById('lecturer');
+    fetch('lecturer.php')
+  .then(res => res.json())
+  .then(data => {
+      const select = document.getElementById('lecturer');
+      
+      // Sort lecturers alphabetically by name
+      data.sort((a, b) => a.name.localeCompare(b.name));
+
+      // Populate select
+      data.forEach(l => {
+          const opt = document.createElement('option');
+          opt.value = l.initials;
+          opt.textContent = l.name;
+          select.appendChild(opt);
+      });
+  })
+  .catch(err => console.error("Error loading lecturers:", err));
+
+});
   loadTabContent('objectives-placeholder', 'objectives.html', () => {
       const objectivesContainer = document.getElementById('objectivesContainer');
       const addBtn = document.getElementById('addObjectiveBtn');

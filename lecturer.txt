@@ -1,0 +1,20 @@
+AH,Ali Haydar
+AI,Atabak Rahimzadeh Ilkhechi
+BS,Behzad Sanaei
+CA,Changiz Ahbab
+EB,Elvin Bacı
+GM,Gholamreza Mohebalizadeh
+HH,Hüseyin Haksayar
+HS,Hüseyin Sezer Solak
+IE,İbrahim Erşan
+IM,Iman Faridmehr
+IS,Irfan Sarıyıldız
+KD,Kamil Dimililer
+KO,Kezban Özlütaş
+KT,Kamuran Türkoğlu
+MD,Manta Marcelinus Dakyen
+MN,Martina Nwajei
+MU,Mehtap Köse Ulukök
+OS,Orhan Şibliyev
+SK,Sara Kandulu
+WF,Waleed Fadel
